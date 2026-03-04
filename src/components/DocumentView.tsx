@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BRAND_LINKS } from "@/config/links";
+import { DOCUMENT_ASSETS } from "@/config/assets";
 import { NewsletterForm } from "./NewsletterForm";
 
 interface DocumentViewProps {
@@ -40,12 +42,20 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
         <div className="doc-red-side" aria-hidden />
         <div className="flex-1 min-w-0">
           <main className="doc-main px-6 md:px-10 py-8 md:py-10">
-            {/* Brand header */}
-            <header className="text-center pb-6 border-b border-stone-200">
-              <p className="doc-brand-main">
+            {/* Brand header – production parity: logo + text */}
+            <header className="text-center doc-header">
+              <Image
+                src={DOCUMENT_ASSETS.logo}
+                alt="לוגו השטיח האדום"
+                width={180}
+                height={48}
+                className="doc-logo mx-auto"
+                unoptimized
+              />
+              <p className="doc-brand-main mt-3">
                 <span className="hom">HōM</span> GROUP
               </p>
-              <div className="mt-2 flex flex-wrap justify-center gap-4 md:gap-6 text-sm font-medium text-stone-700">
+              <div className="doc-sub-brands">
                 <span>ELITE RUGS</span>
                 <span>השטיח האדום</span>
                 <span>Pozitive HōM</span>
@@ -54,18 +64,25 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
             </header>
 
             {/* Document title */}
-            <div className="text-center py-6">
+            <div className="text-center doc-title-block">
               <h1 className="doc-title-main">מסמך דיגיטלי</h1>
-              <p className="mt-2 text-base text-stone-800">
+              <p className="doc-title-sub">
                 {docType} {payload.InvoiceNumber ?? ""}
               </p>
             </div>
 
-            {/* Hero image */}
-            <div className="w-full aspect-[2/1] max-h-72 bg-stone-200 rounded-lg overflow-hidden mb-8" />
+            {/* Hero / banner – production asset */}
+            <div className="doc-banner-wrap">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={DOCUMENT_ASSETS.banner}
+                alt=""
+                className="doc-banner-img"
+              />
+            </div>
 
-            {/* Meta: Branch, Date, Sales rep - two columns RTL style */}
-            <div className="grid grid-cols-2 gap-y-4 mb-8 text-base">
+            {/* Meta: Branch, Date, Sales rep – production layout */}
+            <div className="doc-meta grid grid-cols-2 gap-y-3 text-base">
               <div className="text-left text-stone-500">סניף</div>
               <div className="text-right font-medium text-stone-900">{branchName}</div>
               <div className="text-left text-stone-500">תאריך</div>
@@ -74,9 +91,9 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
               <div className="text-right font-medium text-stone-900">{payload.SalesRepresentative ?? ""}</div>
             </div>
 
-            {/* Items table */}
-            <div className="overflow-x-auto -mx-6 md:-mx-10">
-              <table className="w-full border-collapse text-base">
+            {/* Items table – production alignment */}
+            <div className="doc-table-wrap">
+              <table className="doc-table w-full border-collapse text-base">
                 <thead>
                   <tr className="border-b-2 border-stone-200">
                     <th className="py-3 pr-4 text-right font-bold text-stone-800">תיאור מוצר</th>
@@ -96,8 +113,8 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
               </table>
             </div>
 
-            {/* Summary rows: label (red) | value (dark grey) - RTL so value on left, label on right */}
-            <div className="mt-4 overflow-hidden rounded-lg">
+            {/* Summary rows – production: dark grey (value) | red (label) */}
+            <div className="doc-summary">
               <div className="doc-summary-row">
                 <div className="doc-summary-value">{formatPrice(vat)}</div>
                 <div className="doc-summary-label">חייב מע״מ 18%</div>
@@ -114,65 +131,70 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
               </div>
             </div>
 
-            {/* Download original */}
-            <div className="mt-6">
+            {/* Download original – production: blue link */}
+            <div className="doc-download">
               <Link
                 href={`/documents/${documentId}/pdf`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline font-medium"
+                className="doc-link-primary"
               >
                 להורדת מסמך המקור
               </Link>
             </div>
 
-            {/* Thank you + feedback */}
-            <div className="mt-10 pt-8 border-t border-stone-200">
-              <h2 className="text-xl md:text-2xl font-bold text-[#a61a21]">תודה שבחרתם בנו!</h2>
-              <p className="mt-2 text-lg font-bold text-stone-900">איזה כיף!</p>
-              <p className="mt-4 text-stone-700 leading-relaxed">
+            {/* Thank you + feedback – production: heading, sub, paragraph, avatar img, branch button */}
+            <section className="doc-thank-you">
+              <h2 className="doc-thank-you-title">תודה שבחרתם בנו!</h2>
+              <p className="doc-thank-you-sub">איזה כיף!</p>
+              <p className="doc-thank-you-text">
                 מקווים שניהנת מהשירות של {payload.SalesRepresentative ?? ""}
-                {branchName && ` בסניף ${branchName}`}, לחצו על הלינק ותחממו לנו את הלב.
+                {branchName && ` נשמח לשמוע על חווית הקניה שלך בסניף ${branchName},`} לחצו על הלינק ותחממו לנו את הלב.
               </p>
-              <div className="flex flex-col items-center mt-6">
-                <div className="w-16 h-16 rounded-full bg-stone-300 flex items-center justify-center" aria-hidden />
+              <div className="doc-thank-you-cta">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={DOCUMENT_ASSETS.avatar}
+                  alt=""
+                  className="doc-avatar"
+                />
                 {payload.BranchFeedbackUrl && (
                   <a
                     href={payload.BranchFeedbackUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-4 inline-block rounded-lg bg-[#a61a21] px-6 py-3 text-white font-semibold"
+                    className="doc-btn-branch"
                   >
                     {branchName || "משוב"}
                   </a>
                 )}
               </div>
-            </div>
+            </section>
 
-            {/* Newsletter */}
-            <div className="mt-12 pt-8 border-t border-stone-200">
-              <h2 className="text-xl md:text-2xl font-bold text-stone-900">דברים טובים בדרך אליך ❤️</h2>
-              <p className="mt-3 text-stone-700 leading-relaxed">
+            {/* Newsletter – production hierarchy */}
+            <section className="doc-newsletter">
+              <h2 className="doc-newsletter-title">דברים טובים בדרך אליך ❤️</h2>
+              <p className="doc-newsletter-desc">
                 רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרוייקטים מסקרנים?
               </p>
-              <p className="mt-2 text-base font-bold text-[#a61a21]">זה הזמן להצטרף לניוזלטר שלנו</p>
+              <p className="doc-newsletter-cta">זה הזמן להצטרף לניוזלטר שלנו</p>
               <NewsletterForm documentId={documentId} branchName={branchName} />
-            </div>
+            </section>
 
-            {/* Care guide link */}
-            <div className="mt-10 pt-6 border-t border-b-2 border-[#a61a21]">
+            {/* Care guide link – production styling */}
+            <div className="doc-care-guide">
               <a
                 href={BRAND_LINKS.careGuideUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-base font-bold text-stone-900 block"
+                className="doc-care-guide-link"
               >
                 המדריך המלא לטיפול ושמירה על שטיח &lt;&lt;
               </a>
             </div>
 
-            {/* Footer: brands + social (black circles, white icons) */}
-            <footer className="mt-10 pt-8">
+            {/* Footer: brands + social – production */}
+            <footer className="doc-footer">
               <div className="flex flex-wrap gap-8">
                 <div>
                   <p className="font-bold text-stone-900 text-lg">השטיח האדום</p>

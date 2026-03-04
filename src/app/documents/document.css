@@ -1,11 +1,14 @@
-/* Digital document layout – match reference screenshots */
+/* Digital document – production parity (receipts.carpetshop.co.il) */
 .doc-frame {
   --doc-red: #a61a21;
   --doc-red-dark: #8b1520;
   --doc-green: #059669;
   --doc-grey-bg: #2a2a2a;
-  --doc-content-bg: #fafaf9;
+  --doc-content-bg: #f5f5f4;
   --doc-white: #ffffff;
+  --doc-text: #171717;
+  --doc-text-muted: #525252;
+  --doc-link: #2563eb;
 }
 
 .doc-frame {
@@ -34,22 +37,145 @@
   margin: 0 auto;
   background: var(--doc-white);
   min-height: 100vh;
+  padding: 24px 20px 32px;
+}
+
+@media (min-width: 640px) {
+  .doc-main {
+    padding: 32px 40px 40px;
+  }
+}
+
+/* Header – logo + brand hierarchy */
+.doc-header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.doc-logo {
+  display: block;
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
 }
 
 .doc-brand-main {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #171717;
+  color: var(--doc-text);
+  margin-top: 12px;
 }
 
 .doc-brand-main .hom {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
+}
+
+.doc-sub-brands {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--doc-text-muted);
+}
+
+/* Document title block */
+.doc-title-block {
+  padding: 20px 0 16px;
 }
 
 .doc-title-main {
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--doc-red);
+  margin: 0;
+}
+
+.doc-title-sub {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: var(--doc-text);
+  font-weight: 400;
+}
+
+/* Banner */
+.doc-banner-wrap {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  max-height: 280px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: #e5e5e5;
+}
+
+.doc-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Meta (branch, date, rep) – production spacing */
+.doc-meta {
+  margin-bottom: 24px;
+}
+
+.doc-meta > *:nth-child(odd) {
+  color: var(--doc-text-muted);
+  font-size: 0.9375rem;
+}
+
+.doc-meta > *:nth-child(even) {
+  text-align: right;
+  font-weight: 500;
+  color: var(--doc-text);
+}
+
+/* Table */
+.doc-table-wrap {
+  overflow-x: auto;
+  margin: 0 -20px 16px;
+}
+
+@media (min-width: 640px) {
+  .doc-table-wrap {
+    margin: 0 -40px 20px;
+  }
+}
+
+.doc-table th {
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--doc-text);
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.doc-table td {
+  padding: 10px 12px;
+  font-size: 0.9375rem;
+  color: var(--doc-text);
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.doc-table th:first-child,
+.doc-table td:first-child {
+  text-align: right;
+}
+
+.doc-table th:last-child,
+.doc-table td:last-child {
+  text-align: left;
+}
+
+/* Summary block – production: value (grey) | label (red) */
+.doc-summary {
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .doc-summary-row {
@@ -62,6 +188,7 @@
   color: white;
   padding: 12px 16px;
   font-weight: 600;
+  font-size: 0.9375rem;
   text-align: right;
 }
 
@@ -69,45 +196,200 @@
   background: var(--doc-grey-bg);
   color: white;
   padding: 12px 16px;
+  font-size: 0.9375rem;
   text-align: left;
 }
 
-.doc-social-circle {
+.doc-summary-value.font-semibold {
+  font-weight: 600;
+}
+
+/* Download link – production blue underline */
+.doc-download {
+  margin-bottom: 28px;
+}
+
+.doc-link-primary {
+  color: var(--doc-link);
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.doc-link-primary:hover {
+  color: #1d4ed8;
+}
+
+/* Thank you block – production structure */
+.doc-thank-you {
+  padding-top: 28px;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 28px;
+}
+
+.doc-thank-you-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--doc-red);
+  margin: 0 0 6px;
+}
+
+.doc-thank-you-sub {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--doc-text);
+  margin: 0 0 14px;
+}
+
+.doc-thank-you-text {
+  font-size: 0.9375rem;
+  color: var(--doc-text-muted);
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.doc-thank-you-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.doc-avatar {
+  width: 64px;
+  height: 64px;
+  display: block;
+  object-fit: contain;
+}
+
+.doc-btn-branch {
+  display: inline-block;
+  background: var(--doc-red);
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.doc-btn-branch:hover {
+  background: var(--doc-red-dark);
+}
+
+/* Newsletter section */
+.doc-newsletter {
+  padding-top: 28px;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 28px;
+}
+
+.doc-newsletter-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--doc-text);
+  margin: 0 0 10px;
+}
+
+.doc-newsletter-desc {
+  font-size: 0.9375rem;
+  color: var(--doc-text-muted);
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.doc-newsletter-cta {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--doc-red);
+  margin: 0 0 16px;
+}
+
+/* Care guide link */
+.doc-care-guide {
+  padding: 16px 0;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 2px solid var(--doc-red);
+  margin-bottom: 28px;
+}
+
+.doc-care-guide-link {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--doc-text);
+  text-decoration: none;
+}
+
+.doc-care-guide-link:hover {
+  color: var(--doc-red);
+}
+
+/* Footer */
+.doc-footer {
+  padding-top: 24px;
+}
+
+.doc-footer .doc-social-circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #171717;
+  background: var(--doc-text);
   color: white;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-left: 8px;
-  font-size: 18px;
+  font-size: 16px;
   text-decoration: none;
   transition: opacity 0.2s;
 }
 
-.doc-social-circle:hover {
+.doc-footer .doc-social-circle:hover {
   opacity: 0.85;
 }
 
+.doc-footer > div:first-of-type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  margin-bottom: 20px;
+}
+
+.doc-footer p.font-bold.text-stone-900 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--doc-text);
+  margin-bottom: 8px;
+}
+
+.doc-footer p.text-stone-600 {
+  font-size: 0.875rem;
+  color: var(--doc-text-muted);
+  line-height: 1.55;
+  max-width: 36rem;
+}
+
+/* Care tips – red section, white card */
 .doc-care-card {
   background: var(--doc-white);
   border-radius: 0 12px 12px 0;
   max-width: 100%;
   margin: 0 auto;
+  padding: 24px 20px;
 }
 
 @media (min-width: 640px) {
   .doc-care-card {
     max-width: 90%;
+    padding: 32px 40px;
   }
 }
 
 .doc-care-divider {
   border: none;
   border-top: 1px solid #e5e5e5;
-  margin: 20px 0;
+  margin: 18px 0;
 }
 
 .doc-care-tip-icon {
@@ -118,4 +400,23 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
+}
+
+.doc-social-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--doc-text);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-size: 16px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.doc-social-circle:hover {
+  opacity: 0.85;
 }
