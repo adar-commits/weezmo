@@ -10,8 +10,8 @@ function getApiKey(req: NextRequest): string | null {
 }
 
 function getBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL;
-  if (url) return url.startsWith("http") ? url : `https://${url}`;
+  const url = process.env.NEXT_PUBLIC_APP_URL;
+  if (url && url.trim()) return url.startsWith("http") ? url.trim() : `https://${url.trim()}`;
   return "https://weezmo.vercel.app";
 }
 
@@ -45,7 +45,17 @@ export async function POST(req: NextRequest) {
 
   const dbType = payloadTypeToDbType(payload.type);
 
-  const supabase = createServerSupabaseClient();
+  let supabase;
+  try {
+    supabase = createServerSupabaseClient();
+  } catch (e) {
+    console.error("Supabase client init failed:", e);
+    return NextResponse.json(
+      { status: "error", message: "Server configuration error (Supabase not configured)" },
+      { status: 500 }
+    );
+  }
+
   const { data: row, error } = await supabase
     .from("documents")
     .insert({

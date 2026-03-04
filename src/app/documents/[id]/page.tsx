@@ -1,3 +1,4 @@
+import "../document.css";
 import { notFound } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { DocumentView } from "@/components/DocumentView";

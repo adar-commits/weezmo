@@ -43,6 +43,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Create a digital document (receipt/invoice) and get a public URL. Documents are stored in Supabase and viewable at `https://weezmo.vercel.app/documents/{id}`. The URL uses a UUID so it is not guessable.
 
+**Important:** Set `NEXT_PUBLIC_APP_URL=https://weezmo.vercel.app` in Vercel (and in production) so the API always returns document links with your production domain, not preview deployment URLs.
+
 ### Create document
 
 **`POST /api/documents`**

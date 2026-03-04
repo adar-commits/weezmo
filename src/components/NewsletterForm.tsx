@@ -54,7 +54,7 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="דואר אלקטרוני"
-          className="w-full max-w-xs rounded border border-stone-300 px-3 py-2 text-sm"
+          className="w-full max-w-sm rounded-lg border border-stone-300 px-4 py-3 text-base mt-2"
           required
         />
       </div>
@@ -71,13 +71,17 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
           <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
             מדיניות הפרטיות וה&quot;עוגיות&quot;
           </Link>
-          , ואני מאשר/ת קבלת מידע ו/או דברי פרסומת מ- השטיח האדום בדואר אלקטרוני ו/או סמס.
+          , ואני מאשר/ת קבלת מידע ו/או דברי פרסומת מ-{" "}
+          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+            השטיח האדום
+          </Link>{" "}
+          בדואר אלקטרוני ו/או סמס.
         </span>
       </label>
       <button
         type="submit"
         disabled={status === "loading"}
-        className="rounded bg-red-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-70"
+        className="rounded-lg bg-[#a61a21] px-6 py-3 text-base font-semibold text-white disabled:opacity-70 mt-4"
       >
         {status === "loading" ? "שולח..." : "צרפו אותי!"}
       </button>
