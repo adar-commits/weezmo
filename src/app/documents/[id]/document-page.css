@@ -1,9 +1,9 @@
 /* Document receipt page — RTL Hebrew, red/white theme */
 
 .doc-page {
-  --doc-red: #9b1b1b;
-  --doc-red-dark: #7a1515;
-  --doc-bg: #f2f2f2;
+  --doc-red: #b30103;
+  --doc-red-dark: #8f0102;
+  --doc-bg: #eee;
   --doc-white: #ffffff;
   --doc-ink: #1a1a1a;
   --doc-muted: #555;
@@ -15,23 +15,25 @@
   direction: rtl;
   text-align: right;
   font-family: var(--doc-font);
-  background: var(--doc-red);
+  background: #b30103;
   color: var(--doc-ink);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  padding: 0;
+  min-height: 100vh;
 }
 
-.doc-page .page {
+.doc-page .doc-body {
   max-width: 600px;
   margin: 0 auto;
-  background: var(--doc-white);
+  background: #eee;
   min-height: 100vh;
 }
 
 .doc-page .header {
-  background: var(--doc-white);
-  padding: 28px 24px 20px;
+  background: #eee;
+  padding: 24px 24px 18px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
 }
@@ -43,22 +45,24 @@
 }
 
 .doc-page .header h1 {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 900;
   color: var(--doc-red);
-  margin: 12px 0 4px;
+  margin: 10px 0 4px;
   letter-spacing: -0.01em;
+  font-family: var(--doc-font);
 }
 
 .doc-page .header .doc-sub {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--doc-ink);
+  font-family: var(--doc-font);
 }
 
 .doc-page .banner-wrap {
   padding: 0 16px;
-  background: var(--doc-bg);
+  background: #eee;
 }
 
 .doc-page .banner {
@@ -70,8 +74,8 @@
 }
 
 .doc-page .meta {
-  background: var(--doc-bg);
-  padding: 20px 24px;
+  background: #eee;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--doc-border);
 }
 
@@ -88,19 +92,21 @@
 }
 
 .doc-page .meta-label {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--doc-muted);
   font-weight: 400;
+  font-family: var(--doc-font);
 }
 
 .doc-page .meta-value {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--doc-ink);
+  font-family: var(--doc-font);
 }
 
 .doc-page .items-wrap {
-  background: var(--doc-bg);
+  background: #eee;
   padding: 0 24px;
   border-bottom: 1px solid var(--doc-border);
 }
@@ -108,7 +114,8 @@
 .doc-page .items-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 14px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .items-table th {
@@ -136,7 +143,7 @@
 }
 
 .doc-page .totals {
-  background: var(--doc-white);
+  background: #eee;
   border-bottom: 4px solid var(--doc-border);
 }
 
@@ -148,8 +155,9 @@
 .doc-page .totals-row .t-label {
   background: var(--doc-red);
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
+  font-family: var(--doc-font);
   padding: 12px 24px;
   text-align: center;
   display: flex;
@@ -160,8 +168,9 @@
 .doc-page .totals-row .t-val {
   background: #2b2b2b;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
+  font-family: var(--doc-font);
   padding: 12px 24px;
   text-align: center;
   display: flex;
@@ -175,7 +184,7 @@
 }
 
 .doc-page .pdf-link {
-  background: var(--doc-white);
+  background: #eee;
   padding: 14px 24px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
@@ -183,8 +192,9 @@
 
 .doc-page .pdf-link a {
   color: var(--doc-red);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
+  font-family: var(--doc-font);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -194,37 +204,48 @@
 }
 
 .doc-page .thankyou {
-  background: var(--doc-bg);
-  padding: 32px 24px 24px;
+  background: #eee;
+  padding: 28px 24px 24px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
 }
 
 .doc-page .thankyou h2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 900;
   color: var(--doc-red);
   margin-bottom: 4px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .thankyou h3 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--doc-ink);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .thankyou p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--doc-muted);
   line-height: 1.7;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  font-family: var(--doc-font);
+}
+
+.doc-page .thankyou-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .doc-page .thankyou .avatar {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 18px;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  display: block;
 }
 
 .doc-page .btn-feedback {
@@ -232,7 +253,7 @@
   background: var(--doc-red);
   color: #fff;
   font-family: var(--doc-font);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   padding: 12px 36px;
   border-radius: 4px;
@@ -247,30 +268,33 @@
 }
 
 .doc-page .newsletter {
-  background: var(--doc-bg);
-  padding: 28px 24px;
+  background: #eee;
+  padding: 24px 24px;
   border-bottom: 1px solid var(--doc-border);
   text-align: center;
 }
 
 .doc-page .newsletter h3 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 900;
   color: var(--doc-red);
   margin-bottom: 6px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .newsletter .nl-sub {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--doc-muted);
   margin-bottom: 6px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .newsletter .nl-cta {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--doc-ink);
   margin-bottom: 18px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .nl-input {
@@ -279,12 +303,12 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: var(--doc-font);
-  font-size: 15px;
+  font-size: 14px;
   color: var(--doc-ink);
   text-align: right;
   outline: none;
   margin-bottom: 10px;
-  background: var(--doc-white);
+  background: #fff;
 }
 
 .doc-page .nl-input:focus {
@@ -292,7 +316,7 @@
 }
 
 .doc-page .nl-consent {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--doc-muted);
   margin-bottom: 14px;
   display: flex;
@@ -300,6 +324,7 @@
   gap: 8px;
   text-align: right;
   direction: rtl;
+  font-family: var(--doc-font);
 }
 
 .doc-page .nl-consent a {
@@ -368,38 +393,23 @@
 
 .doc-page .care-banner {
   display: block;
-  background: var(--doc-white);
+  background: #eee;
   border-bottom: 1px solid var(--doc-border);
-}
-
-.doc-page .care-banner img {
-  width: 100%;
-  display: block;
-  cursor: pointer;
 }
 
 .doc-page .care-banner a {
   display: block;
 }
 
-.doc-page .care-guide-btn {
+.doc-page .care-guide-headline {
+  width: 100%;
   display: block;
-  border: 2px solid var(--doc-red);
-  color: var(--doc-ink);
-  font-size: 17px;
-  font-weight: 700;
-  padding: 16px 24px;
-  text-align: center;
-  background: var(--doc-white);
-  transition: background 0.15s;
-}
-
-.doc-page .care-guide-btn:hover {
-  background: #fdf2f2;
+  cursor: pointer;
+  vertical-align: top;
 }
 
 .doc-page .footer-brands {
-  background: var(--doc-bg);
+  background: #eee;
   padding: 24px 24px 4px;
   border-bottom: 1px solid var(--doc-border);
 }
@@ -409,11 +419,12 @@
 }
 
 .doc-page .brand-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--doc-ink);
   margin-bottom: 14px;
   text-align: center;
+  font-family: var(--doc-font);
 }
 
 .doc-page .social-icons {
@@ -427,10 +438,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--doc-bg);
+  background: #ddd;
   transition: background 0.15s;
 }
 
@@ -439,37 +450,40 @@
 }
 
 .doc-page .social-icons img {
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .doc-page .footer-copy {
-  background: var(--doc-bg);
+  background: #eee;
   padding: 16px 24px 28px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
 }
 
 .doc-page .footer-copy p {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--doc-muted);
   line-height: 1.8;
   margin-bottom: 6px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .footer-copy .hashtags {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--doc-ink);
   font-weight: 700;
+  font-family: var(--doc-font);
 }
 
 .doc-page .care-tips {
-  background: var(--doc-bg);
+  background: #eee;
   padding: 0 24px 32px;
 }
 
 .doc-page .care-tips .intro {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--doc-muted);
   text-align: center;
   padding: 22px 0 18px;
@@ -477,6 +491,7 @@
   line-height: 1.7;
   border-bottom: 2px solid #ccc;
   margin-bottom: 0;
+  font-family: var(--doc-font);
 }
 
 .doc-page .tip {
@@ -509,16 +524,18 @@
 }
 
 .doc-page .tip-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--doc-ink);
   margin-bottom: 5px;
+  font-family: var(--doc-font);
 }
 
 .doc-page .tip-text {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--doc-muted);
   line-height: 1.7;
+  font-family: var(--doc-font);
 }
 
 @keyframes doc-spin {

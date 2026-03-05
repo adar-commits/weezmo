@@ -52,6 +52,7 @@ export default async function DocumentPage({
 
   return (
     <div className="doc-page" dir="rtl" lang="he">
+      <div className="doc-body">
       {/* Header */}
       <header className="header">
         <img
@@ -142,19 +143,21 @@ export default async function DocumentPage({
           <br />
           לחצו על הלינק ותחממו לנו את הלב.
         </p>
-        <img
-          className="avatar"
-          src={`${IMG_BASE}/avatar.svg`}
-          alt="נציג"
-        />
-        <a
-          className="btn-feedback"
-          href={feedbackUrl}
-          target="_blank"
-          rel="noopener"
-        >
-          {branchName}
-        </a>
+        <div className="thankyou-cta">
+          <img
+            className="avatar"
+            src={`${IMG_BASE}/avatar.svg`}
+            alt="נציג"
+          />
+          <a
+            className="btn-feedback"
+            href={feedbackUrl}
+            target="_blank"
+            rel="noopener"
+          >
+            {branchName}
+          </a>
+        </div>
       </div>
 
       {/* Newsletter */}
@@ -167,10 +170,10 @@ export default async function DocumentPage({
         <NewsletterForm documentId={id} branchName={branchName || undefined} />
       </div>
 
-      {/* Care banner */}
+      {/* Care banner — headline image */}
       <div className="care-banner">
         <Link href={BRAND_LINKS.careGuideUrl} target="_blank" rel="noopener">
-          <span className="care-guide-btn">המדריך המלא לטיפול ושמירה על שטיח</span>
+          <img src={`${IMG_BASE}/care-guide-headline.png`} alt="המדריך המלא לטיפול ושמירה על שטיח" className="care-guide-headline" />
         </Link>
       </div>
 
@@ -179,20 +182,20 @@ export default async function DocumentPage({
         <div className="brand-block">
           <div className="brand-name">השטיח האדום</div>
           <div className="social-icons">
-            <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
-            <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-            <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener" aria-label="אתר">אתר</a>
-            <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
-            <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+            <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener" aria-label="YouTube"><img src={`${IMG_BASE}/youtube.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener" aria-label="Instagram"><img src={`${IMG_BASE}/instagram.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener" aria-label="אתר"><img src={`${IMG_BASE}/web.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={`${IMG_BASE}/whatsapp.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener" aria-label="Facebook"><img src={`${IMG_BASE}/facebook.svg`} alt="" /></a>
           </div>
         </div>
         <div className="brand-block">
           <div className="brand-name">פוזיטיב</div>
           <div className="social-icons">
-            <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-            <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener" aria-label="אתר">אתר</a>
-            <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
-            <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+            <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener" aria-label="Instagram"><img src={`${IMG_BASE}/instagram.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener" aria-label="אתר"><img src={`${IMG_BASE}/web.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={`${IMG_BASE}/whatsapp.svg`} alt="" /></a>
+            <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener" aria-label="Facebook"><img src={`${IMG_BASE}/facebook.svg`} alt="" /></a>
           </div>
         </div>
       </div>
@@ -216,7 +219,7 @@ export default async function DocumentPage({
         </p>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/circle.svg`} alt="" />
+            <img src={`${IMG_BASE}/tip1.png`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">כן, זה הריח של שטיח חדש...</div>
@@ -227,7 +230,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/circle.svg`} alt="" />
+            <img src={`${IMG_BASE}/tip2.png`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">גם אתה תהיה קצת מקומט...</div>
@@ -238,7 +241,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/circle.svg`} alt="" />
+            <img src={`${IMG_BASE}/tip3.png`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">הצבעים וההצללות שלי יכולים להיות בהירים או כהים יותר...</div>
@@ -249,7 +252,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/circle.svg`} alt="" />
+            <img src={`${IMG_BASE}/tip4.png`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">תן לי רגע להתעורר...</div>
@@ -258,6 +261,7 @@ export default async function DocumentPage({
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
