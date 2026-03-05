@@ -1,8 +1,9 @@
 /**
- * Production image assets (receipts.carpetshop.co.il) for visual parity.
+ * Document image assets. Use local paths so images never 404.
+ * Replace files in public/images/ with real logo, banner, avatar to match production.
  */
 export const DOCUMENT_ASSETS = {
-  logo: "https://receipts.carpetshop.co.il/img/img.png",
-  banner: "https://receipts.carpetshop.co.il/img/banner1.jpg",
-  avatar: "https://receipts.carpetshop.co.il/img/avatar.svg",
+  logo: "/images/logo.svg",
+  banner: "/images/banner.svg",
+  avatar: "/images/avatar.svg",
 } as const;

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { BRAND_LINKS } from "@/config/links";
 import { DOCUMENT_ASSETS } from "@/config/assets";
@@ -41,17 +40,11 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
       <div className="flex">
         <div className="doc-red-side" aria-hidden />
         <div className="flex-1 min-w-0">
-          <main className="doc-main px-6 md:px-10 py-8 md:py-10">
+          <main className="doc-main">
             {/* Brand header – production parity: logo + text */}
             <header className="text-center doc-header">
-              <Image
-                src={DOCUMENT_ASSETS.logo}
-                alt="לוגו השטיח האדום"
-                width={180}
-                height={48}
-                className="doc-logo mx-auto"
-                unoptimized
-              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={DOCUMENT_ASSETS.logo} alt="לוגו השטיח האדום" className="doc-logo mx-auto" />
               <p className="doc-brand-main mt-3">
                 <span className="hom">HōM</span> GROUP
               </p>
@@ -71,14 +64,10 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
               </p>
             </div>
 
-            {/* Hero / banner – production asset */}
+            {/* Hero / banner */}
             <div className="doc-banner-wrap">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={DOCUMENT_ASSETS.banner}
-                alt=""
-                className="doc-banner-img"
-              />
+              <img src={DOCUMENT_ASSETS.banner} alt="" className="doc-banner-img" />
             </div>
 
             {/* Meta: Branch, Date, Sales rep – production layout */}
@@ -153,11 +142,7 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
               </p>
               <div className="doc-thank-you-cta">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={DOCUMENT_ASSETS.avatar}
-                  alt=""
-                  className="doc-avatar"
-                />
+                <img src={DOCUMENT_ASSETS.avatar} alt="" className="doc-avatar" />
                 {payload.BranchFeedbackUrl && (
                   <a
                     href={payload.BranchFeedbackUrl}
