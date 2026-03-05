@@ -7,6 +7,8 @@ import { NewsletterForm } from "./NewsletterForm";
 import "./document-page.css";
 
 const IMG_BASE = "/images";
+const LOGO_URL = "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/img.png?v=1772750312";
+const BANNER_URL = "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/banner1_jpg.jpg?v=1772750312";
 
 function formatPrice(value: number): string {
   return new Intl.NumberFormat("he-IL", {
@@ -54,7 +56,7 @@ export default async function DocumentPage({
       <header className="header">
         <img
           className="logo"
-          src={`${IMG_BASE}/logo.png`}
+          src={LOGO_URL}
           alt="HōM GROUP"
         />
         <h1>מסמך דיגיטלי</h1>
@@ -65,7 +67,7 @@ export default async function DocumentPage({
       <div className="banner-wrap">
         <img
           className="banner"
-          src={`${IMG_BASE}/banner.svg`}
+          src={BANNER_URL}
           alt="השטיח האדום"
         />
       </div>

@@ -1,0 +1,22 @@
+---
+description: Push to git when a task/job is finished
+alwaysApply: true
+---
+
+# Push to Git When Job Finished
+
+When you have **finished** a task (all requested work is done and you are about to respond with a summary or "done"):
+
+1. **If the workspace is a git repo and there are uncommitted changes**: run these in order:
+   - `git add -A`
+   - `git commit -m "<short descriptive message>"` (e.g. "Fix receipt images to use /public/images", "Add NewsletterForm and document page")
+   - `git push`
+
+2. **Skip pushing** if:
+   - The user asked you not to commit or push
+   - There are no changes (`git status` shows nothing to commit)
+   - The repo is not in a clean state to push (e.g. merge in progress); in that case only mention it
+
+3. **Commit message**: One short line summarizing what was done; no need to list every file.
+
+Do not push in the middle of a multi-step task—only when you are **finished** with the full job and would otherwise say "done" or "here’s what I did."
