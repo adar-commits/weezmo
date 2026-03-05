@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { BRAND_LINKS } from "@/config/links";
-import { DOCUMENT_ASSETS } from "@/config/assets";
 import { NewsletterForm } from "./NewsletterForm";
+
+const ASSETS = {
+  banner: "https://receipts.carpetshop.co.il/img/banner1.jpg",
+  logo: "https://receipts.carpetshop.co.il/img/img.png",
+  avatar: "https://receipts.carpetshop.co.il/img/avatar.svg",
+};
 
 interface DocumentViewProps {
   documentId: string;
@@ -35,233 +40,209 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
   const branchName = payload.BranchName ?? payload.BranchID ?? "";
 
   return (
-    <div className="doc-frame">
-      <div className="doc-green-stripe" />
-      <div className="flex">
-        <div className="doc-red-side" aria-hidden />
-        <div className="flex-1 min-w-0">
-          <main className="doc-main">
-            {/* Brand header – production parity: logo + text */}
-            <header className="text-center doc-header">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={DOCUMENT_ASSETS.logo} alt="לוגו השטיח האדום" className="doc-logo mx-auto" />
-              <p className="doc-brand-main mt-3">
-                <span className="hom">HōM</span> GROUP
-              </p>
-              <div className="doc-sub-brands">
-                <span>ELITE RUGS</span>
-                <span>השטיח האדום</span>
-                <span>Pozitive HōM</span>
-                <span>HōM BUSINESS</span>
-              </div>
-            </header>
+    <div className="min-h-screen bg-slate-50">
+      <main className="mx-auto max-w-xl bg-white shadow-sm sm:shadow-md sm:rounded-lg sm:my-6 overflow-hidden">
+        {/* Header: logo + document title */}
+        <header className="px-5 pt-6 pb-5 sm:px-8 sm:pt-8 sm:pb-6 border-b border-slate-100">
+          <img
+            src={ASSETS.logo}
+            alt="לוגו השטיח האדום"
+            className="mx-auto h-11 w-auto object-contain"
+          />
+          <div className="mt-5 text-center">
+            <h1 className="text-xl font-bold text-slate-800 sm:text-2xl">מסמך דיגיטלי</h1>
+            <p className="mt-1 text-sm text-slate-600">
+              {docType} {payload.InvoiceNumber ?? ""}
+            </p>
+          </div>
+        </header>
 
-            {/* Document title */}
-            <div className="text-center doc-title-block">
-              <h1 className="doc-title-main">מסמך דיגיטלי</h1>
-              <p className="doc-title-sub">
-                {docType} {payload.InvoiceNumber ?? ""}
-              </p>
-            </div>
+        {/* Banner */}
+        <div className="relative w-full aspect-[2/1] max-h-56 sm:max-h-64 bg-slate-200">
+          <img
+            src={ASSETS.banner}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
 
-            {/* Hero / banner */}
-            <div className="doc-banner-wrap">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={DOCUMENT_ASSETS.banner} alt="" className="doc-banner-img" />
-            </div>
+        {/* Meta: branch, date, sales rep */}
+        <section className="px-5 py-5 sm:px-8 sm:py-6">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+            <dt className="text-slate-500">סניף</dt>
+            <dd className="text-right font-medium text-slate-800">{branchName}</dd>
+            <dt className="text-slate-500">תאריך</dt>
+            <dd className="text-right font-medium text-slate-800">{payload.PrintDate ?? ""}</dd>
+            <dt className="text-slate-500">נציג מכירות</dt>
+            <dd className="text-right font-medium text-slate-800">{payload.SalesRepresentative ?? ""}</dd>
+          </dl>
+        </section>
 
-            {/* Meta: Branch, Date, Sales rep – production layout */}
-            <div className="doc-meta grid grid-cols-2 gap-y-3 text-base">
-              <div className="text-left text-stone-500">סניף</div>
-              <div className="text-right font-medium text-stone-900">{branchName}</div>
-              <div className="text-left text-stone-500">תאריך</div>
-              <div className="text-right font-medium text-stone-900">{payload.PrintDate ?? ""}</div>
-              <div className="text-left text-stone-500">נציג מכירות</div>
-              <div className="text-right font-medium text-stone-900">{payload.SalesRepresentative ?? ""}</div>
-            </div>
-
-            {/* Items table – production alignment */}
-            <div className="doc-table-wrap">
-              <table className="doc-table w-full border-collapse text-base">
-                <thead>
-                  <tr className="border-b-2 border-stone-200">
-                    <th className="py-3 pr-4 text-right font-bold text-stone-800">תיאור מוצר</th>
-                    <th className="w-16 py-3 text-center font-bold text-stone-800">כמות</th>
-                    <th className="w-28 py-3 text-left font-bold text-stone-800">סכום</th>
+        {/* Product table */}
+        <section className="px-5 sm:px-8">
+          <div className="overflow-x-auto -mx-5 sm:-mx-8">
+            <table className="w-full min-w-[280px] text-sm">
+              <thead>
+                <tr className="border-b-2 border-slate-200">
+                  <th className="py-3 pr-3 text-right font-semibold text-slate-700">תיאור מוצר</th>
+                  <th className="w-14 py-3 text-center font-semibold text-slate-700">כמות</th>
+                  <th className="w-24 py-3 text-left font-semibold text-slate-700">סכום</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item, i) => (
+                  <tr key={i} className="border-b border-slate-100">
+                    <td className="py-3 pr-3 text-right text-slate-800">{item.ItemDescription ?? ""}</td>
+                    <td className="py-3 text-center text-slate-800">{item.ItemQTY ?? 0}</td>
+                    <td className="py-3 text-left text-slate-800">
+                      {formatPrice((item.ItemPrice ?? 0) * (item.ItemQTY ?? 0))}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, i) => (
-                    <tr key={i} className="border-b border-stone-100">
-                      <td className="py-3 pr-4 text-right text-stone-800">{item.ItemDescription ?? ""}</td>
-                      <td className="py-3 text-center text-stone-800">{item.ItemQTY ?? 0}</td>
-                      <td className="py-3 text-left text-stone-800">{formatPrice((item.ItemPrice ?? 0) * (item.ItemQTY ?? 0))}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Summary: VAT, discount, total */}
+        <section className="px-5 py-4 sm:px-8">
+          <div className="rounded-lg overflow-hidden border border-slate-200">
+            <div className="grid grid-cols-2 bg-slate-700 text-white">
+              <div className="py-3 pl-4 text-left text-sm">{formatPrice(vat)}</div>
+              <div className="py-3 pr-4 text-right text-sm font-medium">חייב מע״מ 18%</div>
             </div>
-
-            {/* Summary rows – production: dark grey (value) | red (label) */}
-            <div className="doc-summary">
-              <div className="doc-summary-row">
-                <div className="doc-summary-value">{formatPrice(vat)}</div>
-                <div className="doc-summary-label">חייב מע״מ 18%</div>
+            {discount !== 0 && (
+              <div className="grid grid-cols-2 bg-slate-600 text-white">
+                <div className="py-2 pl-4 text-left text-sm">{formatPrice(discount)}</div>
+                <div className="py-2 pr-4 text-right text-sm font-medium">הנחה</div>
               </div>
-              {discount !== 0 && (
-                <div className="doc-summary-row">
-                  <div className="doc-summary-value">{formatPrice(discount)}</div>
-                  <div className="doc-summary-label">הנחה</div>
-                </div>
-              )}
-              <div className="doc-summary-row">
-                <div className="doc-summary-value font-semibold">{formatPrice(totalPrice)}</div>
-                <div className="doc-summary-label">סהכ קנייה</div>
-              </div>
+            )}
+            <div className="grid grid-cols-2 bg-slate-800 text-white">
+              <div className="py-3 pl-4 text-left text-sm font-semibold">{formatPrice(totalPrice)}</div>
+              <div className="py-3 pr-4 text-right text-sm font-semibold">סהכ קנייה</div>
             </div>
+          </div>
+        </section>
 
-            {/* Download original – production: blue link */}
-            <div className="doc-download">
-              <Link
-                href={`/documents/${documentId}/pdf`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="doc-link-primary"
-              >
-                להורדת מסמך המקור
-              </Link>
-            </div>
+        {/* Download link */}
+        <section className="px-5 pb-5 sm:px-8 sm:pb-6">
+          <Link
+            href={`/documents/${documentId}/pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 text-sm font-medium underline underline-offset-2 hover:text-blue-700"
+          >
+            להורדת מסמך המקור
+          </Link>
+        </section>
 
-            {/* Thank you + feedback – production: heading, sub, paragraph, avatar img, branch button */}
-            <section className="doc-thank-you">
-              <h2 className="doc-thank-you-title">תודה שבחרתם בנו!</h2>
-              <p className="doc-thank-you-sub">איזה כיף!</p>
-              <p className="doc-thank-you-text">
-                מקווים שניהנת מהשירות של {payload.SalesRepresentative ?? ""}
-                {branchName && ` נשמח לשמוע על חווית הקניה שלך בסניף ${branchName},`} לחצו על הלינק ותחממו לנו את הלב.
-              </p>
-              <div className="doc-thank-you-cta">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={DOCUMENT_ASSETS.avatar} alt="" className="doc-avatar" />
-                {payload.BranchFeedbackUrl && (
-                  <a
-                    href={payload.BranchFeedbackUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="doc-btn-branch"
-                  >
-                    {branchName || "משוב"}
-                  </a>
-                )}
-              </div>
-            </section>
-
-            {/* Newsletter – production hierarchy */}
-            <section className="doc-newsletter">
-              <h2 className="doc-newsletter-title">דברים טובים בדרך אליך ❤️</h2>
-              <p className="doc-newsletter-desc">
-                רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרוייקטים מסקרנים?
-              </p>
-              <p className="doc-newsletter-cta">זה הזמן להצטרף לניוזלטר שלנו</p>
-              <NewsletterForm documentId={documentId} branchName={branchName} />
-            </section>
-
-            {/* Care guide link – production styling */}
-            <div className="doc-care-guide">
+        {/* Thank you + feedback */}
+        <section className="px-5 py-6 sm:px-8 sm:py-8 bg-slate-50/80 border-t border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">תודה שבחרתם בנו!</h2>
+          <p className="mt-1 font-semibold text-slate-700">איזה כיף!</p>
+          <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+            מקווים שניהנת מהשירות של {payload.SalesRepresentative ?? ""}
+            {branchName && ` נשמח לשמוע על חווית הקניה שלך בסניף ${branchName},`} לחצו על הלינק ותחממו לנו את הלב.
+          </p>
+          <div className="mt-6 flex flex-col items-center gap-4">
+            <img src={ASSETS.avatar} alt="" className="h-14 w-14 object-contain" />
+            {payload.BranchFeedbackUrl && (
               <a
-                href={BRAND_LINKS.careGuideUrl}
+                href={payload.BranchFeedbackUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="doc-care-guide-link"
+                className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 transition-colors"
               >
-                המדריך המלא לטיפול ושמירה על שטיח &lt;&lt;
+                {branchName || "משוב"}
               </a>
+            )}
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="px-5 py-6 sm:px-8 sm:py-8 border-t border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">דברים טובים בדרך אליך ❤️</h2>
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+            רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרוייקטים מסקרנים?
+          </p>
+          <p className="mt-1 text-sm font-semibold text-slate-700">זה הזמן להצטרף לניוזלטר שלנו</p>
+          <NewsletterForm documentId={documentId} branchName={branchName} />
+        </section>
+
+        {/* Care guide link */}
+        <section className="px-5 py-4 sm:px-8 border-t border-slate-100">
+          <a
+            href={BRAND_LINKS.careGuideUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-2"
+          >
+            המדריך המלא לטיפול ושמירה על שטיח &lt;&lt;
+          </a>
+        </section>
+
+        {/* Footer: brands + social */}
+        <footer className="px-5 py-6 sm:px-8 sm:py-8 border-t border-slate-100 bg-white">
+          <div className="flex flex-wrap gap-8 sm:gap-10">
+            <div>
+              <p className="text-sm font-bold text-slate-800">השטיח האדום</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs font-medium hover:bg-slate-700 transition-colors" aria-label="Facebook">f</a>
+                <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="WhatsApp">WA</a>
+                <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Website">🌐</a>
+                <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Instagram">IG</a>
+                <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="YouTube">YT</a>
+              </div>
             </div>
-
-            {/* Footer: brands + social – production */}
-            <footer className="doc-footer">
-              <div className="flex flex-wrap gap-8">
-                <div>
-                  <p className="font-bold text-stone-900 text-lg">השטיח האדום</p>
-                  <div className="mt-3 flex flex-wrap gap-1">
-                    <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Facebook">f</a>
-                    <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="WhatsApp">WA</a>
-                    <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Website">🌐</a>
-                    <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Instagram">IG</a>
-                    <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="YouTube">YT</a>
-                  </div>
-                </div>
-                <div>
-                  <p className="font-bold text-stone-900 text-lg">פוזיטיב</p>
-                  <div className="mt-3 flex flex-wrap gap-1">
-                    <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Facebook">f</a>
-                    <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="WhatsApp">WA</a>
-                    <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Website">🌐</a>
-                    <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="doc-social-circle" aria-label="Instagram">IG</a>
-                  </div>
-                </div>
-              </div>
-              <p className="mt-6 text-stone-600 text-sm leading-relaxed max-w-xl">
-                אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה, מתוך תשוקה לעיצוב, איכות ואהבה לפרטים הקטנים. נשמח לראות איך בחרת לשלב אותם אצלך בבית! צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
-              </p>
-            </footer>
-          </main>
-
-          {/* Care tips - red background, white inner card */}
-          <div className="bg-[#a61a21] py-10 md:py-12 px-6 md:px-10">
-            <div className="doc-care-card p-6 md:p-8">
-              <p className="text-stone-700 leading-relaxed">
-                סוף סוף אנחנו נפתחים אל העולם, הדרך שלנו לבית שלך היתה ארוכה, אז אשמח למעט סבלנות בזמן שאנחנו מתרעננים
-              </p>
-
-              <hr className="doc-care-divider" />
-              <div className="flex gap-4">
-                <span className="doc-care-tip-icon" aria-hidden>〰️</span>
-                <div>
-                  <p className="font-bold text-stone-900">כן, זה הריח של שטיח חדש...</p>
-                  <p className="mt-1 text-stone-600 text-sm leading-relaxed">
-                    הריח נובע בעיקר מהחוטים שלי שהתהדקו כל כך חזק במהלך המשלוח. תנו לי קצת זמן באוויר הפתוח ובקרוב הריח יעלם לחלוטין.
-                  </p>
-                </div>
-              </div>
-
-              <hr className="doc-care-divider" />
-              <div className="flex gap-4">
-                <span className="doc-care-tip-icon" aria-hidden>↕️</span>
-                <div>
-                  <p className="font-bold text-stone-900">גם אתה תהיה קצת מקומט...</p>
-                  <p className="mt-1 text-stone-600 text-sm leading-relaxed">
-                    אם תהיה מגולגל, ארוז ותישלח מסביב לעולם. זה הזמן שלי להימתח ולהירגע. מבטיח שבתוך זמן קצר אהיה מושלם לתמונה!
-                  </p>
-                </div>
-              </div>
-
-              <hr className="doc-care-divider" />
-              <div className="flex gap-4">
-                <span className="doc-care-tip-icon" aria-hidden>☀️</span>
-                <div>
-                  <p className="font-bold text-stone-900">הצבעים וההצללות שלי יכולים להיות בהירים או כהים יותר...</p>
-                  <p className="mt-1 text-stone-600 text-sm leading-relaxed">
-                    תלוי בחשיפה שלי לאור יום ולתאורת החדר. נסו לסובב אותי כדי להוציא את המראה הכי טוב שלי בחלל.
-                  </p>
-                </div>
-              </div>
-
-              <hr className="doc-care-divider" />
-              <div className="flex gap-4">
-                <span className="doc-care-tip-icon" aria-hidden>💤</span>
-                <div>
-                  <p className="font-bold text-stone-900">תן לי רגע להתעורר...</p>
-                  <p className="mt-1 text-stone-600 text-sm leading-relaxed">
-                    גם אני הייתי דחוס בשק, מגולגל ומכווץ – עכשיו זה הזמן שלי לתפוס צורה! תנער אותי, תטפח בעדינות, תעזור לי להתמתח – ותוך זמן קצר, אהיה בדיוק כמו שתכננת. רק תזכור – פופים, בדיוק כמו אנשים, צריכים רגע להתאפס 😉
-                  </p>
-                </div>
+            <div>
+              <p className="text-sm font-bold text-slate-800">פוזיטיב</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Facebook">f</a>
+                <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="WhatsApp">WA</a>
+                <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Website">🌐</a>
+                <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Instagram">IG</a>
               </div>
             </div>
           </div>
-        </div>
-        <div className="doc-red-side" aria-hidden />
-      </div>
+          <p className="mt-5 text-sm text-slate-600 leading-relaxed max-w-prose">
+            אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה, מתוך תשוקה לעיצוב, איכות ואהבה לפרטים הקטנים. נשמח לראות איך בחרת לשלב אותם אצלך בבית! צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
+          </p>
+        </footer>
+
+        {/* Care tips */}
+        <section className="bg-slate-800 px-5 py-8 sm:px-8 sm:py-10">
+          <div className="mx-auto max-w-2xl rounded-xl bg-white p-5 shadow-lg sm:p-6">
+            <p className="text-sm text-slate-600 leading-relaxed">
+              סוף סוף אנחנו נפתחים אל העולם, הדרך שלנו לבית שלך היתה ארוכה, אז אשמח למעט סבלנות בזמן שאנחנו מתרעננים
+            </p>
+            <hr className="my-5 border-slate-200" />
+            {[
+              {
+                title: "כן, זה הריח של שטיח חדש...",
+                body: "הריח נובע בעיקר מהחוטים שלי שהתהדקו כל כך חזק במהלך המשלוח. תנו לי קצת זמן באוויר הפתוח ובקרוב הריח יעלם לחלוטין.",
+              },
+              {
+                title: "גם אתה תהיה קצת מקומט...",
+                body: "אם תהיה מגולגל, ארוז ותישלח מסביב לעולם. זה הזמן שלי להימתח ולהירגע. מבטיח שבתוך זמן קצר אהיה מושלם לתמונה!",
+              },
+              {
+                title: "הצבעים וההצללות שלי יכולים להיות בהירים או כהים יותר...",
+                body: "תלוי בחשיפה שלי לאור יום ולתאורת החדר. נסו לסובב אותי כדי להוציא את המראה הכי טוב שלי בחלל.",
+              },
+              {
+                title: "תן לי רגע להתעורר...",
+                body: "גם אני הייתי דחוס בשק, מגולגל ומכווץ – עכשיו זה הזמן שלי לתפוס צורה! תנער אותי, תטפח בעדינות, תעזור לי להתמתח – ותוך זמן קצר, אהיה בדיוק כמו שתכננת. רק תזכור – פופים, בדיוק כמו אנשים, צריכים רגע להתאפס 😉",
+              },
+            ].map((tip, i) => (
+              <div key={i}>
+                <p className="text-sm font-semibold text-slate-800">{tip.title}</p>
+                <p className="mt-1 text-sm text-slate-600 leading-relaxed">{tip.body}</p>
+                {i < 3 && <hr className="my-5 border-slate-200" />}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

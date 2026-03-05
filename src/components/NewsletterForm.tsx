@@ -43,7 +43,7 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+    <form onSubmit={handleSubmit} className="mt-4 space-y-4">
       <div>
         <label htmlFor="newsletter-email" className="sr-only">
           דואר אלקטרוני
@@ -54,25 +54,25 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="דואר אלקטרוני"
-          className="w-full max-w-sm rounded-lg border border-stone-300 px-4 py-3 text-base mt-2"
+          className="w-full max-w-xs rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
           required
         />
       </div>
-      <label className="flex items-start gap-2 text-sm text-stone-600">
+      <label className="flex items-start gap-3 text-sm text-slate-600">
         <input
           type="checkbox"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
-          className="mt-0.5"
+          className="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-800 focus:ring-slate-500"
           required
         />
         <span>
           הריני מאשר/ת כי קראתי והבנתי את{" "}
-          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-1 hover:text-blue-700">
             מדיניות הפרטיות וה&quot;עוגיות&quot;
           </Link>
           , ואני מאשר/ת קבלת מידע ו/או דברי פרסומת מ-{" "}
-          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-1 hover:text-blue-700">
             השטיח האדום
           </Link>{" "}
           בדואר אלקטרוני ו/או סמס.
@@ -81,12 +81,12 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
       <button
         type="submit"
         disabled={status === "loading"}
-        className="rounded-lg bg-[#a61a21] px-6 py-3 text-base font-semibold text-white disabled:opacity-70 mt-4"
+        className="rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-60 transition-colors"
       >
         {status === "loading" ? "שולח..." : "צרפו אותי!"}
       </button>
-      {status === "success" && <p className="text-sm text-green-700">נרשמת בהצלחה!</p>}
-      {status === "error" && <p className="text-sm text-red-700">אירעה שגיאה. נסו שוב.</p>}
+      {status === "success" && <p className="text-sm text-emerald-600 font-medium">נרשמת בהצלחה!</p>}
+      {status === "error" && <p className="text-sm text-red-600">אירעה שגיאה. נסו שוב.</p>}
     </form>
   );
 }

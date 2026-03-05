@@ -1,4 +1,3 @@
-import "../document.css";
 import { notFound } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { DocumentView } from "@/components/DocumentView";
@@ -42,7 +41,7 @@ export default async function DocumentPage({ params }: PageProps) {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-stone-100 font-sans">
+    <div dir="rtl" className="min-h-screen font-sans">
       <DocumentView documentId={id} payload={payload} />
     </div>
   );
