@@ -3,6 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BRAND_LINKS } from "@/config/links";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
 interface NewsletterFormProps {
   documentId: string;
@@ -44,49 +49,66 @@ export function NewsletterForm({ documentId, branchName }: NewsletterFormProps) 
 
   return (
     <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-      <div>
-        <label htmlFor="newsletter-email" className="sr-only">
+      <div className="grid gap-2">
+        <Label htmlFor="newsletter-email" className="sr-only">
           דואר אלקטרוני
-        </label>
-        <input
+        </Label>
+        <Input
           id="newsletter-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="דואר אלקטרוני"
-          className="w-full max-w-xs rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+          className="max-w-xs"
           required
         />
       </div>
-      <label className="flex items-start gap-3 text-sm text-slate-600">
-        <input
-          type="checkbox"
+      <div className="flex items-start gap-3 space-y-0">
+        <Checkbox
+          id="newsletter-consent"
           checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          className="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-800 focus:ring-slate-500"
+          onCheckedChange={(v) => setConsent(v === true)}
           required
+          className="mt-0.5"
         />
-        <span>
+        <Label
+          htmlFor="newsletter-consent"
+          className="text-sm font-normal text-muted-foreground leading-relaxed cursor-pointer"
+        >
           הריני מאשר/ת כי קראתי והבנתי את{" "}
-          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-1 hover:text-blue-700">
+          <Link
+            href={BRAND_LINKS.privacyPolicyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline underline-offset-2 hover:opacity-90"
+          >
             מדיניות הפרטיות וה&quot;עוגיות&quot;
           </Link>
           , ואני מאשר/ת קבלת מידע ו/או דברי פרסומת מ-{" "}
-          <Link href={BRAND_LINKS.privacyPolicyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-1 hover:text-blue-700">
+          <Link
+            href={BRAND_LINKS.privacyPolicyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline underline-offset-2 hover:opacity-90"
+          >
             השטיח האדום
           </Link>{" "}
           בדואר אלקטרוני ו/או סמס.
-        </span>
-      </label>
-      <button
+        </Label>
+      </div>
+      <Button
         type="submit"
         disabled={status === "loading"}
-        className="rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-60 transition-colors"
+        className="bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-white"
       >
         {status === "loading" ? "שולח..." : "צרפו אותי!"}
-      </button>
-      {status === "success" && <p className="text-sm text-emerald-600 font-medium">נרשמת בהצלחה!</p>}
-      {status === "error" && <p className="text-sm text-red-600">אירעה שגיאה. נסו שוב.</p>}
+      </Button>
+      {status === "success" && (
+        <p className={cn("text-sm font-medium text-green-600 dark:text-green-400")}>נרשמת בהצלחה!</p>
+      )}
+      {status === "error" && (
+        <p className={cn("text-sm font-medium text-destructive")}>אירעה שגיאה. נסו שוב.</p>
+      )}
     </form>
   );
 }
