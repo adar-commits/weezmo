@@ -7,10 +7,11 @@ import { NewsletterForm } from "./NewsletterForm";
 import { DeliveryTimeline } from "./DeliveryTimeline";
 import { ReceiptCard } from "./ReceiptCard";
 
+// Use absolute production URLs so assets never break (per UX brief / Creative Freedom)
 const ASSETS = {
   banner: "https://receipts.carpetshop.co.il/img/banner1.jpg",
   logo: "https://receipts.carpetshop.co.il/img/img.png",
-  avatar: "/images/avatar.svg",
+  avatar: "https://receipts.carpetshop.co.il/img/avatar.svg",
 };
 const SOCIAL_ICONS = {
   web: "/images/web.svg",
@@ -256,8 +257,8 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
         <section className="border-t border-slate-100 bg-slate-50/60 px-4 py-8 sm:px-8 sm:py-10">
           <h2 className="text-lg font-bold text-slate-800 sm:text-xl">איזה כיף!</h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            מקווים שנהנית מהשירות של {payload.SalesRepresentative ?? ""}
-            {branchName && ` נשמח לשמוע על חווית הקניה בסניף ${branchName}.`} לחצו על הלינק ותחממו לנו את הלב.
+            מקווים שניהנת מהשירות של {payload.SalesRepresentative ?? ""}
+            {branchName && ` נשמח לשמוע על חווית הקניה שלך בסניף ${branchName},`} לחצו על הלינק ותחממו לנו את הלב.
           </p>
           <div className="mt-6 flex flex-col items-center gap-4">
             <img src={ASSETS.avatar} alt="" className="h-14 w-14 object-contain" />
@@ -276,10 +277,11 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
 
         {/* Newsletter */}
         <section className="border-t border-slate-100 px-4 py-8 sm:px-8 sm:py-10">
-          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">דברים טובים בדרך אליך</h2>
+          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">דברים טובים בדרך אליך ❤️</h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            רוצים לדעת לפני כולם על טרנדים, מבצעים והצצה לפרויקטים? הצטרפו לניוזלטר.
+            רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרויקטים מסקרנים?
           </p>
+          <p className="mt-1 text-sm font-semibold text-slate-700">זה הזמן להצטרף לניוזלטר שלנו</p>
           <NewsletterForm documentId={documentId} branchName={branchName} />
         </section>
 
@@ -325,7 +327,7 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
             </div>
           </div>
           <p className="mt-6 text-sm text-slate-600 leading-relaxed max-w-prose">
-            אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה. צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
+            אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה, מתוך תשוקה לעיצוב, איכות ואהבה לפרטים הקטנים. נשמח לראות איך בחרת לשלב אותם אצלך בבית! צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
           </p>
         </footer>
 
