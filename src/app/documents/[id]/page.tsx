@@ -6,7 +6,7 @@ import type { CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "./NewsletterForm";
 import "./document-page.css";
 
-const IMG_BASE = "https://receipts.carpetshop.co.il/img";
+const IMG_BASE = "/images";
 
 function formatPrice(value: number): string {
   return new Intl.NumberFormat("he-IL", {
@@ -54,7 +54,7 @@ export default async function DocumentPage({
       <header className="header">
         <img
           className="logo"
-          src={`${IMG_BASE}/img.png`}
+          src={`${IMG_BASE}/logo.png`}
           alt="HōM GROUP"
         />
         <h1>מסמך דיגיטלי</h1>
@@ -65,7 +65,7 @@ export default async function DocumentPage({
       <div className="banner-wrap">
         <img
           className="banner"
-          src={`${IMG_BASE}/banner1.jpg`}
+          src={`${IMG_BASE}/banner.svg`}
           alt="השטיח האדום"
         />
       </div>
@@ -214,7 +214,7 @@ export default async function DocumentPage({
         </p>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/tip1.jpg`} alt="" />
+            <img src={`${IMG_BASE}/circle.svg`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">כן, זה הריח של שטיח חדש...</div>
@@ -225,7 +225,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/tip2.jpg`} alt="" />
+            <img src={`${IMG_BASE}/circle.svg`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">גם אתה תהיה קצת מקומט...</div>
@@ -236,7 +236,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/tip3.jpg`} alt="" />
+            <img src={`${IMG_BASE}/circle.svg`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">הצבעים וההצללות שלי יכולים להיות בהירים או כהים יותר...</div>
@@ -247,7 +247,7 @@ export default async function DocumentPage({
         </div>
         <div className="tip">
           <div className="tip-icon">
-            <img src={`${IMG_BASE}/tip4.jpg`} alt="" />
+            <img src={`${IMG_BASE}/circle.svg`} alt="" />
           </div>
           <div className="tip-body">
             <div className="tip-title">תן לי רגע להתעורר...</div>
