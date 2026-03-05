@@ -144,7 +144,6 @@
 
 .doc-page .totals {
   background: #eee;
-  border-bottom: 4px solid var(--doc-border);
 }
 
 .doc-page .totals-row {
@@ -152,11 +151,9 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.doc-page .totals-row .t-label {
-  background: var(--doc-red);
-  color: #fff;
+.doc-page .totals-row .t-label,
+.doc-page .totals-row .t-val {
   font-size: 14px;
-  font-weight: 700;
   font-family: var(--doc-font);
   padding: 12px 24px;
   text-align: center;
@@ -165,22 +162,32 @@
   justify-content: center;
 }
 
-.doc-page .totals-row .t-val {
+/* Row 1: full dark grey strip (VAT) */
+.doc-page .totals-row-vat .t-label,
+.doc-page .totals-row-vat .t-val {
   background: #2b2b2b;
   color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: var(--doc-font);
-  padding: 12px 24px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 700;
 }
 
-.doc-page .totals-row + .totals-row .t-label,
-.doc-page .totals-row + .totals-row .t-val {
-  border-top: 2px solid rgba(255, 255, 255, 0.12);
+.doc-page .totals-row-vat .t-val {
+  font-weight: 500;
+}
+
+/* Row 2: full red strip (Total) */
+.doc-page .totals-row-total .t-label,
+.doc-page .totals-row-total .t-val {
+  background: var(--doc-red);
+  color: #fff;
+  font-weight: 700;
+}
+
+.doc-page .totals-row-total .t-val {
+  font-weight: 500;
+}
+
+.doc-page .totals-row-total {
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 .doc-page .pdf-link {
@@ -191,12 +198,16 @@
 }
 
 .doc-page .pdf-link a {
-  color: var(--doc-red);
+  color: #1a73e8;
   font-size: 15px;
   font-weight: 500;
   font-family: var(--doc-font);
   text-decoration: underline;
   cursor: pointer;
+}
+
+.doc-page .pdf-link a:hover {
+  color: #1557b0;
 }
 
 .doc-page .pdf-link a:hover {
@@ -340,10 +351,10 @@
 
 .doc-page .nl-submit {
   width: 100%;
-  background: var(--doc-red);
+  background: #1a73e8;
   color: #fff;
   font-family: var(--doc-font);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   padding: 13px;
   border: none;
@@ -353,7 +364,7 @@
 }
 
 .doc-page .nl-submit:hover {
-  background: var(--doc-red-dark);
+  background: #1557b0;
 }
 
 .doc-page .nl-submit:disabled {

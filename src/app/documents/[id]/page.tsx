@@ -113,13 +113,13 @@ export default async function DocumentPage({
         </table>
       </div>
 
-      {/* Totals */}
+      {/* Totals — reference: row1 dark grey strip, row2 red strip */}
       <div className="totals">
-        <div className="totals-row">
+        <div className="totals-row totals-row-vat">
           <div className="t-label">חייב מע״מ 18%</div>
           <div className="t-val">₪ {formatPrice(vat)}</div>
         </div>
-        <div className="totals-row">
+        <div className="totals-row totals-row-total">
           <div className="t-label">סהכ קנייה</div>
           <div className="t-val">₪ {formatPrice(totalPrice)}</div>
         </div>
@@ -128,7 +128,7 @@ export default async function DocumentPage({
       {/* PDF */}
       <div className="pdf-link">
         <Link href={`/documents/${id}/pdf`} target="_blank" rel="noopener">
-          להורדת מסמך המקור
+          הורדת מספר המקור
         </Link>
       </div>
 
@@ -207,7 +207,7 @@ export default async function DocumentPage({
         <p>נשמח לראות איך בחרת לשלב אותם אצלך בבית!</p>
         <p>צלמו, שתפו, ותייגו אותנו ב</p>
         <p className="hashtags">#carpet_shop או #pozitiebeanbags</p>
-        <p>אנחנו בטוחים שהסטייל שלכם יכבוש גם את אחרים 🖤</p>
+        <p>אנחנו בטוחים שהסטייל שלכם יכבוש גם את אחרים ❤️</p>
       </div>
 
       {/* Care tips */}
