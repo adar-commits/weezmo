@@ -5,7 +5,14 @@ import { NewsletterForm } from "./NewsletterForm";
 const ASSETS = {
   banner: "https://receipts.carpetshop.co.il/img/banner1.jpg",
   logo: "https://receipts.carpetshop.co.il/img/img.png",
-  avatar: "https://receipts.carpetshop.co.il/img/avatar.svg",
+  avatar: "/images/avatar.svg",
+};
+const SOCIAL_ICONS = {
+  web: "/images/web.svg",
+  facebook: "/images/facebook.svg",
+  instagram: "/images/instagram.svg",
+  youtube: "/images/youtube.svg",
+  whatsapp: "/images/whatsapp.svg",
 };
 
 interface DocumentViewProps {
@@ -187,20 +194,38 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
             <div>
               <p className="text-sm font-bold text-slate-800">השטיח האדום</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs font-medium hover:bg-slate-700 transition-colors" aria-label="Facebook">f</a>
-                <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="WhatsApp">WA</a>
-                <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Website">🌐</a>
-                <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Instagram">IG</a>
-                <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="YouTube">YT</a>
+                <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Facebook">
+                  <img src={SOCIAL_ICONS.facebook} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="WhatsApp">
+                  <img src={SOCIAL_ICONS.whatsapp} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Website">
+                  <img src={SOCIAL_ICONS.web} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Instagram">
+                  <img src={SOCIAL_ICONS.instagram} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="YouTube">
+                  <img src={SOCIAL_ICONS.youtube} alt="" className="h-4 w-4" />
+                </a>
               </div>
             </div>
             <div>
               <p className="text-sm font-bold text-slate-800">פוזיטיב</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Facebook">f</a>
-                <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="WhatsApp">WA</a>
-                <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Website">🌐</a>
-                <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white text-xs hover:bg-slate-700 transition-colors" aria-label="Instagram">IG</a>
+                <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Facebook">
+                  <img src={SOCIAL_ICONS.facebook} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="WhatsApp">
+                  <img src={SOCIAL_ICONS.whatsapp} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Website">
+                  <img src={SOCIAL_ICONS.web} alt="" className="h-4 w-4" />
+                </a>
+                <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Instagram">
+                  <img src={SOCIAL_ICONS.instagram} alt="" className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
