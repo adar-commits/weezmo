@@ -23,4 +23,8 @@ export const BRAND_LINKS = {
     "https://carpetshop.co.il/blogs/news/cleaning-carpets-tips?_gl=1*a65ngk*_gcl_au*MTMzOTIwNjQyMC4xNzcwMDE5MDQ1LjExNjQ1NDk5NTkuMTc3MTE1MDg2Mi4xNzcxMTUwODYx",
   /** מדיניות פרטיות (for newsletter checkbox) */
   privacyPolicyUrl: "https://www.carpetshop.co.il/policies/privacy-policy",
+  /** Review / share your look (post-purchase) */
+  reviewUrl: "https://www.carpetshop.co.il/",
+  /** AR tool for placement */
+  arToolUrl: "https://www.carpetshop.co.il/",
 } as const;

@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { BRAND_LINKS } from "@/config/links";
 import { NewsletterForm } from "./NewsletterForm";
+import { DeliveryTimeline } from "./DeliveryTimeline";
+import { ReceiptCard } from "./ReceiptCard";
 
 const ASSETS = {
   banner: "https://receipts.carpetshop.co.il/img/banner1.jpg",
@@ -14,6 +19,9 @@ const SOCIAL_ICONS = {
   youtube: "/images/youtube.svg",
   whatsapp: "/images/whatsapp.svg",
 };
+
+const btnPrimary =
+  "rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a61a21] active:scale-[0.98] bg-[#a61a21] hover:bg-[#8a161c]";
 
 interface DocumentViewProps {
   documentId: string;
@@ -45,111 +53,211 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
   const discount = payload.discount ?? 0;
   const docType = payload.type ?? "מסמך דיגיטלי";
   const branchName = payload.BranchName ?? payload.BranchID ?? "";
+  const customerName = payload.CustomerName ?? "";
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <main className="mx-auto max-w-xl bg-white shadow-sm sm:shadow-md sm:rounded-lg sm:my-6 overflow-hidden">
-        {/* Header: logo + document title */}
-        <header className="px-5 pt-6 pb-5 sm:px-8 sm:pt-8 sm:pb-6 border-b border-slate-100">
+      <main className="mx-auto max-w-xl overflow-hidden bg-white shadow-sm sm:my-8 sm:rounded-2xl sm:shadow-md">
+        {/* Celebration Header – premium, unboxing vibe */}
+        <motion.header
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="px-6 pt-10 pb-8 text-center sm:px-10 sm:pt-14 sm:pb-12"
+        >
           <img
             src={ASSETS.logo}
             alt="לוגו השטיח האדום"
-            className="mx-auto h-11 w-auto object-contain"
+            className="mx-auto h-10 w-auto object-contain sm:h-12"
           />
-          <div className="mt-5 text-center">
-            <h1 className="text-xl font-bold text-slate-800 sm:text-2xl">מסמך דיגיטלי</h1>
-            <p className="mt-1 text-sm text-slate-600">
+          <div className="mt-8 sm:mt-12">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              תודה שבחרתם בנו
+            </h1>
+            {customerName && (
+              <p className="mt-2 text-lg text-slate-600 sm:text-xl">{customerName} יקר/ה,</p>
+            )}
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">
+              ההזמנה שלכם התקבלה. אנחנו מתחילים להכין אותה בקפידה — ומחכים לכם על השטיח האדום.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
               {docType} {payload.InvoiceNumber ?? ""}
             </p>
           </div>
-        </header>
+        </motion.header>
 
-        {/* Banner */}
-        <div className="relative w-full aspect-[2/1] max-h-56 sm:max-h-64 bg-slate-200">
+        {/* Banner – editorial */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="relative w-full aspect-[2/1] max-h-52 bg-slate-200 sm:max-h-64"
+        >
           <img
             src={ASSETS.banner}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-        </div>
+        </motion.div>
 
-        {/* Meta: branch, date, sales rep */}
-        <section className="px-5 py-5 sm:px-8 sm:py-6">
-          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-            <dt className="text-slate-500">סניף</dt>
-            <dd className="text-right font-medium text-slate-800">{branchName}</dd>
-            <dt className="text-slate-500">תאריך</dt>
-            <dd className="text-right font-medium text-slate-800">{payload.PrintDate ?? ""}</dd>
-            <dt className="text-slate-500">נציג מכירות</dt>
-            <dd className="text-right font-medium text-slate-800">{payload.SalesRepresentative ?? ""}</dd>
-          </dl>
+        {/* Meta card – branch, date, rep (4px grid: p-4 = 16px) */}
+        <section className="px-4 pt-6 sm:px-8 sm:pt-8">
+          <ReceiptCard index={0}>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-4 text-sm">
+              <dt className="text-slate-500">סניף</dt>
+              <dd className="text-right font-medium text-slate-800">{branchName}</dd>
+              <dt className="text-slate-500">תאריך</dt>
+              <dd className="text-right font-medium text-slate-800">{payload.PrintDate ?? ""}</dd>
+              <dt className="text-slate-500">נציג מכירות</dt>
+              <dd className="text-right font-medium text-slate-800">{payload.SalesRepresentative ?? ""}</dd>
+            </dl>
+          </ReceiptCard>
         </section>
 
-        {/* Product table */}
-        <section className="px-5 sm:px-8">
-          <div className="overflow-x-auto -mx-5 sm:-mx-8">
-            <table className="w-full min-w-[280px] text-sm">
-              <thead>
-                <tr className="border-b-2 border-slate-200">
-                  <th className="py-3 pr-3 text-right font-semibold text-slate-700">תיאור מוצר</th>
-                  <th className="w-14 py-3 text-center font-semibold text-slate-700">כמות</th>
-                  <th className="w-24 py-3 text-left font-semibold text-slate-700">סכום</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => (
-                  <tr key={i} className="border-b border-slate-100">
-                    <td className="py-3 pr-3 text-right text-slate-800">{item.ItemDescription ?? ""}</td>
-                    <td className="py-3 text-center text-slate-800">{item.ItemQTY ?? 0}</td>
-                    <td className="py-3 text-left text-slate-800">
-                      {formatPrice((item.ItemPrice ?? 0) * (item.ItemQTY ?? 0))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* Order summary – card-based list (not table) */}
+        <section className="px-4 py-4 sm:px-8 sm:py-6">
+          <h2 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">פירוט ההזמנה</h2>
+          <div className="space-y-3">
+            {items.map((item, i) => (
+              <ReceiptCard key={i} index={i + 1}>
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <p className="text-right text-sm font-medium text-slate-800 sm:text-base">
+                    {item.ItemDescription ?? ""}
+                  </p>
+                  <p className="text-left text-sm font-semibold text-slate-900">
+                    {formatPrice((item.ItemPrice ?? 0) * (item.ItemQTY ?? 0))}
+                  </p>
+                </div>
+                <div className="mt-2 flex justify-between text-xs text-slate-500">
+                  <span>כמות: {item.ItemQTY ?? 0}</span>
+                  {item.ItemSKU && <span>{item.ItemSKU}</span>}
+                </div>
+              </ReceiptCard>
+            ))}
           </div>
         </section>
 
-        {/* Summary: VAT, discount, total */}
-        <section className="px-5 py-4 sm:px-8">
-          <div className="rounded-lg overflow-hidden border border-slate-200">
-            <div className="grid grid-cols-2 bg-slate-700 text-white">
-              <div className="py-3 pl-4 text-left text-sm">{formatPrice(vat)}</div>
-              <div className="py-3 pr-4 text-right text-sm font-medium">חייב מע״מ 18%</div>
-            </div>
-            {discount !== 0 && (
-              <div className="grid grid-cols-2 bg-slate-600 text-white">
-                <div className="py-2 pl-4 text-left text-sm">{formatPrice(discount)}</div>
-                <div className="py-2 pr-4 text-right text-sm font-medium">הנחה</div>
+        {/* Totals card */}
+        <section className="px-4 pb-4 sm:px-8 sm:pb-6">
+          <ReceiptCard index={items.length + 2}>
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">חייב מע״מ 18%</span>
+                <span className="font-medium text-slate-800">{formatPrice(vat)}</span>
               </div>
-            )}
-            <div className="grid grid-cols-2 bg-slate-800 text-white">
-              <div className="py-3 pl-4 text-left text-sm font-semibold">{formatPrice(totalPrice)}</div>
-              <div className="py-3 pr-4 text-right text-sm font-semibold">סהכ קנייה</div>
+              {discount !== 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">הנחה</span>
+                  <span className="font-medium text-slate-800">{formatPrice(discount)}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-slate-200 pt-3 text-base font-semibold text-slate-900">
+                <span>סהכ קנייה</span>
+                <span>{formatPrice(totalPrice)}</span>
+              </div>
             </div>
-          </div>
+          </ReceiptCard>
         </section>
 
-        {/* Download link */}
-        <section className="px-5 pb-5 sm:px-8 sm:pb-6">
+        {/* Download PDF CTA */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
           <Link
             href={`/documents/${documentId}/pdf`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 text-sm font-medium underline underline-offset-2 hover:text-blue-700"
+            className={`inline-flex items-center ${btnPrimary}`}
           >
-            להורדת מסמך המקור
+            להורדת מסמך המקור (PDF)
           </Link>
         </section>
 
+        {/* Delivery timeline */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
+          <DeliveryTimeline />
+        </section>
+
+        {/* Care & Love card */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
+          <ReceiptCard index={0}>
+            <h3 className="text-base font-semibold text-slate-800">טיפול ואהבה</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              איך לשמור על השטיח שלכם כמו חדש? המדריך המלא לטיפול ושמירה.
+            </p>
+            <a
+              href={BRAND_LINKS.careGuideUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center rounded-lg border-2 border-slate-800 bg-transparent px-4 py-2 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 active:scale-[0.98]"
+            >
+              המדריך המלא לטיפול ושמירה על שטיח
+            </a>
+          </ReceiptCard>
+        </section>
+
+        {/* Personalized upsell – subtle */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
+          <ReceiptCard index={0}>
+            <h3 className="text-base font-semibold text-slate-800">אולי תאהבו גם</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              מגוון שטיחים ואביזרים שישתלבו עם ההזמנה שלכם.
+            </p>
+            <a
+              href={BRAND_LINKS.carpet.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block text-sm font-medium text-[#a61a21] underline underline-offset-2 hover:text-[#8a161c] focus:outline-none focus:ring-2 focus:ring-[#a61a21]/30 focus:ring-offset-2 rounded"
+            >
+              לגלות עוד באתר
+            </a>
+          </ReceiptCard>
+        </section>
+
+        {/* Share your style / Review */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
+          <ReceiptCard index={0}>
+            <h3 className="text-base font-semibold text-slate-800">תהיו הראשונים לשתף את המראה החדש</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              צלמו את השטיח chez vous, שתפו ותייגו אותנו — נשמח לראות איך נכנס אליכם הביתה.
+            </p>
+            <a
+              href={BRAND_LINKS.reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`mt-4 inline-flex items-center ${btnPrimary}`}
+            >
+              שתפו את הסגנון שלכם
+            </a>
+          </ReceiptCard>
+        </section>
+
+        {/* AR reminder */}
+        <section className="px-4 pb-6 sm:px-8 sm:pb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+            className="rounded-xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-center sm:p-6"
+          >
+            <p className="text-sm font-medium text-slate-700">
+              עדיין מתלבטים איפה לשים? נסו את כלי ה-AR שלנו
+            </p>
+            <a
+              href={BRAND_LINKS.arToolUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition-colors hover:bg-slate-50 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:scale-[0.98]"
+            >
+              להשתמש בכלי AR
+            </a>
+          </motion.div>
+        </section>
+
         {/* Thank you + feedback */}
-        <section className="px-5 py-6 sm:px-8 sm:py-8 bg-slate-50/80 border-t border-slate-100">
-          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">תודה שבחרתם בנו!</h2>
-          <p className="mt-1 font-semibold text-slate-700">איזה כיף!</p>
-          <p className="mt-3 text-sm text-slate-600 leading-relaxed">
-            מקווים שניהנת מהשירות של {payload.SalesRepresentative ?? ""}
-            {branchName && ` נשמח לשמוע על חווית הקניה שלך בסניף ${branchName},`} לחצו על הלינק ותחממו לנו את הלב.
+        <section className="border-t border-slate-100 bg-slate-50/60 px-4 py-8 sm:px-8 sm:py-10">
+          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">איזה כיף!</h2>
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+            מקווים שנהנית מהשירות של {payload.SalesRepresentative ?? ""}
+            {branchName && ` נשמח לשמוע על חווית הקניה בסניף ${branchName}.`} לחצו על הלינק ותחממו לנו את הלב.
           </p>
           <div className="mt-6 flex flex-col items-center gap-4">
             <img src={ASSETS.avatar} alt="" className="h-14 w-14 object-contain" />
@@ -158,7 +266,7 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
                 href={payload.BranchFeedbackUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 transition-colors"
+                className={`inline-flex items-center justify-center shadow-sm ${btnPrimary}`}
               >
                 {branchName || "משוב"}
               </a>
@@ -167,46 +275,33 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
         </section>
 
         {/* Newsletter */}
-        <section className="px-5 py-6 sm:px-8 sm:py-8 border-t border-slate-100">
-          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">דברים טובים בדרך אליך ❤️</h2>
+        <section className="border-t border-slate-100 px-4 py-8 sm:px-8 sm:py-10">
+          <h2 className="text-lg font-bold text-slate-800 sm:text-xl">דברים טובים בדרך אליך</h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרוייקטים מסקרנים?
+            רוצים לדעת לפני כולם על טרנדים, מבצעים והצצה לפרויקטים? הצטרפו לניוזלטר.
           </p>
-          <p className="mt-1 text-sm font-semibold text-slate-700">זה הזמן להצטרף לניוזלטר שלנו</p>
           <NewsletterForm documentId={documentId} branchName={branchName} />
         </section>
 
-        {/* Care guide link */}
-        <section className="px-5 py-4 sm:px-8 border-t border-slate-100">
-          <a
-            href={BRAND_LINKS.careGuideUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-2"
-          >
-            המדריך המלא לטיפול ושמירה על שטיח &lt;&lt;
-          </a>
-        </section>
-
         {/* Footer: brands + social */}
-        <footer className="px-5 py-6 sm:px-8 sm:py-8 border-t border-slate-100 bg-white">
+        <footer className="border-t border-slate-100 bg-white px-4 py-8 sm:px-8 sm:py-10">
           <div className="flex flex-wrap gap-8 sm:gap-10">
             <div>
               <p className="text-sm font-bold text-slate-800">השטיח האדום</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Facebook">
+                <a href={BRAND_LINKS.carpet.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Facebook">
                   <img src={SOCIAL_ICONS.facebook} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="WhatsApp">
+                <a href={BRAND_LINKS.carpet.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="WhatsApp">
                   <img src={SOCIAL_ICONS.whatsapp} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Website">
+                <a href={BRAND_LINKS.carpet.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Website">
                   <img src={SOCIAL_ICONS.web} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Instagram">
+                <a href={BRAND_LINKS.carpet.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Instagram">
                   <img src={SOCIAL_ICONS.instagram} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="YouTube">
+                <a href={BRAND_LINKS.carpet.youtube} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="YouTube">
                   <img src={SOCIAL_ICONS.youtube} alt="" className="h-4 w-4" />
                 </a>
               </div>
@@ -214,31 +309,31 @@ export function DocumentView({ documentId, payload }: DocumentViewProps) {
             <div>
               <p className="text-sm font-bold text-slate-800">פוזיטיב</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Facebook">
+                <a href={BRAND_LINKS.pozitive.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Facebook">
                   <img src={SOCIAL_ICONS.facebook} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="WhatsApp">
+                <a href={BRAND_LINKS.pozitive.whatsapp} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="WhatsApp">
                   <img src={SOCIAL_ICONS.whatsapp} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Website">
+                <a href={BRAND_LINKS.pozitive.website} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Website">
                   <img src={SOCIAL_ICONS.web} alt="" className="h-4 w-4" />
                 </a>
-                <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors" aria-label="Instagram">
+                <a href={BRAND_LINKS.pozitive.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" aria-label="Instagram">
                   <img src={SOCIAL_ICONS.instagram} alt="" className="h-4 w-4" />
                 </a>
               </div>
             </div>
           </div>
-          <p className="mt-5 text-sm text-slate-600 leading-relaxed max-w-prose">
-            אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה, מתוך תשוקה לעיצוב, איכות ואהבה לפרטים הקטנים. נשמח לראות איך בחרת לשלב אותם אצלך בבית! צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
+          <p className="mt-6 text-sm text-slate-600 leading-relaxed max-w-prose">
+            אנחנו שמחים שהמוצרים שלנו הפכו לחלק מהעיצוב שלך. כל פריט אצלנו נבחר ומיוצר בקפידה. צלמו, שתפו, ותייגו אותנו ב #carpet_shop או #pozitiebeanbags
           </p>
         </footer>
 
-        {/* Care tips */}
-        <section className="bg-slate-800 px-5 py-8 sm:px-8 sm:py-10">
+        {/* Care tips – dark band */}
+        <section className="bg-slate-800 px-4 py-8 sm:px-8 sm:py-10">
           <div className="mx-auto max-w-2xl rounded-xl bg-white p-5 shadow-lg sm:p-6">
             <p className="text-sm text-slate-600 leading-relaxed">
-              סוף סוף אנחנו נפתחים אל העולם, הדרך שלנו לבית שלך היתה ארוכה, אז אשמח למעט סבלנות בזמן שאנחנו מתרעננים
+              סוף סוף אנחנו נפתחים אל העולם. הדרך שלנו לבית שלך הייתה ארוכה — אשמח למעט סבלנות בזמן שאנחנו מתרעננים.
             </p>
             <hr className="my-5 border-slate-200" />
             {[
