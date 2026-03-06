@@ -208,6 +208,11 @@
   cursor: pointer;
 }
 
+.doc-page .pdf-link .pdf-link-label {
+  font-family: var(--doc-font) !important;
+  unicode-bidi: isolate;
+}
+
 .doc-page .pdf-link a:hover {
   color: var(--doc-red-dark);
 }

@@ -39,7 +39,8 @@ This document gives another developer or AI everything needed to understand and 
 - **Body:** JSON matching `CreateDocumentPayload`: required `Items` (array of `{ ItemQTY, ItemSKU, ItemPrice, ItemDescription }`); optional `InvoiceNumber`, `BranchID`, `BranchName`, `PrintDate`, `SalesRepresentative`, `CustomerName`, `CustomerPhone`, `CustomerEmail`, `TotalPrice`, `type`, `paymentType`, `discount`, `coupons`, `VAT`, `BranchFeedbackUrl`.  
 - **Logic:** Validate → map `type` via `payloadTypeToDbType()` → insert into Supabase `documents` (`type`, `payload`) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
 - **Errors:** 401 (auth), 400 (invalid body), 500 (Supabase/config).  
-- **Implementation:** [src/app/api/documents/route.ts](src/app/api/documents/route.ts).
+- **Implementation:** [src/app/api/documents/route.ts](src/app/api/documents/route.ts).  
+- **Example:** A payload that matches the live document at `/documents/cee0facc-e133-4f9b-9433-be8414b9990e` is in [docs/example-document-payload.json](example-document-payload.json). To create a document via the API: `curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $DOCUMENTS_API_KEY" -d @docs/example-document-payload.json https://weezmo.vercel.app/api/documents` (or your local `/api/documents`). The API inserts into Supabase and returns `{ status: "success", data: { link } }`.
 
 **POST /api/newsletter**  
 - **Auth:** None. **Body:** `email` (required), optional `consentPrivacy`, `documentId`, `branchName`.  

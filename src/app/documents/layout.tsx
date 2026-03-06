@@ -11,5 +11,9 @@ export default function DocumentsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className={notoSansHebrew.className}>{children}</div>;
+  return (
+    <div className={notoSansHebrew.className} lang="he" dir="rtl">
+      {children}
+    </div>
+  );
 }

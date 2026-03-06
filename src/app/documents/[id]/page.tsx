@@ -125,10 +125,12 @@ export default async function DocumentPage({
         </div>
       </div>
 
-      {/* PDF */}
+      {/* PDF — label in Hebrew with explicit RTL so encoding is preserved */}
       <div className="pdf-link">
         <Link href={`/documents/${id}/pdf`} target="_blank" rel="noopener">
-          הורדת מספר המקור
+          <span lang="he" dir="rtl" className="pdf-link-label">
+            {"\u05D4\u05D5\u05E8\u05D3\u05EA \u05DE\u05E1\u05E4\u05E8 \u05D4\u05DE\u05E7\u05D5\u05E8"}
+          </span>
         </Link>
       </div>
 

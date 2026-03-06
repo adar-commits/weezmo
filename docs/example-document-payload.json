@@ -1,0 +1,29 @@
+{
+  "type": "receipt",
+  "InvoiceNumber": "IN264004805",
+  "BranchName": "סגולה",
+  "PrintDate": "03/03/2026 11:35",
+  "SalesRepresentative": "מוכרן אתר אנטרנט",
+  "Items": [
+    {
+      "ItemQTY": 1,
+      "ItemSKU": "NIRVANA",
+      "ItemDescription": "נירוונה 12 גרז 340*240 NIRVANA",
+      "ItemPrice": 3952.8
+    },
+    {
+      "ItemQTY": 1,
+      "ItemSKU": "BELL",
+      "ItemDescription": "בל קרם 290*200 BELL",
+      "ItemPrice": 959.2
+    },
+    {
+      "ItemQTY": 1,
+      "ItemSKU": "VELUTO",
+      "ItemDescription": "פוף ולוטו פופציק 65 בז VELUTO",
+      "ItemPrice": 376
+    }
+  ],
+  "TotalPrice": 5288,
+  "VAT": 951.84
+}
