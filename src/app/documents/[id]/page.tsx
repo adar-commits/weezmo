@@ -116,7 +116,7 @@ export default async function DocumentPage({
       {/* Totals — reference: row1 dark grey strip, row2 red strip */}
       <div className="totals">
         <div className="totals-row totals-row-vat">
-          <div className="t-label">חייב מע״מ 18%</div>
+          <div className="t-label">מע״מ 18%</div>
           <div className="t-val">₪ {formatPrice(vat)}</div>
         </div>
         <div className="totals-row totals-row-total">
@@ -162,7 +162,7 @@ export default async function DocumentPage({
 
       {/* Newsletter */}
       <div className="newsletter">
-        <h3>דברים טובים בדרך אליך</h3>
+        <h3>דברים טובים בדרך אליך ❤️</h3>
         <p className="nl-sub">
           רוצים לדעת לפני כולם על הטרנדים החמים מעולם העיצוב? מבצעים בלעדיים והצצה לפרוייקטים מסקרנים?
         </p>

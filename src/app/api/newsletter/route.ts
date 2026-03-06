@@ -28,10 +28,10 @@ export async function POST(req: NextRequest) {
   }
 
   const payload = {
+    actionType: "weezmo",
     email,
-    consentPrivacy: Boolean(body.consentPrivacy),
-    documentId: body.documentId ?? null,
-    branchName: body.branchName ?? null,
+    phone: (typeof body.phone === "string" ? body.phone.trim() : "") || "",
+    fullName: (typeof body.fullName === "string" ? body.fullName.trim() : "") || "",
   };
 
   try {
