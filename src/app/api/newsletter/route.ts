@@ -9,7 +9,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { email?: string; consentPrivacy?: boolean; documentId?: string; branchName?: string };
+  let body: {
+    email?: string;
+    consentPrivacy?: boolean;
+    documentId?: string;
+    branchName?: string;
+    phone?: string;
+    fullName?: string;
+  };
   try {
     body = await req.json();
   } catch {
