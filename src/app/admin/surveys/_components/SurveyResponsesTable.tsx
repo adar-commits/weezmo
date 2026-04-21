@@ -117,9 +117,19 @@ export function SurveyResponsesTable({ rows, total, filters }: Props) {
         header: "Webhook",
         cell: ({ getValue }) => {
           const s = String(getValue());
-          const variant =
-            s === "ok" ? "secondary" : s === "failed" ? "destructive" : "outline";
-          return <Badge variant={variant}>{s}</Badge>;
+          if (s === "ok") {
+            return (
+              <Badge variant="outline" className="rounded-full border-emerald-200/80 bg-emerald-50 text-emerald-800">
+                {s}
+              </Badge>
+            );
+          }
+          const variant = s === "failed" ? "destructive" : "outline";
+          return (
+            <Badge variant={variant} className="rounded-full">
+              {s}
+            </Badge>
+          );
         },
       },
     ],
@@ -166,15 +176,15 @@ export function SurveyResponsesTable({ rows, total, filters }: Props) {
 
   return (
     <>
-      <Card className="border-border/70 shadow-sm">
-        <CardHeader className="text-right">
-          <CardTitle className="text-base font-semibold">תגובות אחרונות</CardTitle>
+      <Card className="border-0">
+        <CardHeader className="border-b border-border/40 text-right">
+          <CardTitle className="text-lg font-semibold tracking-tight">תגובות אחרונות</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 px-0">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-muted/35">
               {table.getHeaderGroups().map((hg) => (
-                <TableRow key={hg.id} className="hover:bg-transparent">
+                <TableRow key={hg.id} className="border-border/50 hover:bg-transparent">
                   {hg.headers.map((h) => (
                     <TableHead key={h.id} className="text-center">
                       {flexRender(h.column.columnDef.header, h.getContext())}
@@ -194,7 +204,7 @@ export function SurveyResponsesTable({ rows, total, filters }: Props) {
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    className="cursor-pointer odd:bg-muted/40"
+                    className="cursor-pointer odd:bg-muted/25 transition-colors hover:bg-muted/45"
                     onClick={() => setOpenRow(row.original)}
                   >
                     {row.getVisibleCells().map((cell) => (

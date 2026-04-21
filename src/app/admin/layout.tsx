@@ -10,7 +10,11 @@ export default function AdminRootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={`${notoSansHebrew.className} min-h-svh bg-[#f3f4f6]`} dir="rtl" lang="he">
+    <div
+      className={`admin-surface ${notoSansHebrew.className} min-h-svh bg-background text-foreground antialiased`}
+      dir="rtl"
+      lang="he"
+    >
       {children}
     </div>
   );

@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -32,50 +31,16 @@ function hrefWith(sp: URLSearchParams, patch: Record<string, string | undefined>
 export function SurveyControlBar({ branchOptions, scoreMin, scoreMax }: Props) {
   const router = useRouter();
   const sp = useSearchParams();
-  const [qInput, setQInput] = useState(sp.get("q") ?? "");
   const [scoreRange, setScoreRange] = useState<[number, number]>([scoreMin, scoreMax]);
-
-  useEffect(() => {
-    setQInput(sp.get("q") ?? "");
-  }, [sp]);
 
   useEffect(() => {
     setScoreRange([scoreMin, scoreMax]);
   }, [scoreMin, scoreMax]);
 
-  const debouncedPush = useMemo(() => {
-    let t: ReturnType<typeof setTimeout> | undefined;
-    return (next: string) => {
-      if (t) clearTimeout(t);
-      t = setTimeout(() => {
-        router.replace(next);
-      }, 400);
-    };
-  }, [router]);
-
-  const onSearchChange = useCallback(
-    (v: string) => {
-      setQInput(v);
-      const next = hrefWith(sp, { q: v.trim() || undefined });
-      debouncedPush(next);
-    },
-    [debouncedPush, sp]
-  );
-
   const branchValue = sp.get("branch_id") ?? "__all__";
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-border/60 bg-card p-4 shadow-sm md:flex-row md:flex-wrap md:items-end">
-      <div className="min-w-[200px] flex-1 space-y-2 text-right">
-        <Label htmlFor="survey-q">חיפוש (שם / טלפון / הזמנה)</Label>
-        <Input
-          id="survey-q"
-          dir="rtl"
-          value={qInput}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="הקלידו לחיפוש…"
-        />
-      </div>
+    <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-card/80 p-4 shadow-sm backdrop-blur-sm md:flex-row md:flex-wrap md:items-end">
       <div className="w-full min-w-[180px] space-y-2 text-right md:w-56">
         <Label>סניף</Label>
         <Select
@@ -85,10 +50,10 @@ export function SurveyControlBar({ branchOptions, scoreMin, scoreMax }: Props) {
             router.replace(href);
           }}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full rounded-xl border-border/60 bg-background/80">
             <SelectValue placeholder="כל הסניפים" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl">
             <SelectItem value="__all__">כל הסניפים</SelectItem>
             {branchOptions.map((b) => (
               <SelectItem key={b} value={b}>

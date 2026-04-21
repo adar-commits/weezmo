@@ -33,7 +33,7 @@ export default async function AdminSurveysPage({
   ]);
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="space-y-6 p-4 pb-10 md:space-y-8 md:p-8">
       <Suspense fallback={<div className="h-12 animate-pulse rounded-lg bg-muted" />}>
         <SurveyPeriodTabs />
       </Suspense>

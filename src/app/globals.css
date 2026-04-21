@@ -86,6 +86,42 @@
   --chart-5: oklch(0.645 0.246 16.439);
 }
 
+/* Admin dashboard theme (Ryvix-inspired): teal accent, soft canvas, elevated cards */
+.admin-surface {
+  --radius: 1rem;
+  --background: oklch(0.972 0.006 240);
+  --foreground: oklch(0.3 0.02 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.3 0.02 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.3 0.02 255);
+  --primary: oklch(0.44 0.09 195);
+  --primary-foreground: oklch(0.99 0.01 195);
+  --secondary: oklch(0.93 0.03 195);
+  --secondary-foreground: oklch(0.34 0.07 195);
+  --muted: oklch(0.955 0.012 200);
+  --muted-foreground: oklch(0.52 0.03 240);
+  --accent: oklch(0.94 0.028 195);
+  --accent-foreground: oklch(0.32 0.06 195);
+  --destructive: oklch(0.58 0.19 25);
+  --border: oklch(0.9 0.014 200);
+  --input: oklch(0.9 0.014 200);
+  --ring: oklch(0.52 0.08 195);
+  --chart-1: oklch(0.5 0.1 195);
+  --chart-2: oklch(0.46 0.095 185);
+  --chart-3: oklch(0.58 0.12 170);
+  --chart-4: oklch(0.75 0.14 85);
+  --chart-5: oklch(0.62 0.17 28);
+}
+
+.admin-surface [data-slot="card"] {
+  border-radius: calc(var(--radius) + 6px);
+  border-color: color-mix(in oklch, var(--border) 85%, transparent);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 14px 28px -12px rgb(15 23 42 / 0.08);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -19,7 +19,7 @@ function DistBar({ row }: { row: QuestionAggRow }) {
     { n: row.cnt_2, className: "bg-orange-400/90" },
     { n: row.cnt_3, className: "bg-amber-400/90" },
     { n: row.cnt_4, className: "bg-emerald-500/80" },
-    { n: row.cnt_5, className: "bg-primary" },
+    { n: row.cnt_5, className: "bg-primary shadow-sm" },
   ];
   return (
     <div className="flex h-2 w-full max-w-[140px] overflow-hidden rounded-full bg-muted ms-auto">
@@ -40,9 +40,9 @@ export function SurveyQuestionSection({ rows, filters }: Props) {
   const exportQs = filtersToQueryString(filters);
 
   return (
-    <Card className="border-border/70 shadow-sm">
-      <CardHeader className="flex flex-row-reverse items-center justify-between space-y-0 pb-2">
-        <Button variant="outline" size="sm" className="gap-1" asChild>
+    <Card className="border-0">
+      <CardHeader className="flex flex-row-reverse items-center justify-between space-y-0 border-b border-border/40 pb-4">
+        <Button variant="outline" size="sm" className="gap-1 rounded-xl border-border/60" asChild>
           <a href={`/api/admin/surveys/export?${exportQs}`}>
             <Download className="size-4" />
             ייצוא CSV
@@ -52,8 +52,8 @@ export function SurveyQuestionSection({ rows, filters }: Props) {
       </CardHeader>
       <CardContent className="px-0">
         <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
+          <TableHeader className="bg-muted/35">
+            <TableRow className="border-border/50 hover:bg-transparent">
               <TableHead className="text-right">מזהה שאלה</TableHead>
               <TableHead className="text-center">ממוצע</TableHead>
               <TableHead className="text-center">תגובות</TableHead>
@@ -69,7 +69,7 @@ export function SurveyQuestionSection({ rows, filters }: Props) {
               </TableRow>
             ) : (
               rows.map((r) => (
-                <TableRow key={r.question_id} className="odd:bg-muted/40">
+                <TableRow key={r.question_id} className="odd:bg-muted/25 transition-colors hover:bg-muted/40">
                   <TableCell className="text-right font-mono text-sm" dir="ltr">
                     {r.question_id}
                   </TableCell>

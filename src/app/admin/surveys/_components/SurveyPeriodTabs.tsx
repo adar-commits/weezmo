@@ -38,13 +38,16 @@ export function SurveyPeriodTabs() {
 
   return (
     <div className="flex flex-wrap items-center justify-end gap-2">
-      <div className="inline-flex flex-wrap rounded-lg border border-border/80 bg-card p-0.5 shadow-sm">
+      <div className="inline-flex flex-wrap rounded-2xl border border-border/50 bg-card/90 p-1 shadow-sm backdrop-blur-sm">
         {PERIODS.filter((x) => x.id !== "custom").map(({ id, label }) => (
           <Button
             key={id}
             variant={current === id ? "default" : "ghost"}
             size="sm"
-            className={cn("rounded-md px-3", current === id && "shadow-sm")}
+            className={cn(
+              "rounded-xl px-3.5 transition-all",
+              current === id && "shadow-md shadow-primary/15"
+            )}
             asChild
           >
             <Link href={hrefWith(sp, { period: id })} prefetch={false}>
@@ -57,13 +60,13 @@ export function SurveyPeriodTabs() {
             <Button
               variant={current === "custom" ? "default" : "ghost"}
               size="sm"
-              className={cn("gap-1 rounded-md px-2", current === "custom" && "shadow-sm")}
+              className={cn("gap-1 rounded-xl px-3", current === "custom" && "shadow-md shadow-primary/15")}
             >
               <CalendarDays className="size-4" />
               מותאם
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto space-y-3 p-3" align="end">
+          <PopoverContent className="w-auto space-y-3 rounded-2xl p-3 shadow-lg" align="end">
             <p className="text-right text-sm font-medium">טווח תאריכים</p>
             <div className="flex flex-col gap-2 sm:flex-row">
               <Calendar mode="single" selected={from} onSelect={setFrom} />
