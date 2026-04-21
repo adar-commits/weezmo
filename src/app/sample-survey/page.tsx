@@ -7,6 +7,7 @@ const DEMO_PAYLOAD: CustomerSurveyPayload = {
   template_id: "customer_survey",
   title: "סקר שביעות רצון",
   subtitle: "דעתך חשובה לנו ❤️",
+  order_id: "PREVIEW-DEMO-NO-DB",
   questions: [
     {
       id: "q_service",

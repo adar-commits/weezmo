@@ -38,7 +38,7 @@ This document gives another developer or AI everything needed to understand and 
 - **Auth:** `Authorization: Bearer <DOCUMENTS_API_KEY>` or header `x-api-key: <DOCUMENTS_API_KEY>`.  
 - **Body:** Discriminated by `template_id`:  
   - **Receipt (default):** omit `template_id` or `"template_id": "receipt"` — required `Items` (array). Same optional fields as before (`InvoiceNumber`, …).  
-  - **Customer survey:** `"template_id": "customer_survey"` — required `title`, `questions[]` (`id`, `text`, `required`). Optional `subtitle`, `logoUrl`, `metadata`. Schema: [schemas/customer-survey-payload.json](schemas/customer-survey-payload.json). Example: [example-customer-survey-payload.json](example-customer-survey-payload.json).  
+  - **Customer survey:** `"template_id": "customer_survey"` — required `title`, `questions[]` (`id`, `text`, `required`). Optional `subtitle`, `logoUrl`, **`order_id`** (external correlation, e.g. Shopify order id; echoed as `order_id` on survey webhook), `metadata`. Schema: [schemas/customer-survey-payload.json](schemas/customer-survey-payload.json). Example: [example-customer-survey-payload.json](example-customer-survey-payload.json).  
 - **Logic:** Validate with Zod registry → insert `documents` (`template_id`, `type`, `payload`) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
 - **Errors:** 401 (auth), 400 (invalid body / unknown `template_id`), 500 (Supabase/config).  
 - **Implementation:** [src/app/api/documents/route.ts](../src/app/api/documents/route.ts), [src/lib/templates/registry.ts](../src/lib/templates/registry.ts).  

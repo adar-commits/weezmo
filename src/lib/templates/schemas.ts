@@ -12,6 +12,8 @@ export const customerSurveyPayloadSchema = z.object({
   title: z.string().min(1),
   subtitle: z.string().optional(),
   logoUrl: z.string().url().optional(),
+  /** External correlation key (e.g. Shopify order id). Forwarded on submit webhook. */
+  order_id: z.string().min(1).max(256).optional(),
   questions: z.array(surveyQuestionSchema).min(1).max(20),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });

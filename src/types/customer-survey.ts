@@ -10,6 +10,11 @@ export interface CustomerSurveyPayload {
   subtitle?: string;
   /** Overrides default carpetshop logo when set */
   logoUrl?: string;
+  /**
+   * Your external correlation id (e.g. Shopify order id / order name).
+   * Returned on survey submit webhook as `order_id` for automation.
+   */
+  order_id?: string;
   questions: CustomerSurveyQuestion[];
   metadata?: Record<string, unknown>;
 }

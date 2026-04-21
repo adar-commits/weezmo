@@ -69,12 +69,22 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const meta = payload.metadata ?? {};
+  const orderFromMeta =
+    typeof meta.order_id === "string"
+      ? meta.order_id
+      : typeof meta.orderId === "string"
+        ? meta.orderId
+        : undefined;
+
   const forward = {
     templateId: TEMPLATE_IDS.customerSurvey,
     documentId,
     submittedAt: new Date().toISOString(),
+    /** Same field as POST /api/documents body when provided; else may come from metadata.order_id */
+    order_id: payload.order_id ?? orderFromMeta,
     answers: ans as Record<string, number>,
-    metadata: payload.metadata ?? {},
+    metadata: meta,
     surveyTitle: payload.title,
   };
 

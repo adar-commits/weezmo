@@ -93,11 +93,26 @@ Example:
 
 #### Customer survey template
 
-- **Body (JSON):** `"template_id": "customer_survey"` (required). Also required: `title`, `questions` (array of `{ id, text, required }`). Optional: `subtitle`, `logoUrl`, `metadata`.
+- **Body (JSON):** `"template_id": "customer_survey"` (required). Also required: `title`, `questions` (array of `{ id, text, required }`). Optional: `subtitle`, `logoUrl`, **`order_id`** (recommended), `metadata`.
+- **`order_id`:** Your external correlation key (for example Shopify order id or order name). Stored with the document and returned on the **survey-submit webhook** as `order_id` so Make/Zapier can join survey results to an order. Max length 256. If you omit it, you may still pass `metadata.order_id` / `metadata.orderId` as a fallback for the webhook only.
 - **JSON Schema:** [docs/schemas/customer-survey-payload.json](docs/schemas/customer-survey-payload.json)
 - **Example file:** [docs/example-customer-survey-payload.json](docs/example-customer-survey-payload.json)
 
-Full HTTP example (same auth headers as receipts):
+**Production (`https://weezmo.vercel.app`) — full HTTP request**
+
+Replace `YOUR_DOCUMENTS_API_KEY` with your secret (same variable as receipts).
+
+```http
+POST /api/documents HTTP/1.1
+Host: weezmo.vercel.app
+Content-Type: application/json
+Authorization: Bearer YOUR_DOCUMENTS_API_KEY
+
+```
+
+Use the JSON body from [docs/example-customer-survey-payload.json](docs/example-customer-survey-payload.json) (includes `"order_id": "shopify-order-5678901234"`).
+
+**Same request with curl:**
 
 ```bash
 curl -sS -X POST "https://weezmo.vercel.app/api/documents" \
@@ -124,6 +139,7 @@ Shape sent to your webhook:
   "templateId": "customer_survey",
   "documentId": "<uuid>",
   "submittedAt": "2026-04-21T12:00:00.000Z",
+  "order_id": "shopify-order-5678901234",
   "answers": {
     "q_service": 5,
     "q_rep": 4,
@@ -134,6 +150,8 @@ Shape sent to your webhook:
   "surveyTitle": "סקר שביעות רצון"
 }
 ```
+
+`order_id` is the value from the create payload when present; otherwise it may be taken from `metadata.order_id` or `metadata.orderId` on create.
 
 ### Newsletter webhook
 

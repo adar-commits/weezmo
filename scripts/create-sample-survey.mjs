@@ -21,6 +21,7 @@ const payload = {
   template_id: "customer_survey",
   title: "סקר שביעות רצון",
   subtitle: "דעתך חשובה לנו ❤️",
+  order_id: `sample-${Date.now()}`,
   questions: [
     {
       id: "q_service",

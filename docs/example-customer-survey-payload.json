@@ -2,6 +2,7 @@
   "template_id": "customer_survey",
   "title": "סקר שביעות רצון",
   "subtitle": "דעתך חשובה לנו ❤️",
+  "order_id": "shopify-order-5678901234",
   "questions": [
     {
       "id": "q_service",
@@ -25,6 +26,6 @@
     }
   ],
   "metadata": {
-    "orderId": "optional-order-ref"
+    "channel": "sms_post_purchase"
   }
 }
