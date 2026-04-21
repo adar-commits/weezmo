@@ -3,6 +3,9 @@
   "title": "סקר שביעות רצון",
   "subtitle": "דעתך חשובה לנו ❤️",
   "order_id": "shopify-order-5678901234",
+  "branch_id": "3000",
+  "customer_name": "תמר שני",
+  "customer_phone": "0501234567",
   "questions": [
     {
       "id": "q_service",

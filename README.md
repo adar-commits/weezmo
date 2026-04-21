@@ -56,6 +56,24 @@ create index if not exists documents_template_id_idx on documents (template_id);
 
 Without this column, inserts that set `template_id` will fail until the migration is applied.
 
+### Supabase migration (survey backoffice + persisted responses)
+
+Run the SQL in **[supabase/migrations/20260422000000_survey_backoffice.sql](supabase/migrations/20260422000000_survey_backoffice.sql)** in the Supabase SQL editor (or apply via Supabase CLI). It adds:
+
+- `documents.branch_id`, `documents.customer_name`, `documents.customer_phone` (indexed where relevant)
+- Table **`survey_responses`** (one row per submit) with `avg_score`, webhook status, denormalized identity fields
+- RPCs: `survey_stats_pack`, `survey_agg_by_branch`, `survey_agg_by_question`, `survey_daily_submissions`
+- `pg_trgm` + GIN index on `customer_name` for search
+
+Until this migration runs, `POST /api/survey-submit` may fail on insert if `survey_responses` is missing.
+
+### Admin dashboard (survey analytics)
+
+- **URL:** `/admin/surveys` — Hebrew RTL UI: KPI cards, branch/question breakdown tables, responses table (sort, pagination), filters (period, free-text search, branch, score range), CSV export.
+- **Auth:** [Supabase Auth](https://supabase.com/docs/guides/auth) — email/password and Google OAuth. Enable both providers in the Supabase dashboard; set **Site URL** and **Redirect URLs** to include `https://<your-domain>/admin/auth/callback` (and `http://localhost:3000/admin/auth/callback` for local dev).
+- **Allowlist:** `ADMIN_EMAIL_ALLOWLIST` — comma-separated lowercase emails allowed after login. Use `*` only in development to allow any authenticated user.
+- **API (session cookie):** `GET /api/admin/surveys/export?...` — same query params as the dashboard; CSV (UTF‑8 BOM). `POST /api/admin/surveys/retry-webhook` with JSON `{ "responseId": "<uuid>" }` to resend a failed/skipped webhook (requires `SURVEY_SUBMIT_WEBHOOK_URL`).
+
 ### Create document
 
 **`POST /api/documents`**
@@ -93,8 +111,9 @@ Example:
 
 #### Customer survey template
 
-- **Body (JSON):** `"template_id": "customer_survey"` (required). Also required: `title`, `questions` (array of `{ id, text, required }`). Optional: `subtitle`, `logoUrl`, **`order_id`** (recommended), `metadata`.
+- **Body (JSON):** `"template_id": "customer_survey"` (required). Also required: `title`, `questions` (array of `{ id, text, required }`). Optional: `subtitle`, `logoUrl`, **`order_id`** (recommended), **`branch_id`**, **`customer_name`**, **`customer_phone`** (recommended for admin search), `metadata`.
 - **`order_id`:** Your external correlation key (for example Shopify order id or order name). Stored with the document and returned on the **survey-submit webhook** as `order_id` so Make/Zapier can join survey results to an order. Max length 256. If you omit it, you may still pass `metadata.order_id` / `metadata.orderId` as a fallback for the webhook only.
+- **`branch_id` / `customer_name` / `customer_phone`:** Copied into `documents` columns and into each **`survey_responses`** row for the backoffice (search, filters, CSV).
 - **JSON Schema:** [docs/schemas/customer-survey-payload.json](docs/schemas/customer-survey-payload.json)
 - **Example file:** [docs/example-customer-survey-payload.json](docs/example-customer-survey-payload.json)
 
@@ -130,7 +149,7 @@ curl -sS -X POST "https://weezmo.vercel.app/api/documents" \
 
 ### Survey submit webhook
 
-When a user submits the survey, the browser **POST**s to **`/api/survey-submit`** (no API key; the document id is the secret). The server forwards a JSON payload to **`SURVEY_SUBMIT_WEBHOOK_URL`** (plain JSON in v1, no signature). If the env var is unset, submit returns `503`.
+When a user submits the survey, the browser **POST**s to **`/api/survey-submit`** (no API key; the document id is the secret). The server **inserts a row into `survey_responses`** (always), then POSTs JSON to **`SURVEY_SUBMIT_WEBHOOK_URL`** when that env var is set. If the URL is unset, the response is still saved with `webhook_status: "skipped"` and the API returns **`200`** `{ "success": true, "webhookStatus": "skipped" }`. If the webhook HTTP call fails, the row is kept with `webhook_status: "failed"` and the API returns **`502`** (data is not rolled back).
 
 Shape sent to your webhook:
 
@@ -138,8 +157,13 @@ Shape sent to your webhook:
 {
   "templateId": "customer_survey",
   "documentId": "<uuid>",
+  "responseId": "<uuid>",
   "submittedAt": "2026-04-21T12:00:00.000Z",
   "order_id": "shopify-order-5678901234",
+  "branch_id": "3000",
+  "customer_name": "תמר שני",
+  "customer_phone": "0501234567",
+  "avg_score": 4.25,
   "answers": {
     "q_service": 5,
     "q_rep": 4,
@@ -151,7 +175,7 @@ Shape sent to your webhook:
 }
 ```
 
-`order_id` is the value from the create payload when present; otherwise it may be taken from `metadata.order_id` or `metadata.orderId` on create.
+`order_id` / identity fields follow the create payload and denormalized `documents` columns (see migration).
 
 ### Newsletter webhook
 

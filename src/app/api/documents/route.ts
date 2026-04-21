@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { TEMPLATE_IDS } from "@/constants/templates";
 import { parseCreateDocumentBody } from "@/lib/templates/registry";
 
 function getApiKey(req: NextRequest): string | null {
@@ -53,11 +54,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const insertRow = {
+  const insertRow: Record<string, unknown> = {
     template_id: parsed.templateId,
     type: parsed.dbType,
     payload: parsed.payload as unknown as Record<string, unknown>,
   };
+
+  if (parsed.templateId === TEMPLATE_IDS.customerSurvey) {
+    const p = parsed.payload;
+    insertRow.branch_id = p.branch_id ?? null;
+    insertRow.customer_name = p.customer_name ?? null;
+    insertRow.customer_phone = p.customer_phone ?? null;
+  }
 
   const { data: row, error } = await supabase
     .from("documents")

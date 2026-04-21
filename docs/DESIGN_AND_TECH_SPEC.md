@@ -14,7 +14,7 @@ This document gives another developer or AI everything needed to understand and 
 
 **Production URL:** [weezmo.vercel.app](https://weezmo.vercel.app). Document links must always use this domain (or `NEXT_PUBLIC_APP_URL`), never preview or staging URLs.
 
-**Current state:** API and database work; PDF generation works. The route `GET /documents/[id]` was removed and must be **rebuilt** so users can see the receipt in the browser. Root page `/` is a minimal placeholder.
+**Current state:** API and database work; PDF generation works; `GET /documents/[id]` renders receipt or survey; **Tailwind v4 + shadcn/ui** power the **admin survey dashboard** at `/admin/surveys`.
 
 ---
 
@@ -26,7 +26,7 @@ This document gives another developer or AI everything needed to understand and 
 | Database  | Supabase (server: service role; browser client exists for future use)  |
 | PDF       | `@react-pdf/renderer`; server-only; `src/components/ReceiptPdfDocument.tsx` |
 | Deploy    | Vercel                                                                 |
-| UI        | None in repo today; implementer can add Tailwind/Shadcn etc. for the document view. |
+| UI        | Document views: dedicated CSS under `src/app/documents/`. Admin: Tailwind v4 + shadcn/ui + Recharts + TanStack Table (`/admin/surveys`). |
 
 **Config:** [next.config.ts](next.config.ts) externalizes `@react-pdf/renderer` and allows images from `receipts.carpetshop.co.il`.
 
@@ -38,16 +38,22 @@ This document gives another developer or AI everything needed to understand and 
 - **Auth:** `Authorization: Bearer <DOCUMENTS_API_KEY>` or header `x-api-key: <DOCUMENTS_API_KEY>`.  
 - **Body:** Discriminated by `template_id`:  
   - **Receipt (default):** omit `template_id` or `"template_id": "receipt"` — required `Items` (array). Same optional fields as before (`InvoiceNumber`, …).  
-  - **Customer survey:** `"template_id": "customer_survey"` — required `title`, `questions[]` (`id`, `text`, `required`). Optional `subtitle`, `logoUrl`, **`order_id`** (external correlation, e.g. Shopify order id; echoed as `order_id` on survey webhook), `metadata`. Schema: [schemas/customer-survey-payload.json](schemas/customer-survey-payload.json). Example: [example-customer-survey-payload.json](example-customer-survey-payload.json).  
-- **Logic:** Validate with Zod registry → insert `documents` (`template_id`, `type`, `payload`) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
+  - **Customer survey:** `"template_id": "customer_survey"` — required `title`, `questions[]` (`id`, `text`, `required`). Optional `subtitle`, `logoUrl`, **`order_id`**, **`branch_id`**, **`customer_name`**, **`customer_phone`**, `metadata`. Schema: [schemas/customer-survey-payload.json](schemas/customer-survey-payload.json). Example: [example-customer-survey-payload.json](example-customer-survey-payload.json).  
+- **Logic:** Validate with Zod registry → insert `documents` (`template_id`, `type`, `payload`, and for surveys `branch_id`, `customer_name`, `customer_phone` when provided) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
 - **Errors:** 401 (auth), 400 (invalid body / unknown `template_id`), 500 (Supabase/config).  
 - **Implementation:** [src/app/api/documents/route.ts](../src/app/api/documents/route.ts), [src/lib/templates/registry.ts](../src/lib/templates/registry.ts).  
 - **Receipt example:** [example-document-payload.json](example-document-payload.json).
 
 **POST /api/survey-submit**  
 - **Auth:** None (document UUID is the capability). **Body:** `{ "documentId": "<uuid>", "answers": { "<questionId>": 1–5 } }`.  
-- **Logic:** Load document; ensure `template_id` / payload is customer survey; validate ratings; POST JSON to `SURVEY_SUBMIT_WEBHOOK_URL`.  
+- **Logic:** Load document; ensure survey template; validate ratings; **insert `survey_responses`** (answers, `avg_score`, denormalized ids); POST JSON to `SURVEY_SUBMIT_WEBHOOK_URL` when configured; update `webhook_status`.  
 - **Implementation:** [src/app/api/survey-submit/route.ts](../src/app/api/survey-submit/route.ts).
+
+**Admin (Supabase Auth + allowlist)**  
+- **`GET /admin/surveys`** — dashboard (KPIs, filters, tables). Middleware + `ADMIN_EMAIL_ALLOWLIST`.  
+- **`GET /admin/login`**, **`GET /admin/auth/callback`**, **`POST /admin/auth/signout`**.  
+- **`GET /api/admin/surveys/export`**, **`POST /api/admin/surveys/retry-webhook`** — session-gated.  
+- **SQL:** [supabase/migrations/20260422000000_survey_backoffice.sql](../supabase/migrations/20260422000000_survey_backoffice.sql).
 
 **POST /api/newsletter**  
 - **Auth:** None. **Body:** `email` (required), optional `consentPrivacy`, `documentId`, `branchName`.  
@@ -65,11 +71,12 @@ This document gives another developer or AI everything needed to understand and 
 
 ### 4. Database schema and integration
 
-**Table `documents`:** `id` (UUID, PK), `type` (text: `receipt` | `invoice` | `delivery_note`), `payload` (JSONB), **`template_id`** (text, default `receipt`; use `customer_survey` for the survey template), `created_at` (timestamptz, optional).  
-Apply once in Supabase (see [README.md](../README.md) Digital Documents API → Supabase migration).  
-**RLS:** Public read by `id` only; no anon write. Writes via server (service role).  
-**Clients:** Server [src/lib/supabase/server.ts](src/lib/supabase/server.ts); browser [src/lib/supabase/client.ts](src/lib/supabase/client.ts).  
-**Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional). See [.env.example](../.env.example).
+**Table `documents`:** `id` (UUID, PK), `type` (text: `receipt` | `invoice` | `delivery_note`), `payload` (JSONB), **`template_id`** (text, default `receipt`; use `customer_survey` for the survey template), **`branch_id`**, **`customer_name`**, **`customer_phone`** (optional; survey denormalization for admin), `created_at` (timestamptz, optional).  
+**Table `survey_responses`:** one row per survey submit (`document_id`, `answers`, `avg_score`, identity fields, `webhook_status`, …). See migration file.  
+Apply migrations in Supabase (see [README.md](../README.md)).  
+**RLS:** `survey_responses` has RLS enabled with no policies (service role only).  
+**Clients:** Service role [src/lib/supabase/server.ts](../src/lib/supabase/server.ts); admin session [src/lib/supabase/session.ts](../src/lib/supabase/session.ts); browser [src/lib/supabase/browser.ts](../src/lib/supabase/browser.ts).  
+**Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ADMIN_EMAIL_ALLOWLIST`. See [.env.example](../.env.example).
 
 ---
 

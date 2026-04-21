@@ -22,6 +22,9 @@ const payload = {
   title: "סקר שביעות רצון",
   subtitle: "דעתך חשובה לנו ❤️",
   order_id: `sample-${Date.now()}`,
+  branch_id: "3000",
+  customer_name: "דוגמה סקר",
+  customer_phone: "0501234567",
   questions: [
     {
       id: "q_service",

@@ -4,16 +4,16 @@ import { TEMPLATE_IDS } from "@/constants/templates";
 import { postJsonWebhook } from "@/lib/webhook-forward";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
+import { computeSurveyAverageScore } from "@/lib/survey-score";
+import { buildSurveySubmitWebhookBody } from "@/lib/survey-webhook-payload";
+import {
+  resolveSurveyBranchId,
+  resolveSurveyCustomerName,
+  resolveSurveyCustomerPhone,
+  resolveSurveyOrderId,
+} from "@/lib/survey-denorm";
 
 export async function POST(req: NextRequest) {
-  const webhookUrl = process.env.SURVEY_SUBMIT_WEBHOOK_URL;
-  if (!webhookUrl) {
-    return NextResponse.json(
-      { message: "Survey webhook not configured" },
-      { status: 503 }
-    );
-  }
-
   let body: unknown;
   try {
     body = await req.json();
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   const { data: row, error } = await supabase
     .from("documents")
-    .select("template_id, payload")
+    .select("template_id, payload, branch_id, customer_name, customer_phone")
     .eq("id", documentId)
     .single();
 
@@ -69,30 +69,90 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const meta = payload.metadata ?? {};
-  const orderFromMeta =
-    typeof meta.order_id === "string"
-      ? meta.order_id
-      : typeof meta.orderId === "string"
-        ? meta.orderId
-        : undefined;
+  const avgScore = computeSurveyAverageScore(ans);
+  const orderId = resolveSurveyOrderId(payload);
+  const branchId = resolveSurveyBranchId(row, payload);
+  const customerName = resolveSurveyCustomerName(row, payload);
+  const customerPhone = resolveSurveyCustomerPhone(row, payload);
 
-  const forward = {
-    templateId: TEMPLATE_IDS.customerSurvey,
+  const { data: inserted, error: insertErr } = await supabase
+    .from("survey_responses")
+    .insert({
+      document_id: documentId,
+      answers: ans as Record<string, number>,
+      avg_score: avgScore,
+      order_id: orderId,
+      branch_id: branchId,
+      customer_name: customerName,
+      customer_phone: customerPhone,
+      webhook_status: "pending",
+    })
+    .select("id")
+    .single();
+
+  if (insertErr || !inserted) {
+    console.error("survey_responses insert error:", insertErr);
+    return NextResponse.json({ message: "Failed to save response" }, { status: 500 });
+  }
+
+  const responseId = inserted.id as string;
+  const webhookUrl = process.env.SURVEY_SUBMIT_WEBHOOK_URL?.trim();
+
+  const forward = buildSurveySubmitWebhookBody({
     documentId,
-    submittedAt: new Date().toISOString(),
-    /** Same field as POST /api/documents body when provided; else may come from metadata.order_id */
-    order_id: payload.order_id ?? orderFromMeta,
+    responseId,
+    payload,
+    row,
     answers: ans as Record<string, number>,
-    metadata: meta,
-    surveyTitle: payload.title,
-  };
+    avgScore,
+  });
+
+  if (!webhookUrl) {
+    await supabase
+      .from("survey_responses")
+      .update({
+        webhook_status: "skipped",
+        webhook_error: "SURVEY_SUBMIT_WEBHOOK_URL not configured",
+      })
+      .eq("id", responseId);
+
+    return NextResponse.json({
+      success: true,
+      responseId,
+      webhookStatus: "skipped" as const,
+    });
+  }
 
   const result = await postJsonWebhook(webhookUrl, forward);
   if (!result.ok) {
     console.error("Survey webhook error:", result.status, result.body);
-    return NextResponse.json({ message: "Webhook failed" }, { status: 502 });
+    await supabase
+      .from("survey_responses")
+      .update({
+        webhook_status: "failed",
+        webhook_error: `${result.status}: ${result.body.slice(0, 500)}`,
+      })
+      .eq("id", responseId);
+
+    return NextResponse.json(
+      {
+        success: false,
+        responseId,
+        webhookStatus: "failed" as const,
+        message: "Webhook failed",
+      },
+      { status: 502 }
+    );
   }
 
-  return NextResponse.json({ success: true });
+  await supabase
+    .from("survey_responses")
+    .update({ webhook_status: "ok", webhook_error: null })
+    .eq("id", responseId);
+
+  return NextResponse.json({
+    success: true,
+    responseId,
+    webhookStatus: "ok" as const,
+  });
 }

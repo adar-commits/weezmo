@@ -8,6 +8,9 @@ const DEMO_PAYLOAD: CustomerSurveyPayload = {
   title: "סקר שביעות רצון",
   subtitle: "דעתך חשובה לנו ❤️",
   order_id: "PREVIEW-DEMO-NO-DB",
+  branch_id: "3000",
+  customer_name: "תצוגה מקדימה",
+  customer_phone: "0500000000",
   questions: [
     {
       id: "q_service",

@@ -17,6 +17,10 @@ export default function Home() {
         minimal.
       </p>
       <p>
+        <strong>Admin — survey analytics:</strong>{" "}
+        <Link href="/admin/surveys">/admin/surveys</Link> (Supabase Auth + allowlist; see README).
+      </p>
+      <p>
         <strong>Survey design (instant, no database):</strong>{" "}
         <Link href="/sample-survey">Open sample survey preview</Link> — full UI; submit completes
         locally only.

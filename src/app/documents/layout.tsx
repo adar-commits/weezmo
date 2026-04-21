@@ -1,10 +1,4 @@
-import { Noto_Sans_Hebrew } from "next/font/google";
-
-const notoSansHebrew = Noto_Sans_Hebrew({
-  weight: ["400", "500", "700", "900"],
-  subsets: ["hebrew", "latin"],
-  display: "swap",
-});
+import { notoSansHebrew } from "@/lib/fonts/noto-hebrew";
 
 export default function DocumentsLayout({
   children,

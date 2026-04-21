@@ -15,6 +15,10 @@ export interface CustomerSurveyPayload {
    * Returned on survey submit webhook as `order_id` for automation.
    */
   order_id?: string;
+  /** Denormalized to DB for admin search / filters */
+  branch_id?: string;
+  customer_name?: string;
+  customer_phone?: string;
   questions: CustomerSurveyQuestion[];
   metadata?: Record<string, unknown>;
 }
