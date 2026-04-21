@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { ReceiptPdfDocument } from "@/components/ReceiptPdfDocument";
+import { TEMPLATE_IDS } from "@/constants/templates";
+import { resolveTemplateFromRow } from "@/lib/templates/registry";
 
 export async function GET(
   _req: NextRequest,
@@ -12,7 +14,7 @@ export async function GET(
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
     .from("documents")
-    .select("payload")
+    .select("template_id, payload")
     .eq("id", id)
     .single();
 
@@ -20,12 +22,19 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  const templateId = resolveTemplateFromRow(data);
+  if (templateId === TEMPLATE_IDS.customerSurvey) {
+    return NextResponse.json(
+      { error: "PDF is not available for this document type" },
+      { status: 404 }
+    );
+  }
+
   const payload = data.payload as Record<string, unknown>;
   try {
     const el = React.createElement(ReceiptPdfDocument, {
       payload: payload as Parameters<typeof ReceiptPdfDocument>[0]["payload"],
     });
-// ReceiptPdfDocument returns <Document>..</Document>; cast to satisfy renderToBuffer typings
     const buffer = await renderToBuffer(el as Parameters<typeof renderToBuffer>[0]);
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

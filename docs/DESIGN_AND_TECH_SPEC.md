@@ -36,32 +36,40 @@ This document gives another developer or AI everything needed to understand and 
 
 **POST /api/documents**  
 - **Auth:** `Authorization: Bearer <DOCUMENTS_API_KEY>` or header `x-api-key: <DOCUMENTS_API_KEY>`.  
-- **Body:** JSON matching `CreateDocumentPayload`: required `Items` (array of `{ ItemQTY, ItemSKU, ItemPrice, ItemDescription }`); optional `InvoiceNumber`, `BranchID`, `BranchName`, `PrintDate`, `SalesRepresentative`, `CustomerName`, `CustomerPhone`, `CustomerEmail`, `TotalPrice`, `type`, `paymentType`, `discount`, `coupons`, `VAT`, `BranchFeedbackUrl`.  
-- **Logic:** Validate → map `type` via `payloadTypeToDbType()` → insert into Supabase `documents` (`type`, `payload`) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
-- **Errors:** 401 (auth), 400 (invalid body), 500 (Supabase/config).  
-- **Implementation:** [src/app/api/documents/route.ts](src/app/api/documents/route.ts).  
-- **Example:** A payload that matches the live document at `/documents/cee0facc-e133-4f9b-9433-be8414b9990e` is in [docs/example-document-payload.json](example-document-payload.json). To create a document via the API: `curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $DOCUMENTS_API_KEY" -d @docs/example-document-payload.json https://weezmo.vercel.app/api/documents` (or your local `/api/documents`). The API inserts into Supabase and returns `{ status: "success", data: { link } }`.
+- **Body:** Discriminated by `template_id`:  
+  - **Receipt (default):** omit `template_id` or `"template_id": "receipt"` — required `Items` (array). Same optional fields as before (`InvoiceNumber`, …).  
+  - **Customer survey:** `"template_id": "customer_survey"` — required `title`, `questions[]` (`id`, `text`, `required`). Optional `subtitle`, `logoUrl`, `metadata`. Schema: [schemas/customer-survey-payload.json](schemas/customer-survey-payload.json). Example: [example-customer-survey-payload.json](example-customer-survey-payload.json).  
+- **Logic:** Validate with Zod registry → insert `documents` (`template_id`, `type`, `payload`) → return `{ status: "success", data: { data: { ...payload, id }, link } }` with `link = NEXT_PUBLIC_APP_URL/documents/<id>`.  
+- **Errors:** 401 (auth), 400 (invalid body / unknown `template_id`), 500 (Supabase/config).  
+- **Implementation:** [src/app/api/documents/route.ts](../src/app/api/documents/route.ts), [src/lib/templates/registry.ts](../src/lib/templates/registry.ts).  
+- **Receipt example:** [example-document-payload.json](example-document-payload.json).
+
+**POST /api/survey-submit**  
+- **Auth:** None (document UUID is the capability). **Body:** `{ "documentId": "<uuid>", "answers": { "<questionId>": 1–5 } }`.  
+- **Logic:** Load document; ensure `template_id` / payload is customer survey; validate ratings; POST JSON to `SURVEY_SUBMIT_WEBHOOK_URL`.  
+- **Implementation:** [src/app/api/survey-submit/route.ts](../src/app/api/survey-submit/route.ts).
 
 **POST /api/newsletter**  
 - **Auth:** None. **Body:** `email` (required), optional `consentPrivacy`, `documentId`, `branchName`.  
-- **Logic:** Forward to `NEWSLETTER_WEBHOOK_URL`; return 200 `{ success: true }` on success; 400/502/503 otherwise.  
-- **Implementation:** [src/app/api/newsletter/route.ts](src/app/api/newsletter/route.ts).
+- **Logic:** Forward to `NEWSLETTER_WEBHOOK_URL` via shared webhook helper; return 200 `{ success: true }` on success; 400/502/503 otherwise.  
+- **Implementation:** [src/app/api/newsletter/route.ts](../src/app/api/newsletter/route.ts).
 
 **GET /documents/[id]/pdf**  
-- **Auth:** None. Load document by `id` from Supabase; render ReceiptPdfDocument; return PDF with `Content-Disposition: attachment; filename="document-<id>.pdf"`.  
-- **Implementation:** [src/app/documents/[id]/pdf/route.tsx](src/app/documents/[id]/pdf/route.tsx).
+- **Auth:** None. Load document by `id`; if template is customer survey, return 404 JSON. Otherwise render ReceiptPdfDocument; return PDF with `Content-Disposition: attachment; filename="document-<id>.pdf"`.  
+- **Implementation:** [src/app/documents/[id]/pdf/route.tsx](../src/app/documents/[id]/pdf/route.tsx).
 
 **GET /documents/[id]**  
-- **Current:** No route (404). **Intended:** Show receipt UI (one RTL Hebrew scrollable page). Add `src/app/documents/[id]/page.tsx` and implement all sections below.
+- Renders receipt **or** customer survey by `template_id` / payload. **Implementation:** [src/app/documents/[id]/page.tsx](../src/app/documents/[id]/page.tsx).
 
 ---
 
 ### 4. Database schema and integration
 
-**Table `documents`:** `id` (UUID, PK), `type` (text: `receipt` | `invoice` | `delivery_note`), `payload` (JSONB), `created_at` (timestamptz, optional).  
+**Table `documents`:** `id` (UUID, PK), `type` (text: `receipt` | `invoice` | `delivery_note`), `payload` (JSONB), **`template_id`** (text, default `receipt`; use `customer_survey` for the survey template), `created_at` (timestamptz, optional).  
+Apply once in Supabase (see [README.md](../README.md) Digital Documents API → Supabase migration).  
 **RLS:** Public read by `id` only; no anon write. Writes via server (service role).  
 **Clients:** Server [src/lib/supabase/server.ts](src/lib/supabase/server.ts); browser [src/lib/supabase/client.ts](src/lib/supabase/client.ts).  
-**Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional). See [.env.example](.env.example).
+**Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional). See [.env.example](../.env.example).
 
 ---
 
@@ -107,6 +115,7 @@ sequenceDiagram
 | `SUPABASE_SERVICE_ROLE_KEY`  | Server-side Supabase                                 |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional; browser client                         |
 | `NEWSLETTER_WEBHOOK_URL`     | Newsletter webhook; if unset, API returns 503        |
+| `SURVEY_SUBMIT_WEBHOOK_URL` | Customer survey outbound webhook; if unset, submit returns 503 |
 
 **Production:** Set `NEXT_PUBLIC_APP_URL=https://weezmo.vercel.app`.
 
@@ -125,7 +134,9 @@ sequenceDiagram
 | Document types    | [src/types/document.ts](src/types/document.ts) |
 | Brand links       | [src/config/links.ts](src/config/links.ts) |
 | App shell         | [src/app/layout.tsx](src/app/layout.tsx), [src/app/page.tsx](src/app/page.tsx), [src/app/globals.css](src/app/globals.css) |
-| **Document view** | **Missing** — add `src/app/documents/[id]/page.tsx` |
+| Document view (receipt / survey) | `src/app/documents/[id]/page.tsx` |
+| Survey UI | `src/app/documents/[id]/CustomerSurveyView.tsx`, `survey-page.css` |
+| Receipt UI | `src/components/ReceiptDocumentView.tsx` |
 
 ---
 

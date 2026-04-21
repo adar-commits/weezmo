@@ -41,16 +41,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Digital Documents API
 
-Create a digital document (receipt/invoice) and get a public URL. Documents are stored in Supabase and viewable at `https://weezmo.vercel.app/documents/{id}`. The URL uses a UUID so it is not guessable.
+Create a digital document (receipt/invoice or customer survey) and get a public URL. Documents are stored in Supabase and viewable at `https://weezmo.vercel.app/documents/{id}`. The URL uses a UUID so it is not guessable.
 
 **Important:** Set `NEXT_PUBLIC_APP_URL=https://weezmo.vercel.app` in Vercel (and in production) so the API always returns document links with your production domain, not preview deployment URLs.
+
+### Supabase migration (templates)
+
+Run once in the Supabase SQL editor (adds `template_id` for multi-template rows):
+
+```sql
+alter table documents add column if not exists template_id text not null default 'receipt';
+create index if not exists documents_template_id_idx on documents (template_id);
+```
+
+Without this column, inserts that set `template_id` will fail until the migration is applied.
 
 ### Create document
 
 **`POST /api/documents`**
 
 - **Auth:** `Authorization: Bearer <DOCUMENTS_API_KEY>` or header `x-api-key: <DOCUMENTS_API_KEY>`.
-- **Body (JSON):** Order payload. Required: `Items` (array). Recommended: `InvoiceNumber`, `BranchID`, `BranchName`, `PrintDate`, `SalesRepresentative`, `CustomerName`, `TotalPrice`, `type` (e.g. "חשבונית מס"), `paymentType`, `VAT`, `discount`, `CustomerPhone`, `CustomerEmail`, `coupons`, `BranchFeedbackUrl`.
+
+#### Receipt / invoice (default)
+
+- **Body (JSON):** Either omit `template_id` or set `"template_id": "receipt"`. Required: `Items` (array). Recommended: `InvoiceNumber`, `BranchID`, `BranchName`, `PrintDate`, `SalesRepresentative`, `CustomerName`, `TotalPrice`, `type` (e.g. "חשבונית מס"), `paymentType`, `VAT`, `discount`, `CustomerPhone`, `CustomerEmail`, `coupons`, `BranchFeedbackUrl`.
 
 Example:
 
@@ -77,10 +91,48 @@ Example:
 - **Response (success):** `{ "status": "success", "data": { "data": { ...payload, "id": "<uuid>" }, "link": "https://weezmo.vercel.app/documents/<uuid>" } }`
 - **Errors:** `401` missing/invalid API key, `400` invalid body.
 
+#### Customer survey template
+
+- **Body (JSON):** `"template_id": "customer_survey"` (required). Also required: `title`, `questions` (array of `{ id, text, required }`). Optional: `subtitle`, `logoUrl`, `metadata`.
+- **JSON Schema:** [docs/schemas/customer-survey-payload.json](docs/schemas/customer-survey-payload.json)
+- **Example file:** [docs/example-customer-survey-payload.json](docs/example-customer-survey-payload.json)
+
+Full HTTP example (same auth headers as receipts):
+
+```bash
+curl -sS -X POST "https://weezmo.vercel.app/api/documents" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $DOCUMENTS_API_KEY" \
+  -d @docs/example-customer-survey-payload.json
+```
+
 ### Document URLs
 
-- **View:** `GET https://weezmo.vercel.app/documents/{id}` — RTL Hebrew layout, items table, VAT/total, thank-you, newsletter form, footer with social links, care tips.
-- **Download PDF:** `GET https://weezmo.vercel.app/documents/{id}/pdf` — PDF with only fields present in the create payload (business name, branch, date, customer, items table, total, VAT).
+- **View — receipt:** `GET https://weezmo.vercel.app/documents/{id}` — RTL Hebrew layout, items table, VAT/total, thank-you, newsletter form, footer with social links, care tips.
+- **View — customer survey:** same path; renders the Likert survey when the row's `template_id` is `customer_survey`.
+- **Download PDF:** `GET https://weezmo.vercel.app/documents/{id}/pdf` — PDF for receipt/invoice payloads only; survey documents return `404`.
+
+### Survey submit webhook
+
+When a user submits the survey, the browser **POST**s to **`/api/survey-submit`** (no API key; the document id is the secret). The server forwards a JSON payload to **`SURVEY_SUBMIT_WEBHOOK_URL`** (plain JSON in v1, no signature). If the env var is unset, submit returns `503`.
+
+Shape sent to your webhook:
+
+```json
+{
+  "templateId": "customer_survey",
+  "documentId": "<uuid>",
+  "submittedAt": "2026-04-21T12:00:00.000Z",
+  "answers": {
+    "q_service": 5,
+    "q_rep": 4,
+    "q_speed": 5,
+    "q_solution": 3
+  },
+  "metadata": {},
+  "surveyTitle": "סקר שביעות רצון"
+}
+```
 
 ### Newsletter webhook
 

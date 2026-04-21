@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { postJsonWebhook } from "@/lib/webhook-forward";
 
 export async function POST(req: NextRequest) {
   const webhookUrl = process.env.NEWSLETTER_WEBHOOK_URL;
@@ -41,25 +42,14 @@ export async function POST(req: NextRequest) {
     fullName: (typeof body.fullName === "string" ? body.fullName.trim() : "") || "",
   };
 
-  try {
-    const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      console.error("Newsletter webhook error:", res.status, await res.text());
-      return NextResponse.json(
-        { success: false, message: "Webhook failed" },
-        { status: 502 }
-      );
-    }
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("Newsletter webhook fetch error:", err);
+  const result = await postJsonWebhook(webhookUrl, payload);
+  if (!result.ok) {
+    console.error("Newsletter webhook error:", result.status, result.body);
     return NextResponse.json(
-      { success: false, message: "Webhook request failed" },
+      { success: false, message: "Webhook failed" },
       { status: 502 }
     );
   }
+
+  return NextResponse.json({ success: true });
 }

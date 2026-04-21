@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { CreateDocumentPayload } from "@/types/document";
-import { payloadTypeToDbType } from "@/types/document";
+import { parseCreateDocumentBody } from "@/lib/templates/registry";
 
 function getApiKey(req: NextRequest): string | null {
   const authHeader = req.headers.get("authorization");
@@ -35,15 +34,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const payload = body as CreateDocumentPayload;
-  if (!payload || !Array.isArray(payload.Items)) {
+  const parsed = parseCreateDocumentBody(body);
+  if (!parsed.ok) {
     return NextResponse.json(
-      { status: "error", message: "Missing or invalid body (Items required)" },
+      { status: "error", message: parsed.message },
       { status: 400 }
     );
   }
-
-  const dbType = payloadTypeToDbType(payload.type);
 
   let supabase;
   try {
@@ -56,12 +53,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const insertRow = {
+    template_id: parsed.templateId,
+    type: parsed.dbType,
+    payload: parsed.payload as unknown as Record<string, unknown>,
+  };
+
   const { data: row, error } = await supabase
     .from("documents")
-    .insert({
-      type: dbType,
-      payload: payload as unknown as Record<string, unknown>,
-    })
+    .insert(insertRow)
     .select("id")
     .single();
 
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     status: "success",
     data: {
       data: {
-        ...payload,
+        ...(parsed.payload as object),
         id: row.id,
       },
       link,

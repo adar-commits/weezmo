@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weezmo.vercel.app/schemas/customer-survey-payload.json",
+  "title": "CustomerSurveyPayload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["template_id", "title", "questions"],
+  "properties": {
+    "template_id": {
+      "type": "string",
+      "const": "customer_survey"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "logoUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text", "required"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
