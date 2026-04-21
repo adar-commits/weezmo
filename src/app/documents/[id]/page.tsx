@@ -5,6 +5,7 @@ import { TEMPLATE_IDS } from "@/constants/templates";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
 import type { CreateDocumentPayload } from "@/types/document";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
+import { DocumentPageShell } from "@/components/DocumentPageShell";
 import { CustomerSurveyView } from "./CustomerSurveyView";
 import "./document-page.css";
 import "./survey-page.css";
@@ -30,19 +31,15 @@ export default async function DocumentPage({
 
   if (templateId === TEMPLATE_IDS.customerSurvey) {
     return (
-      <div className="doc-page" dir="rtl" lang="he">
-        <div className="doc-body">
-          <CustomerSurveyView documentId={id} payload={data.payload as CustomerSurveyPayload} />
-        </div>
-      </div>
+      <DocumentPageShell>
+        <CustomerSurveyView documentId={id} payload={data.payload as CustomerSurveyPayload} />
+      </DocumentPageShell>
     );
   }
 
   return (
-    <div className="doc-page" dir="rtl" lang="he">
-      <div className="doc-body">
-        <ReceiptDocumentView documentId={id} payload={data.payload as CreateDocumentPayload} />
-      </div>
-    </div>
+    <DocumentPageShell>
+      <ReceiptDocumentView documentId={id} payload={data.payload as CreateDocumentPayload} />
+    </DocumentPageShell>
   );
 }

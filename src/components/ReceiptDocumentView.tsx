@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DOCUMENT_PAGE_RUG_IMAGE_URL } from "@/config/document-branding";
 import { BRAND_LINKS } from "@/config/links";
 import type { CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
@@ -6,8 +7,6 @@ import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
 const IMG_BASE = "/images";
 const LOGO_URL =
   "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/img.png?v=1772750312";
-const BANNER_URL =
-  "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/banner1_jpg.jpg?v=1772750312";
 
 function formatPrice(value: number): string {
   return new Intl.NumberFormat("he-IL", {
@@ -47,7 +46,7 @@ export function ReceiptDocumentView({
       </header>
 
       <div className="banner-wrap">
-        <img className="banner" src={BANNER_URL} alt="השטיח האדום" />
+        <img className="banner" src={DOCUMENT_PAGE_RUG_IMAGE_URL} alt="השטיח האדום" />
       </div>
 
       <section className="meta">

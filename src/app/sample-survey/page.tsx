@@ -1,4 +1,5 @@
 import { CustomerSurveyView } from "@/app/documents/[id]/CustomerSurveyView";
+import { DocumentPageShell } from "@/components/DocumentPageShell";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
 import "@/app/documents/[id]/document-page.css";
 import "@/app/documents/[id]/survey-page.css";
@@ -39,14 +40,12 @@ const DEMO_PAYLOAD: CustomerSurveyPayload = {
 /** Static UI preview — no DB row; full flow uses POST /api/documents → /documents/{id}. */
 export default function SampleSurveyPage() {
   return (
-    <div className="doc-page" dir="rtl" lang="he">
-      <div className="doc-body">
-        <CustomerSurveyView
-          documentId="00000000-0000-4000-8000-000000000001"
-          payload={DEMO_PAYLOAD}
-          previewMode
-        />
-      </div>
-    </div>
+    <DocumentPageShell>
+      <CustomerSurveyView
+        documentId="00000000-0000-4000-8000-000000000001"
+        payload={DEMO_PAYLOAD}
+        previewMode
+      />
+    </DocumentPageShell>
   );
 }
