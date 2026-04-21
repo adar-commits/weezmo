@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:migrate": "bash scripts/apply-survey-migration.sh"
+    "db:migrate": "bash scripts/apply-survey-migration.sh",
+    "demo:fictive-survey": "node --env-file=.env.local scripts/create-fictive-demo-survey.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",
