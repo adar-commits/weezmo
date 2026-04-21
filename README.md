@@ -81,6 +81,14 @@ Until this migration runs, `POST /api/survey-submit` may fail on insert if `surv
 - **URL:** `/admin/surveys` — Hebrew RTL UI: KPI cards, branch/question breakdown tables, responses table (sort, pagination), filters (period, free-text search, branch, score range), CSV export.
 - **Auth:** [Supabase Auth](https://supabase.com/docs/guides/auth) — email/password and Google OAuth. Enable both providers in the Supabase dashboard; set **Site URL** and **Redirect URLs** to include `https://<your-domain>/admin/auth/callback` (and `http://localhost:3000/admin/auth/callback` for local dev).
 - **Allowlist:** `ADMIN_EMAIL_ALLOWLIST` — comma-separated lowercase emails allowed after login. Use `*` only in development to allow any authenticated user.
+- **Create an email/password user (CLI):** with `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`:
+
+```bash
+node --env-file=.env.local scripts/create-supabase-auth-user.mjs "you@example.com" "your-secure-password"
+```
+
+Then add the same email to `ADMIN_EMAIL_ALLOWLIST` on Vercel (or use the Supabase dashboard **Authentication → Users → Add user** and confirm email there).
+
 - **API (session cookie):** `GET /api/admin/surveys/export?...` — same query params as the dashboard; CSV (UTF‑8 BOM). `POST /api/admin/surveys/retry-webhook` with JSON `{ "responseId": "<uuid>" }` to resend a failed/skipped webhook (requires `SURVEY_SUBMIT_WEBHOOK_URL`).
 
 ### Create document
