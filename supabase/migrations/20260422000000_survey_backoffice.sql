@@ -1,5 +1,13 @@
 -- Survey backoffice: denormalized columns on documents + survey_responses + aggregations + RLS
 
+-- 0) template_id on documents (required by API + this migration; may be missing on older DBs)
+alter table documents add column if not exists template_id text not null default 'receipt';
+
+-- Legacy rows: template only lived under payload.template_id
+update documents
+set template_id = 'customer_survey'
+where coalesce(trim(payload ->> 'template_id'), '') = 'customer_survey';
+
 -- 1) Documents: indexable identity (customer survey create payload)
 alter table documents add column if not exists branch_id text;
 alter table documents add column if not exists customer_name text;
@@ -7,7 +15,21 @@ alter table documents add column if not exists customer_phone text;
 
 create index if not exists idx_documents_template on documents (template_id);
 create index if not exists idx_documents_branch_id on documents (branch_id);
-create index if not exists idx_documents_created_at on documents (created_at);
+
+-- created_at is optional on older installs; only index when present
+do $create_idx$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'documents'
+      and column_name = 'created_at'
+  ) then
+    execute 'create index if not exists idx_documents_created_at on documents (created_at)';
+  end if;
+end
+$create_idx$;
 
 -- 2) Responses (persisted on submit; webhook is secondary)
 create extension if not exists pg_trgm;
