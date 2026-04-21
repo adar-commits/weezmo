@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { DOCUMENT_PAGE_RUG_IMAGE_URL } from "@/config/document-branding";
+import { CustomerClubModal } from "@/components/CustomerClubModal";
+import { DocumentHeroCarousel } from "@/components/DocumentHeroCarousel";
 import { BRAND_LINKS } from "@/config/links";
 import type { CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
@@ -39,6 +40,7 @@ export function ReceiptDocumentView({
 
   return (
     <>
+      <CustomerClubModal />
       <header className="header">
         <img className="logo" src={LOGO_URL} alt="HōM GROUP" />
         <h1>מסמך דיגיטלי</h1>
@@ -46,7 +48,7 @@ export function ReceiptDocumentView({
       </header>
 
       <div className="banner-wrap">
-        <img className="banner" src={DOCUMENT_PAGE_RUG_IMAGE_URL} alt="השטיח האדום" />
+        <DocumentHeroCarousel />
       </div>
 
       <section className="meta">
