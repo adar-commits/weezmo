@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { Button } from "@/components/ui/button";
@@ -18,11 +18,23 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(() => {
-    if (errorParam === "forbidden") return "אין הרשאה לחשבון זה.";
+    if (errorParam === "forbidden") {
+      return "אין הרשאה לחשבון זה. הוסיפו את אותה כתובת אימייל ל‑ADMIN_EMAIL_ALLOWLIST ב‑Vercel (כולל אימייל מ‑Google SSO) והריצו Deploy מחדש.";
+    }
     if (errorParam === "auth") return "ההתחברות נכשלה. נסו שוב.";
     if (errorParam === "config") return "השרת לא מוגדר ל‑Supabase Auth.";
     return null;
   });
+
+  useEffect(() => {
+    const msg = searchParams.get("message");
+    if (!msg) return;
+    try {
+      setMessage(decodeURIComponent(msg));
+    } catch {
+      setMessage(msg);
+    }
+  }, [searchParams]);
 
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
 

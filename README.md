@@ -80,6 +80,7 @@ Until this migration runs, `POST /api/survey-submit` may fail on insert if `surv
 
 - **URL:** `/admin/surveys` — Hebrew RTL UI: KPI cards, branch/question breakdown tables, responses table (sort, pagination), filters (period, free-text search, branch, score range), CSV export.
 - **Auth:** [Supabase Auth](https://supabase.com/docs/guides/auth) — email/password and Google OAuth. Enable both providers in the Supabase dashboard; set **Site URL** and **Redirect URLs** to include `https://<your-domain>/admin/auth/callback` (and `http://localhost:3000/admin/auth/callback` for local dev).
+- **Google SSO checklist:** (1) Supabase → Authentication → Providers → Google: Client ID + secret from Google Cloud Console. (2) Google Cloud → OAuth client → **Authorized redirect URIs** must include Supabase’s redirect URL (shown in the Google provider settings on Supabase, usually `https://<project-ref>.supabase.co/auth/v1/callback`). (3) After Google login succeeds but you bounce back to login: add the **exact Google account email** to `ADMIN_EMAIL_ALLOWLIST` on Vercel (SSO uses that email, not necessarily `a@a.c`).
 - **Allowlist:** `ADMIN_EMAIL_ALLOWLIST` — comma-separated lowercase emails allowed after login. Use `*` only in development to allow any authenticated user.
 - **Create an email/password user (CLI):** with `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`:
 

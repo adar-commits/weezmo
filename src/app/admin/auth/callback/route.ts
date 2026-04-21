@@ -1,47 +1,70 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 
-export async function GET(request: Request) {
+/**
+ * OAuth (e.g. Google) return URL. Session cookies MUST be written onto the same
+ * `NextResponse` as the redirect — using `cookies()` from `next/headers` here often
+ * does not attach auth cookies to the browser, so SSO appears to "fail" after Google.
+ */
+export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") ?? "/admin/surveys";
+  const nextParam = requestUrl.searchParams.get("next") ?? "/admin/surveys";
+  const safeNext = nextParam.startsWith("/") ? nextParam : "/admin/surveys";
+  const oauthError = requestUrl.searchParams.get("error");
+  const oauthDesc = requestUrl.searchParams.get("error_description");
+
+  const loginWith = (params: Record<string, string>) => {
+    const u = new URL("/admin/login", requestUrl.origin);
+    for (const [k, v] of Object.entries(params)) {
+      if (v) u.searchParams.set(k, v);
+    }
+    return NextResponse.redirect(u);
+  };
+
+  if (oauthError) {
+    return loginWith({
+      error: "auth",
+      message: (oauthDesc ?? oauthError).slice(0, 300),
+    });
+  }
 
   if (!code) {
-    return NextResponse.redirect(new URL("/admin/login?error=auth", requestUrl.origin));
+    return loginWith({ error: "auth" });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anon) {
-    return NextResponse.redirect(new URL("/admin/login?error=config", requestUrl.origin));
+    return loginWith({ error: "config" });
   }
 
-  const cookieStore = await cookies();
+  const redirectTarget = new URL(safeNext, requestUrl.origin);
+  const response = NextResponse.redirect(redirectTarget);
 
   const supabase = createServerClient(url, anon, {
     cookies: {
       getAll() {
-        return cookieStore.getAll();
+        return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options);
+        cookiesToSet.forEach(({ name, value, options }) => {
+          response.cookies.set(name, value, {
+            ...options,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: options?.sameSite ?? "lax",
+            path: options?.path ?? "/",
           });
-        } catch {
-          /* ignore */
-        }
+        });
       },
     },
   });
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
-    console.error("OAuth exchange error:", error);
-    return NextResponse.redirect(new URL("/admin/login?error=auth", requestUrl.origin));
+    console.error("OAuth exchange error:", error.message);
+    return loginWith({ error: "auth", message: error.message.slice(0, 300) });
   }
 
-  const dest = next.startsWith("/") ? next : "/admin/surveys";
-  return NextResponse.redirect(new URL(dest, requestUrl.origin));
+  return response;
 }
