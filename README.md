@@ -58,7 +58,16 @@ Without this column, inserts that set `template_id` will fail until the migratio
 
 ### Supabase migration (survey backoffice + persisted responses)
 
-Run the SQL in **[supabase/migrations/20260422000000_survey_backoffice.sql](supabase/migrations/20260422000000_survey_backoffice.sql)** in the Supabase SQL editor (or apply via Supabase CLI). It adds:
+Run the SQL in **[supabase/migrations/20260422000000_survey_backoffice.sql](supabase/migrations/20260422000000_survey_backoffice.sql)** in the Supabase SQL editor, **or from your machine**:
+
+```bash
+export DATABASE_URL='postgresql://...'   # URI from Supabase → Database → Connection string
+npm run db:migrate
+```
+
+(`db:migrate` uses `psql` and stops on the first SQL error.) The repo also includes **`supabase/config.toml`** from `supabase init` so you can use **`npx supabase link`** then **`npx supabase db push`** against a linked project if you prefer the CLI.
+
+The migration adds:
 
 - `documents.branch_id`, `documents.customer_name`, `documents.customer_phone` (indexed where relevant)
 - Table **`survey_responses`** (one row per submit) with `avg_score`, webhook status, denormalized identity fields
