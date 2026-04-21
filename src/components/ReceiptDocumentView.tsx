@@ -101,7 +101,7 @@ export function ReceiptDocumentView({
       <div className="pdf-link">
         <Link href={`/documents/${documentId}/pdf`} target="_blank" rel="noopener">
           <span lang="he" dir="rtl" className="pdf-link-label">
-            {"\u05D4\u05D5\u05E8\u05D3\u05EA \u05DE\u05E1\u05E4\u05E8 \u05D4\u05DE\u05E7\u05D5\u05E8"}
+            הורדת מסמך המקור
           </span>
         </Link>
       </div>
