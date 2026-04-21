@@ -110,6 +110,7 @@ curl -sS -X POST "https://weezmo.vercel.app/api/documents" \
 
 - **View — receipt:** `GET https://weezmo.vercel.app/documents/{id}` — RTL Hebrew layout, items table, VAT/total, thank-you, newsletter form, footer with social links, care tips.
 - **View — customer survey:** same path; renders the Likert survey when the row's `template_id` is `customer_survey`.
+- **Local design preview (no API/DB):** `GET /sample-survey` on the dev server — static UI; use `POST /api/documents` for a real ` /documents/{id}` link.
 - **Download PDF:** `GET https://weezmo.vercel.app/documents/{id}/pdf` — PDF for receipt/invoice payloads only; survey documents return `404`.
 
 ### Survey submit webhook

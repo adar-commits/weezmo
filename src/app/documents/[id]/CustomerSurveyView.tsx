@@ -54,9 +54,12 @@ function lightConfetti(container: HTMLElement | null) {
 export function CustomerSurveyView({
   documentId,
   payload,
+  /** When true, submit only shows success locally (no /api/survey-submit). */
+  previewMode = false,
 }: {
   documentId: string;
   payload: CustomerSurveyPayload;
+  previewMode?: boolean;
 }) {
   const logoSrc = payload.logoUrl ?? DEFAULT_LOGO;
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -78,6 +81,10 @@ export function CustomerSurveyView({
       setError("נא לדרג את כל השאלות המסומנות בכוכבית");
       return;
     }
+    if (previewMode) {
+      setDone(true);
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/survey-submit", {
@@ -96,7 +103,7 @@ export function CustomerSurveyView({
     } finally {
       setSubmitting(false);
     }
-  }, [answers, documentId, payload.questions]);
+  }, [answers, documentId, payload.questions, previewMode]);
 
   useEffect(() => {
     if (done) {
@@ -121,6 +128,11 @@ export function CustomerSurveyView({
 
   return (
     <div className="survey-shell">
+      {previewMode ? (
+        <p className="survey-preview-banner" role="note">
+          תצוגת עיצוב מקומית — להפצה באמת יוצרים מסמך דרך POST /api/documents ומקבלים קישור ייחודי.
+        </p>
+      ) : null}
       <header className="survey-header">
         <img className="survey-logo" src={logoSrc} alt="" width={220} height={80} />
         <h1 className="survey-title">{payload.title}</h1>
