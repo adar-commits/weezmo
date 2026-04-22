@@ -35,7 +35,14 @@ export function SurveyBranchSection({ rows, filters }: Props) {
               <TableHead className="text-right">סניף</TableHead>
               <TableHead className="text-center">תגובות</TableHead>
               <TableHead className="text-center">ממוצע</TableHead>
-              <TableHead className="text-center">% 5★</TableHead>
+              <TableHead className="text-center">
+                <span className="inline-flex flex-col items-center gap-0.5">
+                  <span className="text-amber-500 leading-none" dir="ltr" aria-hidden>
+                    ★★★★★
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">% בדירוג 5</span>
+                </span>
+              </TableHead>
               <TableHead className="text-center">עדכון אחרון</TableHead>
             </TableRow>
           </TableHeader>

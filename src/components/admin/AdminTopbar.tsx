@@ -28,14 +28,20 @@ export function AdminTopbar({ subtitle, email, displayName }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const qs = searchParams.toString();
+  const isSurveys = pathname.startsWith("/admin/surveys");
+
   const exportHref =
-    pathname.startsWith("/admin/surveys") && qs
+    isSurveys && qs
       ? `/api/admin/surveys/export?${qs}`
-      : pathname.startsWith("/admin/surveys")
+      : isSurveys
         ? "/api/admin/surveys/export"
         : "/api/admin/surveys/export";
 
   const name = greetingFromEmail(email, displayName);
+
+  const defaultSubtitle = pathname.startsWith("/admin/documents")
+    ? "רשימת מסמכים וקישורים לתצוגה הציבורית (קבלות, סקרים וכו׳)."
+    : "סקירת ביצועי הסקרים בתקופה שנבחרה.";
 
   return (
     <header className="border-b border-border/40 bg-card/30 backdrop-blur-md">
@@ -46,7 +52,7 @@ export function AdminTopbar({ subtitle, email, displayName }: Props) {
               שלום, {name}!
             </h1>
             <p className="text-sm text-muted-foreground md:text-base">
-              {subtitle ?? "סקירת ביצועי הסקרים בתקופה שנבחרה."}
+              {subtitle ?? defaultSubtitle}
             </p>
             {email ? (
               <p className="truncate text-xs text-muted-foreground/80" dir="ltr">
@@ -55,19 +61,25 @@ export function AdminTopbar({ subtitle, email, displayName }: Props) {
             ) : null}
           </div>
           <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden gap-1.5 rounded-xl border-border/70 bg-background/80 shadow-sm sm:inline-flex"
-              asChild
-            >
-              <a href={exportHref}>
-                <Download className="size-4" />
-                ייצוא CSV
-              </a>
-            </Button>
+            {isSurveys ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden gap-1.5 rounded-xl border-border/70 bg-background/80 shadow-sm sm:inline-flex"
+                asChild
+              >
+                <a href={exportHref}>
+                  <Download className="size-4" />
+                  ייצוא CSV
+                </a>
+              </Button>
+            ) : null}
             <Button variant="outline" size="icon" className="rounded-xl border-border/70 bg-background/80 shadow-sm" asChild>
-              <Link href={`/admin/surveys${qs ? `?${qs}` : ""}`} prefetch={false} aria-label="רענון">
+              <Link
+                href={isSurveys ? `/admin/surveys${qs ? `?${qs}` : ""}` : `${pathname}${qs ? `?${qs}` : ""}`}
+                prefetch={false}
+                aria-label="רענון"
+              >
                 <RefreshCw className="size-4" />
               </Link>
             </Button>
@@ -83,9 +95,11 @@ export function AdminTopbar({ subtitle, email, displayName }: Props) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-48 rounded-xl">
-                <DropdownMenuItem asChild>
-                  <a href={exportHref}>ייצוא CSV</a>
-                </DropdownMenuItem>
+                {isSurveys ? (
+                  <DropdownMenuItem asChild>
+                    <a href={exportHref}>ייצוא CSV</a>
+                  </DropdownMenuItem>
+                ) : null}
                 <DropdownMenuItem asChild>
                   <form action="/admin/auth/signout" method="post">
                     <button type="submit" className="w-full text-right">
@@ -98,7 +112,7 @@ export function AdminTopbar({ subtitle, email, displayName }: Props) {
           </div>
         </div>
 
-        <AdminDashboardSearch />
+        {isSurveys ? <AdminDashboardSearch /> : null}
       </div>
     </header>
   );

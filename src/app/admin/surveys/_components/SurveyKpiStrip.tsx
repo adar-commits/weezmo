@@ -142,14 +142,14 @@ export function SurveyKpiStrip({ kpis }: Props) {
 
       <Card className="border-0">
         <CardHeader className="pb-2 text-right">
-          <CardTitle className="text-sm font-medium text-muted-foreground">שאלה חלשה ביותר</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">השאלה עם הדירוג הנמוך ביותר</CardTitle>
         </CardHeader>
         <CardContent className="space-y-1 text-right">
           <p className="font-mono text-sm font-medium leading-tight" dir="ltr">
             {kpis.worstQuestionId}
           </p>
           <p className="text-2xl font-bold tabular-nums text-destructive">{kpis.worstQuestionAvg.toFixed(2)}</p>
-          <p className="text-xs text-muted-foreground">ממוצע שאלה</p>
+          <p className="text-xs text-muted-foreground">ממוצע לשאלה (1–5)</p>
         </CardContent>
       </Card>
     </div>

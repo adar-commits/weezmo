@@ -24,7 +24,7 @@ export default async function AdminDashboardLayout({
         <AdminTopbar email={email} displayName={displayName} />
       </Suspense>
       <div className="flex flex-1">
-        <AdminSidebar current="surveys" />
+        <AdminSidebar />
         <main className="flex-1 overflow-auto bg-background">{children}</main>
       </div>
     </div>

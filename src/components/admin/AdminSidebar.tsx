@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BarChart3,
   Bell,
+  FileText,
   LayoutDashboard,
   LifeBuoy,
   Settings,
@@ -9,8 +13,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-type Props = { current: "surveys" };
 
 function LogoMark() {
   return (
@@ -31,7 +33,11 @@ function LogoMark() {
   );
 }
 
-export function AdminSidebar({ current }: Props) {
+export function AdminSidebar() {
+  const pathname = usePathname();
+  const isSurveys = pathname.startsWith("/admin/surveys");
+  const isDocuments = pathname.startsWith("/admin/documents");
+
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-e border-border/50 bg-card/40 py-6 backdrop-blur-sm md:flex">
       <div className="flex items-center gap-3 px-5 pb-8">
@@ -50,13 +56,25 @@ export function AdminSidebar({ current }: Props) {
           href="/admin/surveys"
           className={cn(
             "flex items-center gap-3 rounded-2xl px-3 py-2.5 font-medium transition-colors",
-            current === "surveys"
+            isSurveys
               ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
               : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
           )}
         >
           <LayoutDashboard className="size-[18px] shrink-0 opacity-90" />
           סקרי לקוחות
+        </Link>
+        <Link
+          href="/admin/documents"
+          className={cn(
+            "flex items-center gap-3 rounded-2xl px-3 py-2.5 font-medium transition-colors",
+            isDocuments
+              ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+              : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+          )}
+        >
+          <FileText className="size-[18px] shrink-0 opacity-90" />
+          מסמכים דיגיטליים
         </Link>
         <span className="flex cursor-not-allowed items-center gap-3 rounded-2xl px-3 py-2.5 text-muted-foreground/55">
           <BarChart3 className="size-[18px] shrink-0" />

@@ -11,28 +11,7 @@ import {
 } from "@/components/ui/table";
 import type { QuestionAggRow } from "@/app/admin/surveys/queries";
 import { filtersToQueryString, type SurveyDashboardFilters } from "@/app/admin/surveys/filters";
-
-function DistBar({ row }: { row: QuestionAggRow }) {
-  const total = row.response_count || 1;
-  const segs = [
-    { n: row.cnt_1, className: "bg-destructive/80" },
-    { n: row.cnt_2, className: "bg-orange-400/90" },
-    { n: row.cnt_3, className: "bg-amber-400/90" },
-    { n: row.cnt_4, className: "bg-emerald-500/80" },
-    { n: row.cnt_5, className: "bg-primary shadow-sm" },
-  ];
-  return (
-    <div className="flex h-2 w-full max-w-[140px] overflow-hidden rounded-full bg-muted ms-auto">
-      {segs.map((s, i) => (
-        <div
-          key={i}
-          className={s.className}
-          style={{ width: `${(Number(s.n) / total) * 100}%` }}
-        />
-      ))}
-    </div>
-  );
-}
+import { StarBandHeader } from "@/app/admin/surveys/_components/StarBandHeader";
 
 type Props = { rows: QuestionAggRow[]; filters: SurveyDashboardFilters };
 
@@ -50,20 +29,34 @@ export function SurveyQuestionSection({ rows, filters }: Props) {
         </Button>
         <CardTitle className="text-base font-semibold">חלוקה לפי שאלות</CardTitle>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent className="overflow-x-auto px-0">
         <Table>
           <TableHeader className="bg-muted/35">
             <TableRow className="border-border/50 hover:bg-transparent">
               <TableHead className="text-right">מזהה שאלה</TableHead>
               <TableHead className="text-center">ממוצע</TableHead>
               <TableHead className="text-center">תגובות</TableHead>
-              <TableHead className="w-[160px] text-center">1–5</TableHead>
+              <TableHead className="w-[44px] px-0.5 text-center" title="דירוג 5">
+                <StarBandHeader level={5} />
+              </TableHead>
+              <TableHead className="w-[44px] px-0.5 text-center" title="דירוג 4">
+                <StarBandHeader level={4} />
+              </TableHead>
+              <TableHead className="w-[44px] px-0.5 text-center" title="דירוג 3">
+                <StarBandHeader level={3} />
+              </TableHead>
+              <TableHead className="w-[44px] px-0.5 text-center" title="דירוג 2">
+                <StarBandHeader level={2} />
+              </TableHead>
+              <TableHead className="w-[44px] px-0.5 text-center" title="דירוג 1">
+                <StarBandHeader level={1} />
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center text-muted-foreground">
+                <TableCell colSpan={8} className="text-center text-muted-foreground">
                   אין נתונים בטווח
                 </TableCell>
               </TableRow>
@@ -77,9 +70,11 @@ export function SurveyQuestionSection({ rows, filters }: Props) {
                     {Number(r.avg_rating).toFixed(2)}
                   </TableCell>
                   <TableCell className="text-center tabular-nums">{r.response_count}</TableCell>
-                  <TableCell>
-                    <DistBar row={r} />
-                  </TableCell>
+                  <TableCell className="px-0.5 text-center tabular-nums text-sm">{r.cnt_5}</TableCell>
+                  <TableCell className="px-0.5 text-center tabular-nums text-sm">{r.cnt_4}</TableCell>
+                  <TableCell className="px-0.5 text-center tabular-nums text-sm">{r.cnt_3}</TableCell>
+                  <TableCell className="px-0.5 text-center tabular-nums text-sm">{r.cnt_2}</TableCell>
+                  <TableCell className="px-0.5 text-center tabular-nums text-sm">{r.cnt_1}</TableCell>
                 </TableRow>
               ))
             )}
