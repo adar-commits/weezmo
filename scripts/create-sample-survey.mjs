@@ -20,7 +20,7 @@ const key = process.env.DOCUMENTS_API_KEY;
 const payload = {
   template_id: "customer_survey",
   title: "סקר שביעות רצון",
-  subtitle: "דעתך חשובה לנו ❤️",
+  subtitle: "נשמח לדעת איך נוכל להשתפר, דעתך חשובה לנו ❤️",
   order_id: `sample-${Date.now()}`,
   branch_id: "3000",
   customer_name: "דוגמה סקר",

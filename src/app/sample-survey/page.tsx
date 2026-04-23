@@ -7,7 +7,7 @@ import "@/app/documents/[id]/survey-page.css";
 const DEMO_PAYLOAD: CustomerSurveyPayload = {
   template_id: "customer_survey",
   title: "סקר שביעות רצון",
-  subtitle: "דעתך חשובה לנו ❤️",
+  subtitle: "נשמח לדעת איך נוכל להשתפר, דעתך חשובה לנו ❤️",
   order_id: "PREVIEW-DEMO-NO-DB",
   branch_id: "3000",
   customer_name: "תצוגה מקדימה",
@@ -40,7 +40,7 @@ const DEMO_PAYLOAD: CustomerSurveyPayload = {
 /** Static UI preview — no DB row; full flow uses POST /api/documents → /documents/{id}. */
 export default function SampleSurveyPage() {
   return (
-    <DocumentPageShell>
+    <DocumentPageShell survey>
       <CustomerSurveyView
         documentId="00000000-0000-4000-8000-000000000001"
         payload={DEMO_PAYLOAD}

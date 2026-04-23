@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CustomerSurveyPayload } from "@/types/customer-survey";
+import { DEFAULT_CUSTOMER_SURVEY_SUBTITLE, type CustomerSurveyPayload } from "@/types/customer-survey";
 
 const DEFAULT_LOGO =
   "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/img.png?v=1772750312";
 
-/** Visual order RTL: inline-start (right) = happiest (5) … lowest (1) on the left. */
+/** Visual order: LTR row so level 5 (best) is on the left, 1 on the right. */
 const LIKERT_LEVELS = [5, 4, 3, 2, 1] as const;
 
 const LEVEL_EMOJI: Record<number, string> = {
@@ -62,6 +62,8 @@ export function CustomerSurveyView({
   previewMode?: boolean;
 }) {
   const logoSrc = payload.logoUrl ?? DEFAULT_LOGO;
+  const subtitle =
+    payload.subtitle && payload.subtitle.trim() ? payload.subtitle : DEFAULT_CUSTOMER_SURVEY_SUBTITLE;
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -136,9 +138,7 @@ export function CustomerSurveyView({
       <header className="survey-header">
         <img className="survey-logo" src={logoSrc} alt="" width={220} height={80} />
         <h1 className="survey-title">{payload.title}</h1>
-        {payload.subtitle ? (
-          <p className="survey-subtitle">{payload.subtitle}</p>
-        ) : null}
+        <p className="survey-subtitle">{subtitle}</p>
       </header>
 
       <form
@@ -149,21 +149,26 @@ export function CustomerSurveyView({
         }}
       >
         <div className="survey-questions">
-          {payload.questions.map((q, index) => (
-            <fieldset
-              key={q.id}
-              className="survey-q survey-q-enter"
-              style={{ animationDelay: prefersReducedMotion() ? "0ms" : `${index * 55}ms` }}
-            >
-              <legend id={`survey-legend-${q.id}`} className="survey-q-text">
-                {q.text}
-                {q.required ? <span className="survey-required"> *</span> : null}
-              </legend>
-              <div
-                className="survey-likert-row"
-                role="radiogroup"
-                aria-labelledby={`survey-legend-${q.id}`}
+          {payload.questions.map((q, index) => {
+            const labelId = `survey-q-${q.id}`;
+            return (
+              <section
+                key={q.id}
+                className="survey-q survey-q-enter"
+                role="group"
+                style={{ animationDelay: prefersReducedMotion() ? "0ms" : `${index * 55}ms` }}
+                aria-labelledby={labelId}
               >
+                <p id={labelId} className="survey-q-text">
+                  {q.text}
+                  {q.required ? <span className="survey-required"> *</span> : null}
+                </p>
+                <div
+                  className="survey-likert-row"
+                  dir="ltr"
+                  role="radiogroup"
+                  aria-labelledby={labelId}
+                >
                   {LIKERT_LEVELS.map((level) => {
                     const selected = answers[q.id] === level;
                     return (
@@ -182,13 +187,16 @@ export function CustomerSurveyView({
                         <span className="survey-emoji" aria-hidden>
                           {LEVEL_EMOJI[level]}
                         </span>
-                        <span className="sr-only">{LABELS_HE[level]}</span>
+                        <span className="sr-only">
+                          {LABELS_HE[level]}, {level} מתוך 5
+                        </span>
                       </label>
                     );
                   })}
-              </div>
-            </fieldset>
-          ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         {error ? (

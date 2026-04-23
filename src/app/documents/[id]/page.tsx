@@ -31,7 +31,7 @@ export default async function DocumentPage({
 
   if (templateId === TEMPLATE_IDS.customerSurvey) {
     return (
-      <DocumentPageShell>
+      <DocumentPageShell survey>
         <CustomerSurveyView documentId={id} payload={data.payload as CustomerSurveyPayload} />
       </DocumentPageShell>
     );

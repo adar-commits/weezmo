@@ -23,6 +23,10 @@ export interface CustomerSurveyPayload {
   metadata?: Record<string, unknown>;
 }
 
+/** Subtitle when none is sent in the API payload. */
+export const DEFAULT_CUSTOMER_SURVEY_SUBTITLE =
+  "נשמח לדעת איך נוכל להשתפר, דעתך חשובה לנו ❤️";
+
 /** Default copy matching the approved survey brief (four mandatory Likert questions). */
 export const DEFAULT_CUSTOMER_SURVEY_QUESTIONS: CustomerSurveyQuestion[] = [
   {

@@ -14,3 +14,6 @@ export const DOCUMENT_HERO_SLIDE_URLS: readonly [string, string, string] = [
   `${SHOPIFY_FILES}/${BANNER_FILE}&width=1400&height=735&crop=center`,
   `${SHOPIFY_FILES}/${BANNER_FILE}&width=1400&height=735&crop=entropy`,
 ];
+
+/** Tall showroom shot for the survey full-page moving background (vertical emphasis). */
+export const SURVEY_AMBIENT_BG_URL = `${SHOPIFY_FILES}/${BANNER_FILE}&width=1080&height=2200&crop=entropy`;
