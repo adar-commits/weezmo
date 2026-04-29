@@ -1,5 +1,10 @@
 /* Customer survey — matches doc-page tokens; interactive layer */
 
+.doc-page.doc-page--survey .doc-body.doc-body--survey,
+.doc-page.doc-page--survey .doc-body.doc-body--survey * {
+  font-family: var(--doc-font), "Arial Hebrew", Arial, sans-serif;
+}
+
 /* Full-page moving carpet (tall source); receipt pages unchanged */
 .doc-page.doc-page--survey {
   position: relative;
