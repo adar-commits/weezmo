@@ -22,60 +22,64 @@
   -webkit-font-smoothing: antialiased;
   padding: 0;
   min-height: 100vh;
-  /* Long one-pager: calm paper tone, full-width feel (no side “card”) */
-  background: #e8e4dd;
+  /* Outer frame: brand red (matches headline), inner column is --doc-inner */
+  background: var(--doc-red);
 }
 
 .doc-page .doc-body {
-  max-width: 510px;
+  /* ~10% narrower than previous 510px */
+  max-width: min(459px, calc(100vw - 24px));
   margin: 0 auto;
-  background: #faf9f7;
+  background: #dee2e6;
   min-height: 100vh;
-  padding: 0 20px;
+  padding: 0 clamp(22px, 5.5vw, 30px);
   box-sizing: border-box;
 }
 
 .doc-page .header {
-  background: var(--doc-surface);
-  padding: 16px 0 12px;
+  background: transparent;
+  padding: 18px 0 14px;
   text-align: center;
-  border-bottom: 1px solid var(--doc-border);
+  border-bottom: none;
 }
 
 .doc-page .header img.logo {
   width: 220px;
-  margin: 0 auto 6px;
+  margin: 0 auto 8px;
   display: block;
 }
 
 .doc-page .header h1 {
-  font-size: 28px;
+  font-size: clamp(1.5rem, 4.8vw, 1.75rem);
   font-weight: 900;
   color: var(--doc-red);
-  margin: 6px 0 2px;
-  letter-spacing: -0.01em;
+  margin: 8px 0 6px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   font-family: var(--doc-font) !important;
 }
 
 .doc-page .header .doc-sub {
-  font-size: 18px;
+  font-size: clamp(0.9375rem, 3.2vw, 1.0625rem);
   font-weight: 400;
   color: var(--doc-ink);
+  line-height: 1.45;
+  margin: 0;
   font-family: var(--doc-font) !important;
 }
 
 .doc-page .banner-wrap {
-  padding: 0;
-  background: var(--doc-surface);
+  padding: 0 0 12px;
+  background: transparent;
 }
 
 .doc-hero-carousel {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 8.4;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  background: #e0dcd6;
+  background: #c8ccd0;
 }
 
 .doc-hero-slide {
@@ -198,39 +202,46 @@
 }
 
 .doc-page .meta {
-  background: var(--doc-surface);
-  padding: 12px 0;
-  border-bottom: 1px solid var(--doc-border);
+  background: transparent;
+  padding: 6px 0 18px;
+  border-bottom: none;
 }
 
 .doc-page .meta-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--doc-border);
-}
-
-.doc-page .meta-row:last-child {
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0;
   border-bottom: none;
 }
 
+.doc-page .meta-row:last-child {
+  padding-bottom: 4px;
+}
+
 .doc-page .meta-label {
-  font-size: 14px;
-  color: var(--doc-muted);
-  font-weight: 400;
+  font-size: clamp(0.875rem, 2.8vw, 0.9375rem);
+  color: var(--doc-ink);
+  font-weight: 600;
+  line-height: 1.5;
   font-family: var(--doc-font) !important;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .doc-page .meta-value {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: clamp(0.875rem, 2.8vw, 0.9375rem);
+  font-weight: 400;
   color: var(--doc-ink);
+  line-height: 1.5;
   font-family: var(--doc-font) !important;
+  text-align: left;
+  min-width: 0;
 }
 
 .doc-page .items-wrap {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 0;
   border-bottom: 1px solid var(--doc-border);
 }
@@ -245,7 +256,7 @@
 .doc-page .items-table th {
   font-weight: 700;
   color: var(--doc-ink);
-  padding: 14px 0 10px;
+  padding: 14px 10px 10px;
   border-bottom: 2px solid var(--doc-border);
   text-align: right;
 }
@@ -256,7 +267,7 @@
 }
 
 .doc-page .items-table td {
-  padding: 10px 0;
+  padding: 12px 10px;
   border-bottom: 1px solid var(--doc-border);
   color: var(--doc-ink);
   vertical-align: top;
@@ -267,7 +278,7 @@
 }
 
 .doc-page .totals {
-  background: var(--doc-surface);
+  background: transparent;
 }
 
 .doc-page .totals-row {
@@ -279,7 +290,7 @@
 .doc-page .totals-row .t-val {
   font-size: 14px;
   font-family: var(--doc-font) !important;
-  padding: 12px 0;
+  padding: 12px 10px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -315,7 +326,7 @@
 }
 
 .doc-page .pdf-link {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 10px 0;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
@@ -340,7 +351,7 @@
 }
 
 .doc-page .thankyou {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 14px 0 16px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
@@ -414,7 +425,7 @@
 }
 
 .doc-page .newsletter {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 14px 0 18px;
   border-bottom: 1px solid var(--doc-border);
   text-align: center;
@@ -552,7 +563,7 @@
 
 .doc-page .care-banner {
   display: block;
-  background: var(--doc-surface);
+  background: transparent;
   border-bottom: 1px solid var(--doc-border);
 }
 
@@ -568,7 +579,7 @@
 }
 
 .doc-page .footer-brands {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 14px 0 8px;
   border-bottom: 1px solid var(--doc-border);
 }
@@ -615,7 +626,7 @@
 }
 
 .doc-page .footer-copy {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 12px 0 18px;
   text-align: center;
   border-bottom: 1px solid var(--doc-border);
@@ -637,7 +648,7 @@
 }
 
 .doc-page .care-tips {
-  background: var(--doc-surface);
+  background: transparent;
   padding: 0 0 20px;
 }
 
