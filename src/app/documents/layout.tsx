@@ -1,12 +1,11 @@
-import { notoSansHebrew } from "@/lib/fonts/noto-hebrew";
-
+/** Typography for /documents/* comes from document-page.css (--doc-font, Open Sans Hebrew). */
 export default function DocumentsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className={notoSansHebrew.className} lang="he" dir="rtl">
+    <div lang="he" dir="rtl">
       {children}
     </div>
   );
