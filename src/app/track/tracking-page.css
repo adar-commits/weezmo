@@ -1,8 +1,60 @@
-@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap");
+/*
+ * Open Sans Hebrew — self-hosted (Google Early Access files are gone;
+ * these are the Hebrew + Latin cuts of Open Sans, registered under the
+ * classic "Open Sans Hebrew" family name the brand mockup expects).
+ */
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/hebrew-400.woff2") format("woff2");
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/hebrew-700.woff2") format("woff2");
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/latin-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/hebrew-800.woff2") format("woff2");
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/open-sans-hebrew/latin-800.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /*
  * Pixel-aligned to brand tracking mockup.
- * Red #891F21 · Grey #707070 · Assistant
+ * Red #891F21 · Grey #707070 · Open Sans Hebrew
  */
 
 .track-page {
@@ -12,7 +64,7 @@
   --track-pending-node: #d0d0d0;
   --track-pending-text: #c8c8c8;
   --track-line: #e0e0e0;
-  --track-font: "Assistant", "Arial Hebrew", Arial, sans-serif;
+  --track-font: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
   --track-node: 42px;
   direction: rtl;
   text-align: right;
@@ -109,10 +161,10 @@
   }
 }
 
-/* ── Meta: full line in brand red (mockup) ── */
+/* ── Meta: red labels · grey values ── */
 .track-meta {
   text-align: center;
-  margin: 0 0 0;
+  margin: 0;
 }
 
 .track-meta__line {
@@ -120,7 +172,6 @@
   font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
-  color: var(--track-red);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -132,14 +183,18 @@
   white-space: nowrap;
 }
 
-.track-meta__label,
-.track-meta__value {
+.track-meta__label {
   color: var(--track-red);
   font-weight: 400;
 }
 
+.track-meta__value {
+  color: var(--track-grey);
+  font-weight: 400;
+}
+
 .track-meta__sep {
-  color: var(--track-red);
+  color: var(--track-grey);
   font-weight: 400;
   user-select: none;
 }
@@ -182,18 +237,22 @@
 }
 
 .track-section-title {
-  margin: 0 0 10px;
-  font-size: 16px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-family: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
+  font-size: 20px;
   font-weight: 700;
   color: #000;
   text-align: right;
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .track-products__text {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  color: #000;
+  color: var(--track-grey);
   text-align: right;
   line-height: 1.55;
 }
@@ -271,7 +330,7 @@
   margin-top: 10px;
   font-size: 13px;
   font-weight: 400;
-  color: var(--track-grey);
+  color: #000;
   line-height: 1.2;
   white-space: nowrap;
 }
