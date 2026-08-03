@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CustomerClubModal } from "@/components/CustomerClubModal";
 import { BRAND_LINKS } from "@/config/links";
+import { getBranchFeedbackUrl } from "@/lib/branch-feedback-urls";
 import type { CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
 
@@ -39,7 +40,10 @@ export function ReceiptDocumentView({
   const branchName = payload.BranchName ?? "";
   const repName = payload.SalesRepresentative ?? "";
   const printDate = payload.PrintDate ?? "";
-  const feedbackUrl = payload.BranchFeedbackUrl ?? BRAND_LINKS.reviewUrl;
+  const feedbackUrl =
+    payload.BranchFeedbackUrl ??
+    getBranchFeedbackUrl(payload.BranchID) ??
+    BRAND_LINKS.reviewUrl;
   const totalPrice = payload.TotalPrice ?? 0;
   const vat = payload.VAT ?? 0;
   const items = payload.Items ?? [];
