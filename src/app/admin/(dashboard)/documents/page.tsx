@@ -116,7 +116,7 @@ export default async function AdminDocumentsPage({
                 </TableRow>
               ) : (
                 rows.map((r) => {
-                  const href = getPublicDocumentUrl(r.id);
+                  const href = getPublicDocumentUrl(r.id, r.template_id);
                   return (
                     <TableRow key={r.id} className="odd:bg-muted/25">
                       <TableCell className="text-right text-xs text-muted-foreground" dir="ltr">

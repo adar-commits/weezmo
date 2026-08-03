@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getPublicDocumentUrl as buildPublicDocumentUrl } from "@/lib/public-urls";
 import { TEMPLATE_IDS } from "@/constants/templates";
 
 export const ADMIN_DOCUMENTS_PAGE_SIZE = 40;
@@ -13,16 +14,8 @@ export type AdminDocumentListRow = {
 
 export type AdminDocumentTemplateFilter = "all" | "receipt" | "customer_survey";
 
-function publicBaseUrl(): string {
-  const u = process.env.NEXT_PUBLIC_APP_URL;
-  if (u && u.trim()) {
-    return u.trim().startsWith("http") ? u.trim().replace(/\/$/, "") : `https://${u.trim().replace(/\/$/, "")}`;
-  }
-  return "https://weezmo.vercel.app";
-}
-
-export function getPublicDocumentUrl(id: string): string {
-  return `${publicBaseUrl()}/documents/${id}`;
+export function getPublicDocumentUrl(id: string, templateId: string): string {
+  return buildPublicDocumentUrl(templateId, id);
 }
 
 export async function listAdminDocuments(

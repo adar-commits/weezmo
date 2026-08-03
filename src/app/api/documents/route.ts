@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { TEMPLATE_IDS } from "@/constants/templates";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getPublicDocumentUrl } from "@/lib/public-urls";
 import { parseCreateDocumentBody } from "@/lib/templates/registry";
 
 function getApiKey(req: NextRequest): string | null {
   const authHeader = req.headers.get("authorization");
   if (authHeader?.startsWith("Bearer ")) return authHeader.slice(7);
   return req.headers.get("x-api-key");
-}
-
-function getBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_APP_URL;
-  if (url && url.trim()) return url.startsWith("http") ? url.trim() : `https://${url.trim()}`;
-  return "https://weezmo.vercel.app";
 }
 
 export async function POST(req: NextRequest) {
@@ -81,8 +76,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const baseUrl = getBaseUrl();
-  const link = `${baseUrl}/documents/${row.id}`;
+  const link = getPublicDocumentUrl(parsed.templateId, row.id);
 
   return NextResponse.json({
     status: "success",
