@@ -91,18 +91,24 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
         <>
           <section className="track-meta" aria-label="פרטי הזמנה">
             <p className="track-meta__line">
-              <span className="track-meta__label">שם הלקוח:</span>{" "}
-              <span className="track-meta__value">{data.customerName}</span>
-              <span className="track-meta__sep" aria-hidden>
-                {" | "}
+              <span className="track-meta__part">
+                <span className="track-meta__label">שם הלקוח:</span>{" "}
+                <span className="track-meta__value">{data.customerName}</span>
               </span>
-              <span className="track-meta__label">מס הזמנה:</span>{" "}
-              <span className="track-meta__value">{data.orderNumber}</span>
               <span className="track-meta__sep" aria-hidden>
-                {" | "}
+                |
               </span>
-              <span className="track-meta__label">סניף:</span>{" "}
-              <span className="track-meta__value">{data.branchDesc}</span>
+              <span className="track-meta__part">
+                <span className="track-meta__label">מס הזמנה</span>{" "}
+                <span className="track-meta__value">{data.orderNumber}</span>
+              </span>
+              <span className="track-meta__sep" aria-hidden>
+                |
+              </span>
+              <span className="track-meta__part">
+                <span className="track-meta__label">סניף:</span>{" "}
+                <span className="track-meta__value">{data.branchDesc}</span>
+              </span>
             </p>
             {data.customerAddress ? (
               <p className="track-meta__detail">{data.customerAddress}</p>
@@ -123,13 +129,11 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
             <h2 id="track-products-heading" className="track-section-title">
               מוצרים
             </h2>
-            <ul className="track-products__list">
-              {data.products.map((product, index) => (
-                <li key={`${product.prdDesc}-${index}`}>
-                  {product.prdDesc} (כמות: {product.Quantity})
-                </li>
-              ))}
-            </ul>
+            <p className="track-products__text">
+              {data.products
+                .map((product) => `${product.prdDesc} (כמות: ${product.Quantity})`)
+                .join(" | ")}
+            </p>
           </section>
 
           <OrderProgressStepper events={data.Events} />
@@ -137,12 +141,13 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
           <hr className="track-divider" />
 
           <p className="track-support">
+            מצאת טעות בהזמנה?{" "}
             <a
               href={BRAND_LINKS.trackingSupportWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
             >
-              מצאת טעות בהזמנה? לחץ כאן
+              לחץ כאן
             </a>
           </p>
         </>

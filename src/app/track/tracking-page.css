@@ -1,19 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap");
 
 /*
- * Order tracking — original brand mockup (Assistant, pomegranate, grey rail).
+ * Pixel-aligned to brand tracking mockup.
+ * Red #891F21 · Grey #707070 · Assistant
  */
 
 .track-page {
-  --track-red: #bb1a20;
-  --track-red-bright: #d42028;
+  --track-red: #891f21;
+  --track-grey: #707070;
   --track-ink: #1a1a1a;
-  --track-muted: #8a8a8a;
-  --track-pending: #cfcfcf;
-  --track-pending-text: #c5c5c5;
-  --track-line: #dddddd;
+  --track-pending-node: #d0d0d0;
+  --track-pending-text: #c8c8c8;
+  --track-line: #e0e0e0;
   --track-font: "Assistant", "Arial Hebrew", Arial, sans-serif;
-  --track-node: 36px;
+  --track-node: 42px;
   direction: rtl;
   text-align: right;
   font-family: var(--track-font);
@@ -33,31 +33,31 @@
 }
 
 .track-body {
-  max-width: 720px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 36px 28px 56px;
+  padding: 28px 40px 48px;
 }
 
 .track-content {
   width: 100%;
 }
 
-/* ── Header: HōM GROUP logo + brand lines ── */
+/* ── Header ── */
 .track-header {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .track-logo {
   display: block;
-  width: min(380px, 86vw);
+  width: min(360px, 82vw);
   height: auto;
-  margin: 0 auto 14px;
+  margin: 0 auto 12px;
 }
 
 .track-brand {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--track-red);
   line-height: 1.25;
@@ -67,24 +67,25 @@
   margin: 2px 0 0;
   font-size: 13px;
   font-weight: 400;
-  color: var(--track-muted);
+  color: var(--track-grey);
   line-height: 1.3;
 }
 
 .track-title {
-  margin: 18px 0 12px;
-  font-size: 28px;
+  margin: 20px 0 8px;
+  font-size: 26px;
   font-weight: 800;
-  color: var(--track-ink);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  color: #000;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
 /* ── States ── */
 .track-state {
   text-align: center;
   padding: 40px 16px;
-  color: var(--track-muted);
+  color: var(--track-grey);
 }
 
 .track-state--error {
@@ -108,50 +109,59 @@
   }
 }
 
-/* ── Meta: single centered pipe line ── */
+/* ── Meta: full line in brand red (mockup) ── */
 .track-meta {
   text-align: center;
-  margin: 0 0 4px;
+  margin: 0 0 0;
 }
 
 .track-meta__line {
   margin: 0;
   font-size: 14px;
-  line-height: 1.55;
-  color: var(--track-ink);
+  line-height: 1.5;
   font-weight: 400;
-}
-
-.track-meta__label {
   color: var(--track-red);
-  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0 10px;
 }
 
+.track-meta__part {
+  white-space: nowrap;
+}
+
+.track-meta__label,
 .track-meta__value {
-  color: var(--track-ink);
+  color: var(--track-red);
   font-weight: 400;
 }
 
 .track-meta__sep {
-  color: var(--track-ink);
+  color: var(--track-red);
   font-weight: 400;
+  user-select: none;
 }
 
 .track-meta__detail {
   margin: 6px 0 0;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--track-muted);
+  color: var(--track-grey);
   font-weight: 400;
+  text-align: center;
 }
 
 .track-notes {
-  margin: 14px auto 0;
+  margin: 12px auto 0;
   max-width: 480px;
   padding: 10px 14px;
   border: 1px solid var(--track-line);
   border-radius: 4px;
   font-size: 14px;
+  color: var(--track-ink);
+  text-align: center;
 }
 
 .track-notes p {
@@ -162,53 +172,50 @@
 .track-divider {
   border: none;
   border-top: 1px solid var(--track-line);
-  margin: 18px 0;
+  margin: 22px 0;
 }
 
 /* ── Products ── */
 .track-products {
-  margin: 0 0 8px;
+  margin: 0;
+  text-align: right;
 }
 
 .track-section-title {
   margin: 0 0 10px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--track-ink);
+  color: #000;
   text-align: right;
 }
 
-.track-products__list {
+.track-products__text {
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.track-products__list li {
-  padding: 2px 0;
   font-size: 15px;
   font-weight: 400;
-  color: var(--track-ink);
+  color: #000;
   text-align: right;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* ── Timeline (original: grey rail, nodes, date then label) ── */
+/* ── Timeline ── */
 .track-timeline {
-  margin: 28px 0 8px;
+  margin: 40px 0 4px;
   padding: 0 8px;
 }
 
 .track-stepper {
   --track-count: 5;
   position: relative;
+  width: 100%;
 }
 
 .track-stepper__rail {
   position: absolute;
   top: calc(var(--track-node) / 2);
-  right: calc(100% / var(--track-count) / 2);
-  left: calc(100% / var(--track-count) / 2);
+  /* rail runs from first node center to last node center */
+  right: calc(50% / var(--track-count));
+  left: calc(50% / var(--track-count));
   height: 2px;
   background: var(--track-line);
   transform: translateY(-50%);
@@ -217,10 +224,8 @@
 }
 
 .track-stepper__steps {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(var(--track-count), 1fr);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -229,19 +234,12 @@
 }
 
 .track-step {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.track-step__inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
-  max-width: 130px;
+  min-width: 0;
+  padding: 0 4px;
 }
 
 .track-step__node {
@@ -251,7 +249,7 @@
   width: var(--track-node);
   height: var(--track-node);
   border-radius: 50%;
-  background: var(--track-pending);
+  background: var(--track-pending-node);
   color: #fff;
   flex-shrink: 0;
   position: relative;
@@ -263,50 +261,46 @@
 }
 
 .track-step__check {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
 .track-step__date {
   display: block;
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--track-ink);
+  color: var(--track-grey);
   line-height: 1.2;
   white-space: nowrap;
-  min-height: 1.2em;
 }
 
-.track-step__date--empty {
-  display: none;
+.track-step__label {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--track-pending-text);
+  max-width: 140px;
+}
+
+.track-step--done .track-step__label {
+  color: var(--track-red);
 }
 
 .track-step--pending .track-step__label {
   margin-top: 10px;
 }
 
-.track-step__label {
-  margin: 3px 0 0;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.3;
-  color: var(--track-pending-text);
-  max-width: 118px;
-}
-
-.track-step--done .track-step__label {
-  color: var(--track-red);
-  font-weight: 400;
-}
-
-/* ── Support: entire phrase is the red link ── */
+/* ── Support: black phrase + red underlined link ── */
 .track-support {
   text-align: center;
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   font-size: 14px;
   line-height: 1.5;
+  font-weight: 400;
+  color: var(--track-ink);
 }
 
 .track-support a {
@@ -317,34 +311,26 @@
 }
 
 .track-support a:hover {
-  color: var(--track-red-bright);
+  opacity: 0.85;
 }
 
-/* ── Mobile: vertical timeline (original mobile mockup) ── */
-@media (max-width: 640px) {
+/* ── Mobile ── */
+@media (max-width: 700px) {
   .track-body {
-    padding: 24px 16px 44px;
+    padding: 20px 16px 40px;
   }
 
   .track-logo {
-    width: min(300px, 90vw);
-    margin-bottom: 12px;
-  }
-
-  .track-brand {
-    font-size: 16px;
+    width: min(300px, 88vw);
   }
 
   .track-title {
     font-size: 22px;
-    margin: 14px 0 10px;
+    margin: 16px 0 8px;
   }
 
   .track-meta__line {
-    font-size: 13px;
-    display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 4px;
   }
 
@@ -352,15 +338,18 @@
     display: none;
   }
 
+  .track-divider {
+    margin: 18px 0;
+  }
+
   .track-timeline {
-    margin-top: 22px;
-    padding: 0;
+    margin-top: 28px;
   }
 
   .track-stepper__rail {
     top: 18px;
     bottom: 18px;
-    right: 17px;
+    right: calc(var(--track-node) / 2);
     left: auto;
     width: 2px;
     height: auto;
@@ -368,31 +357,26 @@
   }
 
   .track-stepper__steps {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding-right: 0;
   }
 
   .track-step {
-    flex: none;
-    justify-content: flex-start;
-    padding: 10px 0;
-  }
-
-  .track-step__inner {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     column-gap: 12px;
-    max-width: none;
-    width: 100%;
+    padding: 10px 0;
     text-align: right;
   }
 
   .track-step__node {
     grid-column: 1;
     grid-row: 1;
+    width: 36px;
+    height: 36px;
   }
 
   .track-step__label {
@@ -408,17 +392,13 @@
     grid-column: 3;
     grid-row: 1;
     margin: 0;
-    min-height: 0;
-    font-size: 12px;
     text-align: left;
+    font-size: 12px;
   }
 
   .track-step--pending .track-step__label {
     grid-column: 2 / 4;
-  }
-
-  .track-step__date--empty {
-    display: none;
+    margin-top: 0;
   }
 }
 
