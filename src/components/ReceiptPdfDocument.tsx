@@ -11,154 +11,204 @@ import {
 const LOGO_URL =
   "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/img.png?v=1772750312";
 
+const VAT_RATE = 0.18;
+
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 28,
-    paddingBottom: 36,
-    paddingHorizontal: 36,
+    paddingTop: 32,
+    paddingBottom: 40,
+    paddingHorizontal: 40,
     fontFamily: PDF_HEBREW_FONT_FAMILY,
     fontSize: 9,
     direction: "rtl",
+    color: "#1a1a1a",
+    backgroundColor: "#fff",
   },
   headerRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 14,
-    gap: 12,
+    marginBottom: 16,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    gap: 20,
   },
-  businessBlock: {
-    flex: 1,
-    textAlign: "right",
-    fontSize: 9,
-    lineHeight: 1.45,
-  },
-  businessTitle: {
-    fontWeight: 700,
-    fontSize: 10,
-    marginBottom: 4,
+  logoWrap: {
+    width: 130,
+    alignItems: "flex-end",
   },
   logo: {
     width: 120,
     objectFit: "contain",
   },
-  siteLine: {
-    marginTop: 6,
-    fontSize: 8,
-    color: "#333",
+  businessBlock: {
+    flex: 1,
     textAlign: "right",
+    fontSize: 9,
+    lineHeight: 1.55,
+  },
+  businessTitle: {
+    fontWeight: 700,
+    fontSize: 11,
+    marginBottom: 5,
+    color: "#000",
+  },
+  businessLine: {
+    marginBottom: 1,
+  },
+  siteLine: {
+    marginTop: 4,
+    fontSize: 8.5,
+    color: "#444",
   },
   metaRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
-    gap: 16,
-    marginBottom: 10,
+    gap: 24,
+    marginBottom: 12,
   },
   metaCol: {
     flex: 1,
     textAlign: "right",
     fontSize: 9,
-    lineHeight: 1.5,
+    lineHeight: 1.6,
+  },
+  metaColCustomer: {
+    flex: 1,
+    textAlign: "right",
+    fontSize: 9,
+    lineHeight: 1.6,
+    paddingRight: 8,
   },
   metaLabel: {
-    color: "#333",
+    color: "#555",
+    fontWeight: 500,
+  },
+  customerName: {
+    fontWeight: 700,
+    fontSize: 10,
+    marginTop: 2,
+    marginBottom: 2,
   },
   docTitle: {
     textAlign: "center",
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
     textDecoration: "underline",
-    marginTop: 6,
-    marginBottom: 12,
+    marginTop: 4,
+    marginBottom: 14,
+    letterSpacing: 0.2,
   },
   table: {
     borderWidth: 1,
-    borderColor: "#000",
-    marginTop: 4,
+    borderColor: "#333",
+    marginTop: 2,
   },
   tableHeader: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#000",
-    backgroundColor: "#f5f5f5",
-    paddingVertical: 5,
-    paddingHorizontal: 4,
+    borderColor: "#333",
+    backgroundColor: "#ececec",
+    paddingVertical: 6,
+    paddingHorizontal: 6,
     fontWeight: 700,
-    fontSize: 8,
+    fontSize: 8.5,
   },
   tableRow: {
-    flexDirection: "row-reverse",
-    borderBottomWidth: 1,
-    borderColor: "#000",
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-    fontSize: 8,
+    flexDirection: "row",
+    borderBottomWidth: 0.5,
+    borderColor: "#bbb",
+    paddingVertical: 6,
+    paddingHorizontal: 6,
+    fontSize: 8.5,
   },
   tableRowLast: {
-    flexDirection: "row-reverse",
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-    fontSize: 8,
+    flexDirection: "row",
+    paddingVertical: 6,
+    paddingHorizontal: 6,
+    fontSize: 8.5,
+  },
+  tableRowAlt: {
+    backgroundColor: "#fafafa",
   },
   colIdx: { width: "6%", textAlign: "center" },
-  colSku: { width: "14%", textAlign: "right" },
-  colDesc: { width: "38%", textAlign: "right", paddingHorizontal: 2 },
-  colUnit: { width: "16%", textAlign: "right" },
+  colSku: { width: "13%", textAlign: "right", paddingHorizontal: 2 },
+  colDesc: { width: "36%", textAlign: "right", paddingHorizontal: 4 },
+  colUnit: { width: "17%", textAlign: "left", paddingHorizontal: 2 },
   colQty: { width: "8%", textAlign: "center" },
-  colLine: { width: "18%", textAlign: "right" },
-  amountLtr: {
+  colLine: { width: "20%", textAlign: "left", paddingHorizontal: 2 },
+  amount: {
     direction: "ltr",
-    textAlign: "right",
     fontVariantNumeric: "tabular-nums",
   },
   summaryWrap: {
-    flexDirection: "row-reverse",
-    justifyContent: "flex-start",
-    marginTop: 12,
-    gap: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginTop: 14,
+    gap: 24,
   },
   summaryBox: {
     borderWidth: 1,
-    borderColor: "#000",
-    padding: 8,
-    minWidth: 160,
+    borderColor: "#333",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    minWidth: 175,
+    backgroundColor: "#fafafa",
   },
   summaryRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 4,
-    fontSize: 8,
+    alignItems: "center",
+    marginBottom: 5,
+    fontSize: 8.5,
+    gap: 12,
   },
   summaryTotal: {
     fontWeight: 700,
-    marginTop: 4,
-    paddingTop: 4,
-    borderTopWidth: 0.5,
+    marginTop: 2,
+    marginBottom: 0,
+    paddingTop: 6,
+    borderTopWidth: 1,
     borderColor: "#999",
+    fontSize: 9.5,
   },
   sideMeta: {
     flex: 1,
     textAlign: "right",
-    fontSize: 8,
-    lineHeight: 1.55,
+    fontSize: 8.5,
+    lineHeight: 1.6,
+    paddingTop: 4,
   },
   footer: {
-    marginTop: 18,
+    marginTop: 20,
     textAlign: "right",
-    fontSize: 7.5,
-    lineHeight: 1.45,
-    color: "#222",
+    fontSize: 8,
+    lineHeight: 1.55,
+    color: "#333",
+    paddingTop: 12,
+    borderTopWidth: 0.5,
+    borderTopColor: "#ccc",
   },
   footerHead: {
     fontWeight: 700,
-    marginBottom: 4,
+    marginBottom: 5,
+    fontSize: 8.5,
+  },
+  footerBullet: {
+    marginBottom: 2,
+    paddingRight: 4,
   },
   footnote: {
-    marginTop: 14,
+    marginTop: 16,
     fontSize: 7,
-    color: "#555",
-    textAlign: "right",
-    lineHeight: 1.4,
+    color: "#666",
+    textAlign: "center",
+    lineHeight: 1.45,
+  },
+  ltr: {
+    direction: "ltr",
   },
 });
 
@@ -184,12 +234,29 @@ interface Payload {
   discount?: number;
 }
 
-function formatMoneyIls(n: number) {
-  const s = n.toLocaleString("en-US", {
+function roundMoney(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+function formatMoneyIls(n: number): string {
+  const formatted = n.toLocaleString("he-IL", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  return `ILS ${s}`;
+  return `₪${formatted}`;
+}
+
+function resolveTotals(total: number, vatFromPayload?: number) {
+  if (vatFromPayload != null && vatFromPayload > 0) {
+    return {
+      vat: roundMoney(vatFromPayload),
+      subtotal: roundMoney(Math.max(0, total - vatFromPayload)),
+    };
+  }
+  // Israeli retail totals are typically VAT-inclusive when VAT is omitted.
+  const subtotal = roundMoney(total / (1 + VAT_RATE));
+  const vat = roundMoney(total - subtotal);
+  return { vat, subtotal };
 }
 
 function docTypeLabel(type?: string) {
@@ -199,11 +266,19 @@ function docTypeLabel(type?: string) {
   return "קבלה";
 }
 
+function MetaLine({ label, value }: { label: string; value: string }) {
+  return (
+    <Text>
+      <Text style={styles.metaLabel}>{label}: </Text>
+      <Text>{value}</Text>
+    </Text>
+  );
+}
+
 export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
   const items = payload.Items ?? [];
   const total = payload.TotalPrice ?? 0;
-  const vat = payload.VAT ?? 0;
-  const totalWithoutVat = Math.max(0, total - vat);
+  const { vat, subtotal } = resolveTotals(total, payload.VAT);
   const docType = docTypeLabel(payload.type);
   const docNumber = payload.InvoiceNumber ?? "";
   const printDate = payload.PrintDate ?? "";
@@ -224,55 +299,61 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
     hour12: false,
   });
 
+  const docTitle = docNumber
+    ? `העתק - ${docType} ${docNumber}`
+    : `העתק - ${docType}`;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerRow}>
+          <View style={styles.logoWrap}>
+            <Image style={styles.logo} src={LOGO_URL} />
+          </View>
           <View style={styles.businessBlock}>
             <Text style={styles.businessTitle}>קבוצת הום קמעונאות בע״מ</Text>
-            <Text>השטיח האדום — סניף: {branch || "—"}</Text>
-            <Text>טלפון: 3076*</Text>
-            <Text>עוסק מורשה: 515713212</Text>
-            <Text>מספר תיק במע״מ: 515713212</Text>
-            <Text style={styles.siteLine}>אתר: www.carpetshop.co.il</Text>
+            <Text style={styles.businessLine}>
+              השטיח האדום{branch ? ` — ${branch}` : ""}
+            </Text>
+            <Text style={styles.businessLine}>
+              <Text style={styles.metaLabel}>טלפון: </Text>
+              <Text style={styles.ltr}>*3076</Text>
+            </Text>
+            <Text style={styles.businessLine}>
+              <Text style={styles.metaLabel}>עוסק מורשה: </Text>
+              <Text style={styles.ltr}>515713212</Text>
+            </Text>
+            <Text style={styles.businessLine}>
+              <Text style={styles.metaLabel}>מספר תיק במע״מ: </Text>
+              <Text style={styles.ltr}>515713212</Text>
+            </Text>
+            <Text style={styles.siteLine}>
+              <Text style={styles.metaLabel}>אתר: </Text>
+              <Text style={styles.ltr}>www.carpetshop.co.il</Text>
+            </Text>
           </View>
-          <Image style={styles.logo} src={LOGO_URL} />
         </View>
 
         <View style={styles.metaRow}>
-          <View style={styles.metaCol}>
-            <Text>
-              <Text style={styles.metaLabel}>תאריך הקבלה: </Text>
-              {printDate || "—"}
-            </Text>
-            <Text>
-              <Text style={styles.metaLabel}>תאריך הדפסה: </Text>
-              {printDateStr}
-            </Text>
-            <Text>
-              <Text style={styles.metaLabel}>שעת הדפסה: </Text>
-              {printTimeStr}
-            </Text>
-            <Text>
-              <Text style={styles.metaLabel}>נציג מכירות: </Text>
-              {rep || "—"}
-            </Text>
-          </View>
-          <View style={styles.metaCol}>
-            <Text style={{ fontWeight: 700 }}>לכבוד:</Text>
-            <Text>{customer || "—"}</Text>
+          <View style={styles.metaColCustomer}>
+            <Text style={styles.metaLabel}>לכבוד:</Text>
+            <Text style={styles.customerName}>{customer || "—"}</Text>
             {phone ? (
               <Text>
                 <Text style={styles.metaLabel}>טלפון: </Text>
-                {phone}
+                <Text style={styles.ltr}>{phone}</Text>
               </Text>
             ) : null}
           </View>
+          <View style={styles.metaCol}>
+            <MetaLine label="תאריך הקבלה" value={printDate || "—"} />
+            <MetaLine label="תאריך הדפסה" value={printDateStr} />
+            <MetaLine label="שעת הדפסה" value={printTimeStr} />
+            <MetaLine label="נציג מכירות" value={rep || "—"} />
+          </View>
         </View>
 
-        <Text style={styles.docTitle}>
-          {docNumber ? `${docType} ${docNumber} - העתק` : docType}
-        </Text>
+        <Text style={styles.docTitle}>{docTitle}</Text>
 
         <View style={styles.table}>
           <View style={styles.tableHeader}>
@@ -286,18 +367,24 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
           {items.map((item, i) => {
             const qty = item.ItemQTY ?? 0;
             const price = item.ItemPrice ?? 0;
-            const lineTotal = qty * price;
+            const lineTotal = roundMoney(qty * price);
             const isLast = i === items.length - 1;
+            const rowStyle =
+              i % 2 === 1
+                ? [isLast ? styles.tableRowLast : styles.tableRow, styles.tableRowAlt]
+                : isLast
+                  ? styles.tableRowLast
+                  : styles.tableRow;
             return (
-              <View key={i} style={isLast ? styles.tableRowLast : styles.tableRow}>
+              <View key={i} style={rowStyle}>
                 <Text style={styles.colIdx}>{i + 1}</Text>
-                <Text style={styles.colSku}>{item.ItemSKU ?? ""}</Text>
-                <Text style={styles.colDesc}>{item.ItemDescription ?? ""}</Text>
-                <Text style={[styles.colUnit, styles.amountLtr]}>
+                <Text style={styles.colSku}>{item.ItemSKU ?? "—"}</Text>
+                <Text style={styles.colDesc}>{item.ItemDescription ?? "—"}</Text>
+                <Text style={[styles.colUnit, styles.amount]}>
                   {formatMoneyIls(price)}
                 </Text>
                 <Text style={styles.colQty}>{qty}</Text>
-                <Text style={[styles.colLine, styles.amountLtr]}>
+                <Text style={[styles.colLine, styles.amount]}>
                   {formatMoneyIls(lineTotal)}
                 </Text>
               </View>
@@ -309,26 +396,23 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
           <View style={styles.summaryBox}>
             <View style={styles.summaryRow}>
               <Text>סה״כ ללא מע״מ</Text>
-              <Text style={styles.amountLtr}>{formatMoneyIls(totalWithoutVat)}</Text>
+              <Text style={styles.amount}>{formatMoneyIls(subtotal)}</Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text>מע״מ (18%)</Text>
-              <Text style={styles.amountLtr}>{formatMoneyIls(vat)}</Text>
+              <Text>מע״מ ({Math.round(VAT_RATE * 100)}%)</Text>
+              <Text style={styles.amount}>{formatMoneyIls(vat)}</Text>
             </View>
             <View style={[styles.summaryRow, styles.summaryTotal]}>
               <Text>סה״כ לתשלום</Text>
-              <Text style={styles.amountLtr}>{formatMoneyIls(total)}</Text>
+              <Text style={styles.amount}>{formatMoneyIls(total)}</Text>
             </View>
           </View>
           <View style={styles.sideMeta}>
-            <Text>
-              <Text style={styles.metaLabel}>סניף: </Text>
-              {branch || "—"}
-            </Text>
+            <MetaLine label="סניף" value={branch || "—"} />
             {payload.BranchID != null && payload.BranchID !== "" ? (
               <Text>
                 <Text style={styles.metaLabel}>מזהה סניף: </Text>
-                {String(payload.BranchID)}
+                <Text style={styles.ltr}>{String(payload.BranchID)}</Text>
               </Text>
             ) : null}
           </View>
@@ -336,8 +420,10 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
 
         <View style={styles.footer}>
           <Text style={styles.footerHead}>לקוחות יקרים:</Text>
-          <Text>• בכפוף לנוהל החזרת מוצרים התלוי בכל סניפי הרשת ובאתר האינטרנט.</Text>
-          <Text>• בימי שישי לא יתאפשרו החזרות בסניפים.</Text>
+          <Text style={styles.footerBullet}>
+            • בכפוף לנוהל החזרת מוצרים התלוי בכל סניפי הרשת ובאתר האינטרנט.
+          </Text>
+          <Text style={styles.footerBullet}>• בימי שישי לא יתאפשרו החזרות בסניפים.</Text>
         </View>
 
         <Text style={styles.footnote}>
