@@ -119,10 +119,10 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
             </div>
 
             {data.customerAddress ? (
-              <p className="track-meta__detail">{data.customerAddress}</p>
-            ) : null}
-            {data.workingHours ? (
-              <p className="track-meta__detail">{data.workingHours}</p>
+              <p className="track-meta__detail">
+                <strong className="track-meta__label">כתובת לקוח:</strong>{" "}
+                {data.customerAddress}
+              </p>
             ) : null}
             {data.Notes ? (
               <div className="track-notes" role="note">
