@@ -14,7 +14,6 @@ const MISSING_ORDER_MESSAGE =
 
 type Props = {
   orderId?: string;
-  /** When set, skip API fetch (sample preview). */
   previewData?: OrderTrackingPayload;
 };
 
@@ -87,20 +86,34 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
 
       {!loading && data ? (
         <>
+          <hr className="track-divider track-divider--header" />
+
           <section className="track-meta" aria-label="פרטי הזמנה">
             <div className="track-meta__grid track-meta__grid--desktop">
-              <p className="track-meta__cell track-meta__cell--start">
-                <span className="track-meta__label">שם הלקוח:</span>{" "}
-                <span className="track-meta__value">{data.customerName}</span>
-              </p>
-              <p className="track-meta__cell track-meta__cell--center">
-                <span className="track-meta__label">מס הזמנה:</span>{" "}
-                <span className="track-meta__value">{data.orderNumber}</span>
-              </p>
-              <p className="track-meta__cell track-meta__cell--end">
-                <span className="track-meta__label">סניף:</span>{" "}
-                <span className="track-meta__value">{data.branchDesc}</span>
-              </p>
+              <div className="track-meta__col track-meta__col--start">
+                <p className="track-meta__line">
+                  <span className="track-meta__label">שם הלקוח:</span>{" "}
+                  <span className="track-meta__value">{data.customerName}</span>
+                </p>
+              </div>
+              <div className="track-meta__col track-meta__col--center">
+                <p className="track-meta__line">
+                  <span className="track-meta__label">מס הזמנה:</span>{" "}
+                  <span className="track-meta__value">{data.orderNumber}</span>
+                </p>
+                {data.customerAddress ? (
+                  <p className="track-meta__detail">{data.customerAddress}</p>
+                ) : null}
+                {data.workingHours ? (
+                  <p className="track-meta__detail">{data.workingHours}</p>
+                ) : null}
+              </div>
+              <div className="track-meta__col track-meta__col--end">
+                <p className="track-meta__line">
+                  <span className="track-meta__label">סניף:</span>{" "}
+                  <span className="track-meta__value">{data.branchDesc}</span>
+                </p>
+              </div>
             </div>
 
             <div className="track-meta__stack track-meta__stack--mobile">
@@ -117,12 +130,13 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
                 <span className="track-meta__label">סניף:</span>{" "}
                 <span className="track-meta__value">{data.branchDesc}</span>
               </p>
+              {data.customerAddress ? (
+                <p className="track-meta__detail">{data.customerAddress}</p>
+              ) : null}
+              {data.workingHours ? (
+                <p className="track-meta__detail">{data.workingHours}</p>
+              ) : null}
             </div>
-
-            {data.customerAddress ? (
-              <p className="track-meta__sub">{data.customerAddress}</p>
-            ) : null}
-            {data.workingHours ? <p className="track-meta__sub">{data.workingHours}</p> : null}
 
             {data.Notes ? (
               <div className="track-notes" role="note">
@@ -146,11 +160,11 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
             </ul>
           </section>
 
-          <hr className="track-divider track-divider--timeline" />
+          <hr className="track-divider" />
 
           <OrderProgressStepper events={data.Events} />
 
-          <hr className="track-divider" />
+          <hr className="track-divider track-divider--footer" />
 
           <p className="track-support">
             מצאת טעות בהזמנה?{" "}

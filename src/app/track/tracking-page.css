@@ -1,35 +1,45 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans+Hebrew:wght@400;500;600;700;800&display=swap");
 
-/* Order tracking portal — matches brand mockup (RTL Hebrew) */
+/*
+ * Order tracking portal — pixel match to brand mockup.
+ * Typography matches document-page.css (Open Sans Hebrew).
+ */
 
 .track-page {
   --track-red: #b30103;
   --track-red-dark: #8f0102;
   --track-ink: #1a1a1a;
-  --track-muted: #888;
-  --track-pending: #b8b8b8;
-  --track-line: #d8d8d8;
+  --track-muted: #777;
+  --track-date: #666;
+  --track-pending-node: #d1d1d1;
+  --track-pending-label: #c8c8c8;
+  --track-line: #e3e3e3;
   --track-font: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
-  --track-node-size: 40px;
-  --track-date-h: 20px;
-  --track-node-gap: 12px;
+  --track-text: 15px;
+  --track-leading: 1.45;
+  --track-node-size: 44px;
   direction: rtl;
   text-align: right;
-  font-family: var(--track-font);
-  color: var(--track-ink);
-  font-size: 15px;
-  line-height: 1.45;
+  font-family: var(--track-font), "Arial Hebrew", Arial, sans-serif;
+  font-size: var(--track-text);
+  line-height: var(--track-leading);
   font-weight: 400;
+  color: var(--track-ink);
   min-height: 100vh;
   background: #fff;
   -webkit-font-smoothing: antialiased;
 }
 
-.track-body {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 28px 40px 56px;
+.track-page,
+.track-page * {
+  font-family: var(--track-font), "Arial Hebrew", Arial, sans-serif;
   box-sizing: border-box;
+}
+
+.track-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 32px 36px 52px;
 }
 
 .track-content {
@@ -39,23 +49,23 @@
 /* ── Header ── */
 .track-header {
   text-align: center;
-  margin-bottom: 26px;
+  margin-bottom: 0;
 }
 
 .track-logo {
   display: block;
   width: 280px;
-  max-width: 72vw;
+  max-width: 78vw;
   height: auto;
-  margin: 0 auto 10px;
+  margin: 0 auto 8px;
 }
 
 .track-brand {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--track-ink);
-  line-height: 1.3;
+  color: var(--track-red);
+  line-height: 1.35;
 }
 
 .track-tagline {
@@ -63,21 +73,21 @@
   font-size: 13px;
   font-weight: 400;
   color: var(--track-muted);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .track-title {
-  margin: 18px 0 0;
-  font-size: 22px;
+  margin: 16px 0 0;
+  font-size: 20px;
   font-weight: 700;
   color: var(--track-ink);
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 /* ── States ── */
 .track-state {
   text-align: center;
-  padding: 40px 16px;
+  padding: 36px 16px;
   color: var(--track-muted);
 }
 
@@ -87,13 +97,13 @@
 
 .track-spinner {
   display: inline-block;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border: 3px solid var(--track-line);
   border-top-color: var(--track-red);
   border-radius: 50%;
   animation: track-spin 0.75s linear infinite;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 @keyframes track-spin {
@@ -102,48 +112,72 @@
   }
 }
 
-/* ── Meta ── */
-.track-meta {
-  margin-bottom: 0;
+/* ── Dividers ── */
+.track-divider {
+  border: none;
+  border-top: 1px solid var(--track-line);
+  margin: 20px 0;
 }
 
-.track-meta__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px 16px;
-  margin: 0 0 6px;
+.track-divider--header {
+  margin-top: 18px;
+}
+
+.track-divider--footer {
+  margin-top: 24px;
+  margin-bottom: 22px;
+}
+
+/* ── Meta (3-column desktop) ── */
+.track-meta {
+  margin: 0;
 }
 
 .track-meta__grid--desktop {
   display: grid;
+  grid-template-columns: 1fr 1.35fr 1fr;
+  gap: 12px 20px;
+  align-items: start;
 }
 
 .track-meta__stack--mobile {
   display: none;
 }
 
-.track-meta__cell {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  white-space: nowrap;
-}
-
-.track-meta__cell--start {
+.track-meta__col--start {
   text-align: right;
 }
 
-.track-meta__cell--center {
+.track-meta__col--center {
   text-align: center;
 }
 
-.track-meta__cell--end {
+.track-meta__col--end {
   text-align: left;
+}
+
+.track-meta__line {
+  margin: 0;
+  font-size: var(--track-text);
+  line-height: var(--track-leading);
+  white-space: nowrap;
+}
+
+.track-meta__detail {
+  margin: 4px 0 0;
+  font-size: var(--track-text);
+  line-height: var(--track-leading);
+  color: var(--track-ink);
+  font-weight: 400;
+}
+
+.track-meta__col--center .track-meta__detail {
+  white-space: normal;
 }
 
 .track-meta__label {
   color: var(--track-red);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .track-meta__value {
@@ -155,22 +189,12 @@
   color: var(--track-ink);
 }
 
-.track-meta__sub {
-  margin: 3px 0;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--track-ink);
-  line-height: 1.55;
-}
-
 .track-notes {
-  margin: 14px auto 0;
-  max-width: 520px;
+  margin: 16px auto 0;
+  max-width: 480px;
   padding: 10px 14px;
-  background: #faf8f8;
-  border: 1px solid #ececec;
-  border-radius: 6px;
+  border: 1px solid var(--track-line);
+  border-radius: 4px;
   text-align: center;
   font-size: 14px;
 }
@@ -179,25 +203,14 @@
   margin: 0;
 }
 
-/* ── Dividers ── */
-.track-divider {
-  border: none;
-  border-top: 1px solid var(--track-line);
-  margin: 22px 0;
-}
-
-.track-divider--timeline {
-  margin-bottom: 28px;
-}
-
 /* ── Products ── */
 .track-products {
   margin: 0;
 }
 
 .track-section-title {
-  margin: 0 0 10px;
-  font-size: 16px;
+  margin: 0 0 8px;
+  font-size: var(--track-text);
   font-weight: 700;
   color: var(--track-ink);
   text-align: right;
@@ -210,18 +223,18 @@
 }
 
 .track-products__list li {
-  padding: 3px 0;
-  font-size: 15px;
+  padding: 2px 0;
+  font-size: var(--track-text);
   font-weight: 400;
   color: var(--track-ink);
   text-align: right;
-  line-height: 1.5;
+  line-height: var(--track-leading);
 }
 
-/* ── Timeline (horizontal desktop) ── */
+/* ── Timeline ── */
 .track-timeline {
-  margin: 0 0 8px;
-  padding: 0;
+  margin: 8px 0 0;
+  padding: 0 4px;
 }
 
 .track-stepper {
@@ -233,9 +246,9 @@
 
 .track-stepper__rail {
   position: absolute;
-  top: calc(var(--track-date-h) + var(--track-node-gap) + var(--track-node-size) / 2);
-  right: calc(50% / var(--track-count));
-  left: calc(50% / var(--track-count));
+  top: calc(var(--track-node-size) / 2);
+  right: calc(100% / var(--track-count) / 2);
+  left: calc(100% / var(--track-count) / 2);
   height: 2px;
   background: var(--track-line);
   transform: translateY(-50%);
@@ -247,7 +260,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  height: 100%;
+  bottom: 0;
   width: var(--track-progress);
   background: var(--track-red);
   transition: width 0.35s ease;
@@ -278,22 +291,7 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  max-width: 140px;
-}
-
-.track-step__date {
-  display: block;
-  height: var(--track-date-h);
-  margin-bottom: var(--track-node-gap);
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--track-ink);
-  line-height: var(--track-date-h);
-  white-space: nowrap;
-}
-
-.track-step__date--empty {
-  visibility: hidden;
+  max-width: 148px;
 }
 
 .track-step__node {
@@ -303,7 +301,7 @@
   width: var(--track-node-size);
   height: var(--track-node-size);
   border-radius: 50%;
-  background: var(--track-pending);
+  background: var(--track-pending-node);
   color: #fff;
   flex-shrink: 0;
   position: relative;
@@ -315,33 +313,47 @@
 }
 
 .track-step__check {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
+.track-step__date {
+  display: block;
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--track-date);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .track-step__label {
-  margin: var(--track-node-gap) 0 0;
+  margin: 6px 0 0;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.35;
-  color: var(--track-pending);
-  max-width: 130px;
+  color: var(--track-pending-label);
+  max-width: 136px;
 }
 
 .track-step--done .track-step__label {
   color: var(--track-red);
-  font-weight: 400;
+  font-weight: 700;
 }
 
-/* ── Support link ── */
+.track-step--pending .track-step__label {
+  margin-top: 10px;
+}
+
+/* ── Support ── */
 .track-support {
   text-align: center;
   margin: 0;
-  font-size: 15px;
+  font-size: var(--track-text);
   font-weight: 400;
   color: var(--track-ink);
-  line-height: 1.5;
+  line-height: var(--track-leading);
 }
 
 .track-support a {
@@ -359,7 +371,7 @@
 @media (max-width: 767px) {
   .track-body {
     max-width: 100%;
-    padding: 20px 18px 40px;
+    padding: 22px 18px 40px;
   }
 
   .track-logo {
@@ -367,8 +379,7 @@
   }
 
   .track-title {
-    font-size: 20px;
-    margin-top: 14px;
+    font-size: 18px;
   }
 
   .track-meta__grid--desktop {
@@ -380,21 +391,18 @@
     text-align: center;
   }
 
-  .track-meta__line {
-    margin: 0 0 6px;
-    font-size: 14px;
-    line-height: 1.55;
+  .track-meta__stack--mobile .track-meta__line {
+    white-space: normal;
   }
 
-  .track-meta__sub {
-    font-size: 13px;
+  .track-meta__stack--mobile .track-meta__detail {
+    text-align: center;
   }
 
   .track-divider {
-    margin: 18px 0;
+    margin: 16px 0;
   }
 
-  /* Vertical timeline */
   .track-stepper__rail,
   .track-stepper__rail-fill {
     display: none;
@@ -403,17 +411,16 @@
   .track-stepper__steps {
     flex-direction: column;
     align-items: stretch;
-    gap: 0;
     position: relative;
-    padding-right: 20px;
+    padding-right: 22px;
   }
 
   .track-stepper__steps::before {
     content: "";
     position: absolute;
-    top: 20px;
-    bottom: 20px;
-    right: 19px;
+    top: 22px;
+    bottom: 22px;
+    right: 21px;
     width: 2px;
     background: var(--track-line);
     z-index: 0;
@@ -422,11 +429,11 @@
   .track-stepper__steps::after {
     content: "";
     position: absolute;
-    top: 20px;
-    right: 19px;
+    top: 22px;
+    right: 21px;
     width: 2px;
     height: var(--track-progress);
-    max-height: calc(100% - 40px);
+    max-height: calc(100% - 44px);
     background: var(--track-red);
     z-index: 1;
   }
@@ -434,7 +441,7 @@
   .track-step {
     flex: none;
     justify-content: flex-start;
-    padding: 10px 0;
+    padding: 8px 0;
   }
 
   .track-step__inner {
@@ -442,23 +449,23 @@
     align-items: center;
     justify-content: flex-start;
     text-align: right;
-    gap: 0;
     max-width: none;
-    width: 100%;
-  }
-
-  .track-step__date {
-    order: 3;
-    height: auto;
-    margin: 0 0 0 12px;
-    min-width: 74px;
-    text-align: left;
-    flex-shrink: 0;
+    gap: 0;
   }
 
   .track-step__node {
     order: 1;
+    width: 40px;
+    height: 40px;
     margin-left: 14px;
+    flex-shrink: 0;
+  }
+
+  .track-step__date {
+    order: 3;
+    margin: 0 0 0 auto;
+    min-width: 76px;
+    text-align: left;
     flex-shrink: 0;
   }
 
@@ -472,17 +479,7 @@
   }
 
   .track-step--pending .track-step__label {
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .track-meta__line {
-    font-size: 13px;
-  }
-
-  .track-step__label {
-    font-size: 13px;
+    margin-top: 0;
   }
 }
 

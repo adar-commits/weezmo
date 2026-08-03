@@ -1,3 +1,7 @@
 export default function TrackLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <div lang="he" dir="rtl">
+      {children}
+    </div>
+  );
 }

@@ -4,12 +4,12 @@ import type { OrderTrackingEvent } from "@/types/order-tracking";
 
 function CheckIcon() {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden className="track-step__check">
+    <svg viewBox="0 0 20 20" aria-hidden className="track-step__check">
       <path
-        d="M3.5 8.2 6.4 11 12.5 5"
+        d="M4.5 10.2 8 13.7 15.5 6.2"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2.2"
+        strokeWidth="2.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -61,16 +61,14 @@ export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] 
                 className={`track-step${completed ? " track-step--done" : " track-step--pending"}`}
               >
                 <div className="track-step__inner">
+                  <span className="track-step__node">
+                    <CheckIcon />
+                  </span>
                   {completed ? (
                     <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
                       {formatEventDate(event.eventTime!)}
                     </time>
-                  ) : (
-                    <span className="track-step__date track-step__date--empty" aria-hidden />
-                  )}
-                  <span className="track-step__node">
-                    <CheckIcon />
-                  </span>
+                  ) : null}
                   <p className="track-step__label">{event.eventDesc}</p>
                 </div>
               </li>
