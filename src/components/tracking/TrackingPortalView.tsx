@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { BRAND_LINKS } from "@/config/links";
 import { OrderProgressStepper } from "@/components/tracking/OrderProgressStepper";
+import { TrackingBrandLogo } from "@/components/tracking/TrackingBrandLogo";
+import { TrackingLoadingSplash } from "@/components/tracking/TrackingLoadingSplash";
 import type { OrderTrackingPayload } from "@/types/order-tracking";
 
 const GENERIC_ERROR = "לא ניתן לטעון את פרטי ההזמנה. נא לנסות שוב מאוחר יותר.";
@@ -59,30 +61,24 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
     void fetchOrder(orderId.trim());
   }, [orderId, previewData, fetchOrder]);
 
+  if (loading) {
+    return <TrackingLoadingSplash />;
+  }
+
   return (
     <div className="track-content">
       <header className="track-header">
-        <div className="track-brand-block">
-          <p className="track-brand">השטיח האדום</p>
-          <p className="track-tagline">כל השטיחים שבעולם</p>
-        </div>
+        <TrackingBrandLogo />
         <h1 className="track-title">מעקב סטטוס הזמנה</h1>
       </header>
 
-      {loading ? (
-        <div className="track-state track-state--loading" role="status">
-          <span className="track-spinner" aria-hidden />
-          <p>טוען פרטי הזמנה…</p>
-        </div>
-      ) : null}
-
-      {!loading && error ? (
+      {error ? (
         <div className="track-state track-state--error" role="alert">
           <p>{error}</p>
         </div>
       ) : null}
 
-      {!loading && data ? (
+      {data ? (
         <>
           <section className="track-meta" aria-label="פרטי הזמנה">
             <p className="track-meta__line track-meta__line--desktop">
