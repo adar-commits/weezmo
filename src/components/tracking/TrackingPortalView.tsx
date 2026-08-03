@@ -64,9 +64,9 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
   }, [orderId, previewData, fetchOrder]);
 
   return (
-    <>
+    <div className="track-content">
       <header className="track-header">
-        <img className="track-logo" src={LOGO_URL} alt="השטיח האדום" width={220} height={80} />
+        <img className="track-logo" src={LOGO_URL} alt="HōM GROUP" width={280} height={96} />
         <p className="track-brand">השטיח האדום</p>
         <p className="track-tagline">כל השטיחים שבעולם</p>
         <h1 className="track-title">מעקב סטטוס הזמנה</h1>
@@ -88,36 +88,35 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
       {!loading && data ? (
         <>
           <section className="track-meta" aria-label="פרטי הזמנה">
-            <div className="track-meta__row track-meta__row--desktop">
-              <span className="track-meta__item">
+            <div className="track-meta__grid track-meta__grid--desktop">
+              <p className="track-meta__cell track-meta__cell--start">
                 <span className="track-meta__label">שם הלקוח:</span>{" "}
                 <span className="track-meta__value">{data.customerName}</span>
-              </span>
-              <span className="track-meta__item">
+              </p>
+              <p className="track-meta__cell track-meta__cell--center">
                 <span className="track-meta__label">מס הזמנה:</span>{" "}
                 <span className="track-meta__value">{data.orderNumber}</span>
-              </span>
-              <span className="track-meta__item">
+              </p>
+              <p className="track-meta__cell track-meta__cell--end">
                 <span className="track-meta__label">סניף:</span>{" "}
                 <span className="track-meta__value">{data.branchDesc}</span>
-              </span>
+              </p>
             </div>
 
-            <div className="track-meta__row track-meta__row--mobile">
-              <span className="track-meta__item">
+            <div className="track-meta__stack track-meta__stack--mobile">
+              <p className="track-meta__line">
                 <span className="track-meta__label">מס הזמנה:</span>{" "}
                 <span className="track-meta__value">{data.orderNumber}</span>
-              </span>
-              <span className="track-meta__item">
+              </p>
+              <p className="track-meta__line">
                 <span className="track-meta__label">שם הלקוח:</span>{" "}
                 <span className="track-meta__value">{data.customerName}</span>
                 <span className="track-meta__sep" aria-hidden>
-                  {" "}
-                  |{" "}
+                  {" | "}
                 </span>
                 <span className="track-meta__label">סניף:</span>{" "}
                 <span className="track-meta__value">{data.branchDesc}</span>
-              </span>
+              </p>
             </div>
 
             {data.customerAddress ? (
@@ -132,6 +131,8 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
             ) : null}
           </section>
 
+          <hr className="track-divider" />
+
           <section className="track-products" aria-labelledby="track-products-heading">
             <h2 id="track-products-heading" className="track-section-title">
               מוצרים
@@ -145,7 +146,11 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
             </ul>
           </section>
 
+          <hr className="track-divider track-divider--timeline" />
+
           <OrderProgressStepper events={data.Events} />
+
+          <hr className="track-divider" />
 
           <p className="track-support">
             מצאת טעות בהזמנה?{" "}
@@ -159,6 +164,6 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
           </p>
         </>
       ) : null}
-    </>
+    </div>
   );
 }

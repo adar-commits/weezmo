@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { formatEventDate } from "@/lib/order-tracking/format-event-date";
 import type { OrderTrackingEvent } from "@/types/order-tracking";
 
@@ -8,7 +9,7 @@ function CheckIcon() {
         d="M3.5 8.2 6.4 11 12.5 5"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -16,37 +17,15 @@ function CheckIcon() {
   );
 }
 
-function StepNode({ event, index }: { event: OrderTrackingEvent; index: number }) {
-  const completed = event.eventTime != null && event.eventTime.trim() !== "";
-
-  return (
-    <li
-      className={`track-step${completed ? " track-step--done" : " track-step--pending"}`}
-      data-step={index + 1}
-    >
-      <div className="track-step__node-wrap">
-        {completed ? (
-          <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
-            {formatEventDate(event.eventTime!)}
-          </time>
-        ) : (
-          <span className="track-step__date track-step__date--empty" aria-hidden />
-        )}
-        <span className="track-step__node">
-          <CheckIcon />
-        </span>
-        <p className="track-step__label">{event.eventDesc}</p>
-      </div>
-    </li>
-  );
+function isCompleted(event: OrderTrackingEvent): boolean {
+  return event.eventTime != null && event.eventTime.trim() !== "";
 }
 
 export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] }) {
   if (events.length === 0) return null;
 
   const lastCompletedIndex = events.reduce(
-    (acc, event, index) =>
-      event.eventTime != null && event.eventTime.trim() !== "" ? index : acc,
+    (acc, event, index) => (isCompleted(event) ? index : acc),
     -1
   );
 
@@ -61,14 +40,44 @@ export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] 
 
   return (
     <section className="track-timeline" aria-label="סטטוס הזמנה">
-      <ol
+      <div
         className="track-stepper"
-        style={{ ["--track-progress" as string]: `${progressPct}%` }}
+        style={
+          {
+            ["--track-count" as string]: events.length,
+            ["--track-progress" as string]: `${progressPct}%`,
+          } as CSSProperties
+        }
       >
-        {events.map((event, index) => (
-          <StepNode key={`${event.eventDesc}-${index}`} event={event} index={index} />
-        ))}
-      </ol>
+        <div className="track-stepper__rail" aria-hidden>
+          <div className="track-stepper__rail-fill" />
+        </div>
+        <ol className="track-stepper__steps">
+          {events.map((event, index) => {
+            const completed = isCompleted(event);
+            return (
+              <li
+                key={`${event.eventDesc}-${index}`}
+                className={`track-step${completed ? " track-step--done" : " track-step--pending"}`}
+              >
+                <div className="track-step__inner">
+                  {completed ? (
+                    <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
+                      {formatEventDate(event.eventTime!)}
+                    </time>
+                  ) : (
+                    <span className="track-step__date track-step__date--empty" aria-hidden />
+                  )}
+                  <span className="track-step__node">
+                    <CheckIcon />
+                  </span>
+                  <p className="track-step__label">{event.eventDesc}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </section>
   );
 }
