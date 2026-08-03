@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useId, useState } from "react";
-import Link from "next/link";
-import { BRAND_LINKS } from "@/config/links";
 
 const STORAGE_KEY = "weezmo_customer_club_modal_v1";
 
@@ -54,17 +52,13 @@ export function CustomerClubModal() {
       >
         <header className="club-modal-header">
           <h2 id={titleId} className="club-modal-title">
-            הצטרפו למועדון הלקוחות
+            רוצה להתעדכן במבצעים של השטיח האדום?
           </h2>
         </header>
         <div className="club-modal-body">
           <p className="club-modal-text">
-            בלחיצה על &quot;כן&quot; אני מאשר/ת קבלת מידע שיווקי, מבצעים והטבות מ<strong>הום קמעונאות</strong> בדוא״ל
-            ו/או ב-SMS, בהתאם לתקנון המועדון ול
-            <Link href={BRAND_LINKS.privacyPolicyUrl} className="club-modal-link" target="_blank" rel="noopener noreferrer">
-              מדיניות הפרטיות
-            </Link>
-            . ייתכן שימוש במידע לצורך התאמת קהלים ברשתות חברתיות, כפי שמפורט במדיניות.
+            אני מאשר/ת קבלת מידע שיווקי במסרונים או בכל דרך אחרת ומאפשר/ת לחלוק מידע אודותיי עם רשתות חברתיות
+            לצורך איתור לקוחות דומים ליצירת קהלים, כפוף למדיניות הפרטיות.
           </p>
         </div>
         <footer className="club-modal-footer">
@@ -72,7 +66,7 @@ export function CustomerClubModal() {
             דלג
           </button>
           <button type="button" className="club-modal-btn club-modal-btn--primary" onClick={() => close("yes")}>
-            כן
+            בהחלט
           </button>
         </footer>
       </div>
