@@ -65,17 +65,20 @@
   --track-pending-text: #c8c8c8;
   --track-line: #e0e0e0;
   --track-font: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
-  --track-node: 42px;
+  --track-node: 68px;
   direction: rtl;
   text-align: right;
   font-family: var(--track-font);
-  font-size: 15px;
+  font-size: 20px;
   line-height: 1.45;
   font-weight: 400;
   color: var(--track-ink);
   min-height: 100vh;
   background: #fff;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .track-page,
@@ -85,9 +88,10 @@
 }
 
 .track-body {
-  max-width: 920px;
+  width: min(1320px, 96vw);
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 28px 40px 48px;
+  padding: clamp(28px, 3vh, 48px) clamp(24px, 3vw, 56px) clamp(36px, 4vh, 64px);
 }
 
 .track-content {
@@ -102,31 +106,31 @@
 
 .track-brand-block {
   text-align: center;
-  margin: 0 auto 4px;
+  margin: 0 auto 6px;
 }
 
 .track-brand {
   margin: 0;
-  font-size: 28px;
+  font-size: clamp(36px, 4vw, 52px);
   font-weight: 700;
   color: var(--track-red);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .track-tagline {
-  margin: 6px 0 0;
-  font-size: 14px;
+  margin: 10px 0 0;
+  font-size: clamp(16px, 1.5vw, 22px);
   font-weight: 400;
   color: var(--track-grey);
   line-height: 1.3;
 }
 
 .track-title {
-  margin: 22px 0 10px;
-  font-size: 26px;
+  margin: 32px 0 18px;
+  font-size: clamp(34px, 3.6vw, 48px);
   font-weight: 800;
   color: #000;
-  line-height: 1.2;
+  line-height: 1.15;
   letter-spacing: -0.01em;
   text-align: center;
 }
@@ -167,14 +171,14 @@
 
 .track-meta__line {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: clamp(18px, 1.55vw, 22px);
+  line-height: 1.55;
   font-weight: 400;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
-  gap: 0 10px;
+  gap: 0 16px;
 }
 
 .track-meta__line--desktop {
@@ -191,7 +195,7 @@
 
 .track-meta__row {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -212,8 +216,8 @@
 }
 
 .track-meta__detail {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: 10px 0 0;
+  font-size: clamp(16px, 1.4vw, 20px);
   line-height: 1.5;
   color: var(--track-grey);
   font-weight: 400;
@@ -239,7 +243,7 @@
 .track-divider {
   border: none;
   border-top: 1px solid var(--track-line);
-  margin: 22px 0;
+  margin: 36px 0;
 }
 
 /* ── Products ── */
@@ -249,10 +253,10 @@
 }
 
 .track-section-title {
-  margin: 0 0 14px;
+  margin: 0 0 18px;
   padding: 0;
   font-family: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
-  font-size: 20px;
+  font-size: clamp(26px, 2.4vw, 34px);
   font-weight: 700;
   color: #000;
   text-align: right;
@@ -268,8 +272,8 @@
 
 .track-products__list li {
   margin: 0;
-  padding: 2px 0;
-  font-size: 14px;
+  padding: 6px 0;
+  font-size: clamp(18px, 1.55vw, 22px);
   font-weight: 400;
   color: var(--track-grey);
   text-align: right;
@@ -278,7 +282,7 @@
 
 /* ── Timeline ── */
 .track-timeline {
-  margin: 40px 0 4px;
+  margin: 56px 0 12px;
   padding: 0 8px;
 }
 
@@ -294,7 +298,7 @@
   /* rail runs from first node center to last node center */
   right: calc(50% / var(--track-count));
   left: calc(50% / var(--track-count));
-  height: 2px;
+  height: 3px;
   background: var(--track-line);
   transform: translateY(-50%);
   z-index: 0;
@@ -339,8 +343,8 @@
 }
 
 .track-step__check {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   display: block;
 }
 
@@ -348,14 +352,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
-  gap: 4px;
+  margin-top: 16px;
+  gap: 6px;
   width: 100%;
 }
 
 .track-step__date {
   display: block;
-  font-size: 13px;
+  font-size: clamp(15px, 1.35vw, 18px);
   font-weight: 400;
   color: #000;
   line-height: 1.2;
@@ -364,11 +368,11 @@
 
 .track-step__label {
   margin: 0;
-  font-size: 13px;
+  font-size: clamp(15px, 1.4vw, 19px);
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--track-pending-text);
-  max-width: 140px;
+  max-width: 220px;
 }
 
 .track-step--done .track-step__label {
@@ -382,8 +386,8 @@
 /* ── Support: black phrase + red underlined link ── */
 .track-support {
   text-align: center;
-  margin: 2px 0 0;
-  font-size: 14px;
+  margin: 8px 0 0;
+  font-size: clamp(18px, 1.5vw, 22px);
   line-height: 1.5;
   font-weight: 400;
   color: var(--track-ink);
@@ -402,23 +406,30 @@
 
 /* ── Mobile (matches vertical RTL mockup) ── */
 @media (max-width: 700px) {
+  .track-page {
+    --track-node: 40px;
+    font-size: 17px;
+    align-items: flex-start;
+  }
+
   .track-body {
+    width: 100%;
     max-width: 100%;
-    padding: 20px 18px 44px;
+    padding: 28px 20px 56px;
   }
 
   .track-brand {
-    font-size: 24px;
+    font-size: 30px;
   }
 
   .track-tagline {
-    font-size: 13px;
-    margin-top: 5px;
+    font-size: 15px;
+    margin-top: 6px;
   }
 
   .track-title {
-    font-size: 22px;
-    margin: 18px 0 10px;
+    font-size: 26px;
+    margin: 22px 0 14px;
   }
 
   .track-meta__line--desktop {
