@@ -2,14 +2,56 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isEmailAllowlisted } from "@/lib/admin-allowlist";
 import {
+  lookupDocumentIdByLegacyMongoId,
+  parseLegacyReceiptPath,
+} from "@/lib/legacy-receipt-redirect";
+import {
   getAppBaseUrl,
+  getDocumentsBaseUrl,
   getTrackingHostname,
   isCustomerFacingHost,
+  isLegacyReceiptsHost,
 } from "@/lib/public-urls";
 
 function requestHostname(request: NextRequest): string {
   const host = request.headers.get("host") ?? request.nextUrl.hostname;
   return host.toLowerCase().split(":")[0] ?? host;
+}
+
+async function handleLegacyReceiptRedirect(
+  request: NextRequest,
+  hostname: string
+): Promise<NextResponse | null> {
+  if (!isLegacyReceiptsHost(hostname)) {
+    return null;
+  }
+
+  const parsed = parseLegacyReceiptPath(request.nextUrl.pathname);
+  if (!parsed) {
+    return null;
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnon) {
+    return null;
+  }
+
+  const documentId = await lookupDocumentIdByLegacyMongoId(
+    parsed.legacyMongoId,
+    supabaseUrl,
+    supabaseAnon
+  );
+
+  if (!documentId) {
+    return new NextResponse("Document not found", { status: 404 });
+  }
+
+  const target = new URL(getDocumentsBaseUrl());
+  target.pathname = parsed.pdf
+    ? `/documents/${documentId}/pdf`
+    : `/documents/${documentId}`;
+  return NextResponse.redirect(target, 301);
 }
 
 function handleBrandedSubdomain(request: NextRequest): NextResponse | null {
@@ -36,6 +78,13 @@ function handleBrandedSubdomain(request: NextRequest): NextResponse | null {
 }
 
 export async function middleware(request: NextRequest) {
+  const hostname = requestHostname(request);
+
+  const legacyRedirect = await handleLegacyReceiptRedirect(request, hostname);
+  if (legacyRedirect) {
+    return legacyRedirect;
+  }
+
   const branded = handleBrandedSubdomain(request);
   if (branded) {
     if (branded.status >= 300 && branded.status < 400) {

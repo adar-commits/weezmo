@@ -41,6 +41,25 @@ export function getDocumentsBaseUrl(): string {
   );
 }
 
+/** Old receipts app host: receipts.carpetshop.co.il/{mongoId} */
+export function getLegacyReceiptsBaseUrl(): string {
+  return normalizeBaseUrl(
+    process.env.NEXT_PUBLIC_RECEIPTS_LEGACY_URL,
+    productionFallback("https://receipts.carpetshop.co.il")
+  );
+}
+
+export function getLegacyReceiptsHostname(): string | null {
+  return hostnameFromBaseUrl(getLegacyReceiptsBaseUrl());
+}
+
+export function isLegacyReceiptsHost(hostname: string): boolean {
+  const legacyHost = getLegacyReceiptsHostname();
+  if (!legacyHost) return false;
+  const normalized = hostname.toLowerCase().split(":")[0] ?? hostname;
+  return normalized === legacyHost;
+}
+
 export function getPublicDocumentBaseUrl(templateId: string): string {
   if (templateId === TEMPLATE_IDS.customerSurvey) return getSurveyBaseUrl();
   return getDocumentsBaseUrl();
@@ -69,6 +88,7 @@ export function getCustomerFacingHostnames(): string[] {
     hostnameFromBaseUrl(getTrackingBaseUrl()),
     hostnameFromBaseUrl(getSurveyBaseUrl()),
     hostnameFromBaseUrl(getDocumentsBaseUrl()),
+    getLegacyReceiptsHostname(),
   ].filter((h): h is string => Boolean(h));
 
   return [...new Set(hosts)];
