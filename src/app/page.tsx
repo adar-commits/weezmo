@@ -26,6 +26,11 @@ export default function Home() {
         locally only.
       </p>
       <p>
+        <strong>Order tracking (instant preview):</strong>{" "}
+        <Link href="/sample-tracking">Open sample tracking preview</Link> — mock data; live links use{" "}
+        <code>/track?orderID=SO…</code>.
+      </p>
+      <p>
         <strong>Real shareable link:</strong> create a document with{" "}
         <code>POST /api/documents</code> (see README). You need <code>.env.local</code> with{" "}
         <code>DOCUMENTS_API_KEY</code> and Supabase vars, then:

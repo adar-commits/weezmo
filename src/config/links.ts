@@ -25,6 +25,9 @@ export const BRAND_LINKS = {
   privacyPolicyUrl: "https://www.carpetshop.co.il/policies/privacy-policy",
   /** Review / share your look (post-purchase) */
   reviewUrl: "https://www.carpetshop.co.il/",
+  /** Order tracking portal — report order mistake via WhatsApp */
+  trackingSupportWhatsapp:
+    "https://api.whatsapp.com/send/?phone=972779725055&type=phone_number&app_absent=0",
   /** AR tool for placement */
   arToolUrl: "https://www.carpetshop.co.il/",
 } as const;
