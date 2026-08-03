@@ -112,7 +112,7 @@
 
 .track-logo {
   display: block;
-  width: clamp(240px, 28vw, 340px);
+  width: clamp(320px, 42vw, 520px);
   height: auto;
   margin: 0 auto;
 }
@@ -151,7 +151,7 @@
 
 .track-splash__logo {
   display: block;
-  width: clamp(260px, 32vw, 380px);
+  width: clamp(340px, 46vw, 560px);
   height: auto;
   margin: 0 auto;
 }
@@ -483,7 +483,7 @@
   }
 
   .track-logo {
-    width: min(280px, 82vw);
+    width: min(92vw, 480px);
   }
 
   .track-splash {
@@ -492,7 +492,7 @@
   }
 
   .track-splash__logo {
-    width: min(300px, 88vw);
+    width: min(94vw, 520px);
   }
 
   .track-splash__spinner {

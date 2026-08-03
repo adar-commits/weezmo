@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { TrackingLoadingDots } from "@/components/tracking/TrackingLoadingDots";
 
-const RED_CARPET_LOGO = "/images/red-carpet-logo.png";
+const HOM_GROUP_LOGO = "/images/hom-group-logo.png";
+const LOGO_WIDTH = 561;
+const LOGO_HEIGHT = 243;
 
 export function TrackingLoadingSplash() {
   return (
@@ -11,10 +13,10 @@ export function TrackingLoadingSplash() {
       <div className="track-splash__card">
         <div className="track-splash__logo-wrap">
           <Image
-            src={RED_CARPET_LOGO}
-            alt="השטיח האדום"
-            width={348}
-            height={223}
+            src={HOM_GROUP_LOGO}
+            alt="HōM GROUP — השטיח האדום"
+            width={LOGO_WIDTH}
+            height={LOGO_HEIGHT}
             className="track-splash__logo"
             priority
           />
