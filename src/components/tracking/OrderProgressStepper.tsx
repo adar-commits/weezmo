@@ -42,12 +42,14 @@ export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] 
                 <span className="track-step__node">
                   <CheckIcon />
                 </span>
-                {completed ? (
-                  <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
-                    {formatEventDate(event.eventTime!)}
-                  </time>
-                ) : null}
-                <p className="track-step__label">{event.eventDesc}</p>
+                <div className="track-step__copy">
+                  {completed ? (
+                    <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
+                      {formatEventDate(event.eventTime!)}
+                    </time>
+                  ) : null}
+                  <p className="track-step__label">{event.eventDesc}</p>
+                </div>
               </li>
             );
           })}
