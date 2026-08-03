@@ -6,10 +6,10 @@ function CheckIcon() {
   return (
     <svg viewBox="0 0 20 20" aria-hidden className="track-step__check">
       <path
-        d="M4.5 10.2 8 13.7 15.5 6.2"
+        d="M4.2 10.4 8.1 14.2 15.8 6.4"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2.4"
+        strokeWidth="2.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -21,37 +21,17 @@ function isCompleted(event: OrderTrackingEvent): boolean {
   return event.eventTime != null && event.eventTime.trim() !== "";
 }
 
+/** Original mockup: grey rail; red/grey nodes; date then label under circle (desktop). */
 export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] }) {
   if (events.length === 0) return null;
-
-  const lastCompletedIndex = events.reduce(
-    (acc, event, index) => (isCompleted(event) ? index : acc),
-    -1
-  );
-
-  const progressPct =
-    events.length <= 1
-      ? lastCompletedIndex >= 0
-        ? 100
-        : 0
-      : lastCompletedIndex >= 0
-        ? (lastCompletedIndex / (events.length - 1)) * 100
-        : 0;
 
   return (
     <section className="track-timeline" aria-label="סטטוס הזמנה">
       <div
         className="track-stepper"
-        style={
-          {
-            ["--track-count" as string]: events.length,
-            ["--track-progress" as string]: `${progressPct}%`,
-          } as CSSProperties
-        }
+        style={{ ["--track-count" as string]: events.length } as CSSProperties}
       >
-        <div className="track-stepper__rail" aria-hidden>
-          <div className="track-stepper__rail-fill" />
-        </div>
+        <div className="track-stepper__rail" aria-hidden />
         <ol className="track-stepper__steps">
           {events.map((event, index) => {
             const completed = isCompleted(event);
@@ -68,7 +48,9 @@ export function OrderProgressStepper({ events }: { events: OrderTrackingEvent[] 
                     <time className="track-step__date" dateTime={event.eventTime ?? undefined}>
                       {formatEventDate(event.eventTime!)}
                     </time>
-                  ) : null}
+                  ) : (
+                    <span className="track-step__date track-step__date--empty" aria-hidden />
+                  )}
                   <p className="track-step__label">{event.eventDesc}</p>
                 </div>
               </li>

@@ -1,28 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans+Hebrew:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap");
 
 /*
- * Order tracking portal — pixel match to brand mockup.
- * Typography matches document-page.css (Open Sans Hebrew).
+ * Order tracking — original brand mockup (Assistant, pomegranate, grey rail).
  */
 
 .track-page {
-  --track-red: #b30103;
-  --track-red-dark: #8f0102;
+  --track-red: #bb1a20;
+  --track-red-bright: #d42028;
   --track-ink: #1a1a1a;
-  --track-muted: #777;
-  --track-date: #666;
-  --track-pending-node: #d1d1d1;
-  --track-pending-label: #c8c8c8;
-  --track-line: #e3e3e3;
-  --track-font: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
-  --track-text: 15px;
-  --track-leading: 1.45;
-  --track-node-size: 44px;
+  --track-muted: #8a8a8a;
+  --track-pending: #cfcfcf;
+  --track-pending-text: #c5c5c5;
+  --track-line: #dddddd;
+  --track-font: "Assistant", "Arial Hebrew", Arial, sans-serif;
+  --track-node: 36px;
   direction: rtl;
   text-align: right;
-  font-family: var(--track-font), "Arial Hebrew", Arial, sans-serif;
-  font-size: var(--track-text);
-  line-height: var(--track-leading);
+  font-family: var(--track-font);
+  font-size: 15px;
+  line-height: 1.45;
   font-weight: 400;
   color: var(--track-ink);
   min-height: 100vh;
@@ -32,40 +28,39 @@
 
 .track-page,
 .track-page * {
-  font-family: var(--track-font), "Arial Hebrew", Arial, sans-serif;
+  font-family: var(--track-font);
   box-sizing: border-box;
 }
 
 .track-body {
-  max-width: 780px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 32px 36px 52px;
+  padding: 36px 28px 56px;
 }
 
 .track-content {
   width: 100%;
 }
 
-/* ── Header ── */
+/* ── Header: HōM GROUP logo + brand lines ── */
 .track-header {
   text-align: center;
-  margin-bottom: 0;
+  margin-bottom: 8px;
 }
 
 .track-logo {
   display: block;
-  width: 280px;
-  max-width: 78vw;
+  width: min(380px, 86vw);
   height: auto;
-  margin: 0 auto 8px;
+  margin: 0 auto 14px;
 }
 
 .track-brand {
   margin: 0;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--track-red);
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 .track-tagline {
@@ -73,21 +68,22 @@
   font-size: 13px;
   font-weight: 400;
   color: var(--track-muted);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .track-title {
-  margin: 16px 0 0;
-  font-size: 20px;
-  font-weight: 700;
+  margin: 18px 0 12px;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--track-ink);
-  line-height: 1.3;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 /* ── States ── */
 .track-state {
   text-align: center;
-  padding: 36px 16px;
+  padding: 40px 16px;
   color: var(--track-muted);
 }
 
@@ -112,72 +108,23 @@
   }
 }
 
-/* ── Dividers ── */
-.track-divider {
-  border: none;
-  border-top: 1px solid var(--track-line);
-  margin: 20px 0;
-}
-
-.track-divider--header {
-  margin-top: 18px;
-}
-
-.track-divider--footer {
-  margin-top: 24px;
-  margin-bottom: 22px;
-}
-
-/* ── Meta (3-column desktop) ── */
+/* ── Meta: single centered pipe line ── */
 .track-meta {
-  margin: 0;
-}
-
-.track-meta__grid--desktop {
-  display: grid;
-  grid-template-columns: 1fr 1.35fr 1fr;
-  gap: 12px 20px;
-  align-items: start;
-}
-
-.track-meta__stack--mobile {
-  display: none;
-}
-
-.track-meta__col--start {
-  text-align: right;
-}
-
-.track-meta__col--center {
   text-align: center;
-}
-
-.track-meta__col--end {
-  text-align: left;
+  margin: 0 0 4px;
 }
 
 .track-meta__line {
   margin: 0;
-  font-size: var(--track-text);
-  line-height: var(--track-leading);
-  white-space: nowrap;
-}
-
-.track-meta__detail {
-  margin: 4px 0 0;
-  font-size: var(--track-text);
-  line-height: var(--track-leading);
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--track-ink);
   font-weight: 400;
 }
 
-.track-meta__col--center .track-meta__detail {
-  white-space: normal;
-}
-
 .track-meta__label {
   color: var(--track-red);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .track-meta__value {
@@ -187,15 +134,23 @@
 
 .track-meta__sep {
   color: var(--track-ink);
+  font-weight: 400;
+}
+
+.track-meta__detail {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--track-muted);
+  font-weight: 400;
 }
 
 .track-notes {
-  margin: 16px auto 0;
+  margin: 14px auto 0;
   max-width: 480px;
   padding: 10px 14px;
   border: 1px solid var(--track-line);
   border-radius: 4px;
-  text-align: center;
   font-size: 14px;
 }
 
@@ -203,14 +158,21 @@
   margin: 0;
 }
 
+/* ── Dividers ── */
+.track-divider {
+  border: none;
+  border-top: 1px solid var(--track-line);
+  margin: 18px 0;
+}
+
 /* ── Products ── */
 .track-products {
-  margin: 0;
+  margin: 0 0 8px;
 }
 
 .track-section-title {
-  margin: 0 0 8px;
-  font-size: var(--track-text);
+  margin: 0 0 10px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--track-ink);
   text-align: right;
@@ -224,29 +186,27 @@
 
 .track-products__list li {
   padding: 2px 0;
-  font-size: var(--track-text);
+  font-size: 15px;
   font-weight: 400;
   color: var(--track-ink);
   text-align: right;
-  line-height: var(--track-leading);
+  line-height: 1.5;
 }
 
-/* ── Timeline ── */
+/* ── Timeline (original: grey rail, nodes, date then label) ── */
 .track-timeline {
-  margin: 8px 0 0;
-  padding: 0 4px;
+  margin: 28px 0 8px;
+  padding: 0 8px;
 }
 
 .track-stepper {
   --track-count: 5;
-  --track-progress: 0%;
   position: relative;
-  padding: 0;
 }
 
 .track-stepper__rail {
   position: absolute;
-  top: calc(var(--track-node-size) / 2);
+  top: calc(var(--track-node) / 2);
   right: calc(100% / var(--track-count) / 2);
   left: calc(100% / var(--track-count) / 2);
   height: 2px;
@@ -254,16 +214,6 @@
   transform: translateY(-50%);
   z-index: 0;
   pointer-events: none;
-}
-
-.track-stepper__rail-fill {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: var(--track-progress);
-  background: var(--track-red);
-  transition: width 0.35s ease;
 }
 
 .track-stepper__steps {
@@ -291,17 +241,17 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  max-width: 148px;
+  max-width: 130px;
 }
 
 .track-step__node {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--track-node-size);
-  height: var(--track-node-size);
+  width: var(--track-node);
+  height: var(--track-node);
   border-radius: 50%;
-  background: var(--track-pending-node);
+  background: var(--track-pending);
   color: #fff;
   flex-shrink: 0;
   position: relative;
@@ -313,47 +263,50 @@
 }
 
 .track-step__check {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   display: block;
 }
 
 .track-step__date {
   display: block;
-  margin: 10px 0 0;
-  font-size: 13px;
+  margin-top: 10px;
+  font-size: 12px;
   font-weight: 400;
-  color: var(--track-date);
+  color: var(--track-ink);
   line-height: 1.2;
   white-space: nowrap;
+  min-height: 1.2em;
 }
 
-.track-step__label {
-  margin: 6px 0 0;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.35;
-  color: var(--track-pending-label);
-  max-width: 136px;
-}
-
-.track-step--done .track-step__label {
-  color: var(--track-red);
-  font-weight: 700;
+.track-step__date--empty {
+  display: none;
 }
 
 .track-step--pending .track-step__label {
   margin-top: 10px;
 }
 
-/* ── Support ── */
+.track-step__label {
+  margin: 3px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--track-pending-text);
+  max-width: 118px;
+}
+
+.track-step--done .track-step__label {
+  color: var(--track-red);
+  font-weight: 400;
+}
+
+/* ── Support: entire phrase is the red link ── */
 .track-support {
   text-align: center;
-  margin: 0;
-  font-size: var(--track-text);
-  font-weight: 400;
-  color: var(--track-ink);
-  line-height: var(--track-leading);
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .track-support a {
@@ -364,131 +317,113 @@
 }
 
 .track-support a:hover {
-  color: var(--track-red-dark);
+  color: var(--track-red-bright);
 }
 
-/* ── Mobile ── */
-@media (max-width: 767px) {
+/* ── Mobile: vertical timeline (original mobile mockup) ── */
+@media (max-width: 640px) {
   .track-body {
-    max-width: 100%;
-    padding: 22px 18px 40px;
+    padding: 24px 16px 44px;
   }
 
   .track-logo {
-    width: 220px;
+    width: min(300px, 90vw);
+    margin-bottom: 12px;
+  }
+
+  .track-brand {
+    font-size: 16px;
   }
 
   .track-title {
-    font-size: 18px;
+    font-size: 22px;
+    margin: 14px 0 10px;
   }
 
-  .track-meta__grid--desktop {
+  .track-meta__line {
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .track-meta__sep {
     display: none;
   }
 
-  .track-meta__stack--mobile {
-    display: block;
-    text-align: center;
+  .track-timeline {
+    margin-top: 22px;
+    padding: 0;
   }
 
-  .track-meta__stack--mobile .track-meta__line {
-    white-space: normal;
-  }
-
-  .track-meta__stack--mobile .track-meta__detail {
-    text-align: center;
-  }
-
-  .track-divider {
-    margin: 16px 0;
-  }
-
-  .track-stepper__rail,
-  .track-stepper__rail-fill {
-    display: none;
+  .track-stepper__rail {
+    top: 18px;
+    bottom: 18px;
+    right: 17px;
+    left: auto;
+    width: 2px;
+    height: auto;
+    transform: none;
   }
 
   .track-stepper__steps {
     flex-direction: column;
     align-items: stretch;
-    position: relative;
-    padding-right: 22px;
-  }
-
-  .track-stepper__steps::before {
-    content: "";
-    position: absolute;
-    top: 22px;
-    bottom: 22px;
-    right: 21px;
-    width: 2px;
-    background: var(--track-line);
-    z-index: 0;
-  }
-
-  .track-stepper__steps::after {
-    content: "";
-    position: absolute;
-    top: 22px;
-    right: 21px;
-    width: 2px;
-    height: var(--track-progress);
-    max-height: calc(100% - 44px);
-    background: var(--track-red);
-    z-index: 1;
+    gap: 0;
+    padding-right: 0;
   }
 
   .track-step {
     flex: none;
     justify-content: flex-start;
-    padding: 8px 0;
+    padding: 10px 0;
   }
 
   .track-step__inner {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: flex-start;
-    text-align: right;
+    column-gap: 12px;
     max-width: none;
-    gap: 0;
+    width: 100%;
+    text-align: right;
   }
 
   .track-step__node {
-    order: 1;
-    width: 40px;
-    height: 40px;
-    margin-left: 14px;
-    flex-shrink: 0;
-  }
-
-  .track-step__date {
-    order: 3;
-    margin: 0 0 0 auto;
-    min-width: 76px;
-    text-align: left;
-    flex-shrink: 0;
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .track-step__label {
-    order: 2;
-    flex: 1;
+    grid-column: 2;
+    grid-row: 1;
     margin: 0;
     max-width: none;
     text-align: right;
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .track-step__date {
+    grid-column: 3;
+    grid-row: 1;
+    margin: 0;
+    min-height: 0;
+    font-size: 12px;
+    text-align: left;
   }
 
   .track-step--pending .track-step__label {
-    margin-top: 0;
+    grid-column: 2 / 4;
+  }
+
+  .track-step__date--empty {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .track-spinner {
     animation: none;
-  }
-
-  .track-stepper__rail-fill {
-    transition: none;
   }
 }
