@@ -1,4 +1,5 @@
 import { TEMPLATE_IDS, type TemplateId } from "@/constants/templates";
+import { assertAllowedBranchId } from "@/lib/allowed-branches";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
 import type { CreateDocumentPayload } from "@/types/document";
 import { payloadTypeToDbType } from "@/types/document";
@@ -45,6 +46,16 @@ export function parseCreateDocumentBody(raw: unknown): ParsedCreate {
         message: r.error.issues.map((i) => i.message).join("; ") || "Invalid survey payload",
       };
     }
+    if (r.data.branch_id != null && String(r.data.branch_id).trim() !== "") {
+      const branchCheck = assertAllowedBranchId(r.data.branch_id, "branch_id");
+      if (!branchCheck.ok) return branchCheck;
+      return {
+        ok: true,
+        templateId: TEMPLATE_IDS.customerSurvey,
+        payload: { ...r.data, branch_id: branchCheck.branchId },
+        dbType: "receipt",
+      };
+    }
     return {
       ok: true,
       templateId: TEMPLATE_IDS.customerSurvey,
@@ -72,10 +83,14 @@ export function parseCreateDocumentBody(raw: unknown): ParsedCreate {
     };
   }
 
+  const branchCheck = assertAllowedBranchId(r.data.BranchID, "BranchID");
+  if (!branchCheck.ok) return branchCheck;
+
   const merged = {
     ...(raw as Record<string, unknown>),
     template_id: TEMPLATE_IDS.receipt,
     Items: r.data.Items,
+    BranchID: branchCheck.branchId,
   } as unknown as CreateDocumentPayload;
 
   return {

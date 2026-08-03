@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Cursor local config
 .cursor/
+
+# Local one-off import artifacts (large)
+scripts/import-legacy-receipts.ndjson
+scripts/import-batches/
