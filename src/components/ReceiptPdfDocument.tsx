@@ -12,6 +12,7 @@ const LOGO_URL =
   "https://cdn.shopify.com/s/files/1/0594/9839/7887/files/img.png?v=1772750312";
 
 const VAT_RATE = 0.18;
+const RLM = "\u200F";
 
 /** react-pdf flex ignores page direction — use LTR rows + DOM order for RTL visuals. */
 const ROW = "row" as const;
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
   logoWrap: {
     width: 130,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   logo: {
     width: 120,
@@ -56,16 +57,31 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#000",
     textAlign: "right",
+    direction: "rtl",
   },
-  businessLine: {
+  businessSubtitle: {
     marginBottom: 1,
     textAlign: "right",
+    direction: "rtl",
+    fontWeight: 400,
   },
-  siteLine: {
-    marginTop: 4,
-    fontSize: 8.5,
-    color: "#444",
+  rtlLine: {
+    flexDirection: ROW,
+    justifyContent: "flex-end",
+    alignItems: "baseline",
+    width: "100%",
+    gap: 5,
+  },
+  fieldLabel: {
+    fontWeight: 700,
+    direction: "rtl",
     textAlign: "right",
+    color: "#1a1a1a",
+  },
+  fieldValue: {
+    fontWeight: 400,
+    textAlign: "right",
+    color: "#1a1a1a",
   },
   metaRow: {
     flexDirection: ROW,
@@ -79,36 +95,14 @@ const styles = StyleSheet.create({
     fontSize: 9,
     lineHeight: 1.65,
   },
-  metaLabel: {
-    color: "#555",
-    fontWeight: 500,
-    textAlign: "right",
-  },
-  rtlLine: {
-    flexDirection: ROW,
-    justifyContent: "flex-end",
-    alignItems: "baseline",
-    width: "100%",
-    gap: 4,
-  },
-  customerName: {
-    fontWeight: 700,
-    fontSize: 10,
-    marginTop: 2,
-    marginBottom: 3,
-    textAlign: "right",
-    width: "100%",
-  },
   docTitle: {
-    flexDirection: ROW,
-    justifyContent: "center",
-    alignItems: "baseline",
+    textAlign: "center",
     fontSize: 12,
     fontWeight: 700,
     textDecoration: "underline",
     marginTop: 4,
     marginBottom: 14,
-    gap: 4,
+    direction: "rtl",
   },
   table: {
     borderWidth: 1,
@@ -124,6 +118,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     fontWeight: 700,
     fontSize: 8.5,
+    direction: "rtl",
   },
   tableRow: {
     flexDirection: ROW,
@@ -144,13 +139,14 @@ const styles = StyleSheet.create({
   },
   colIdx: { width: "6%", textAlign: "center" },
   colSku: { width: "13%", textAlign: "right", paddingHorizontal: 2 },
-  colDesc: { width: "36%", textAlign: "right", paddingHorizontal: 4 },
+  colDesc: { width: "36%", textAlign: "right", paddingHorizontal: 4, direction: "rtl" },
   colUnit: { width: "17%", textAlign: "left", paddingHorizontal: 2 },
   colQty: { width: "8%", textAlign: "center" },
   colLine: { width: "20%", textAlign: "left", paddingHorizontal: 2 },
   amount: {
     direction: "ltr",
     fontVariantNumeric: "tabular-nums",
+    fontWeight: 400,
   },
   summaryWrap: {
     flexDirection: ROW,
@@ -176,7 +172,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   summaryTotal: {
-    fontWeight: 700,
     marginTop: 2,
     marginBottom: 0,
     paddingTop: 6,
@@ -201,24 +196,37 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderTopColor: "#ccc",
   },
-  footerHead: {
-    fontWeight: 700,
-    marginBottom: 5,
-    fontSize: 8.5,
-    textAlign: "right",
+  bulletRow: {
+    flexDirection: ROW,
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
     width: "100%",
+    marginBottom: 4,
+    gap: 6,
   },
-  footerBullet: {
-    marginBottom: 2,
+  bulletMark: {
+    fontWeight: 400,
+    width: 8,
     textAlign: "right",
-    width: "100%",
+  },
+  bulletText: {
+    flex: 1,
+    textAlign: "right",
+    direction: "rtl",
+    fontWeight: 400,
+    lineHeight: 1.5,
   },
   footnote: {
-    marginTop: 16,
+    marginTop: 18,
+    paddingTop: 10,
+    borderTopWidth: 0.5,
+    borderTopColor: "#ddd",
     fontSize: 7,
-    color: "#666",
-    textAlign: "center",
-    lineHeight: 1.45,
+    color: "#555",
+    textAlign: "right",
+    direction: "rtl",
+    lineHeight: 1.55,
+    width: "100%",
   },
   ltr: {
     direction: "ltr",
@@ -278,7 +286,11 @@ function docTypeLabel(type?: string) {
   return "קבלה";
 }
 
-/** Label on the right, value to its left — correct Hebrew line layout. */
+function hebrewLabel(label: string): string {
+  return `${label}${RLM}:`;
+}
+
+/** Bold label (right) + normal value (left) — Hebrew RTL field line. */
 function RtlField({
   label,
   value,
@@ -290,14 +302,22 @@ function RtlField({
 }) {
   return (
     <View style={styles.rtlLine}>
-      <Text style={valueLtr ? styles.ltr : undefined}>{value}</Text>
-      <Text style={styles.metaLabel}>{label}:</Text>
+      <Text style={valueLtr ? [styles.fieldValue, styles.ltr] : styles.fieldValue}>{value}</Text>
+      <Text style={styles.fieldLabel}>{hebrewLabel(label)}</Text>
+    </View>
+  );
+}
+
+function RtlBullet({ children }: { children: string }) {
+  return (
+    <View style={styles.bulletRow}>
+      <Text style={styles.bulletText}>{children}</Text>
+      <Text style={styles.bulletMark}>•</Text>
     </View>
   );
 }
 
 function TableColumns({
-  row,
   idx,
   sku,
   desc,
@@ -305,7 +325,6 @@ function TableColumns({
   qty,
   line,
 }: {
-  row: number;
   idx: number;
   sku: string;
   desc: string;
@@ -349,24 +368,26 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
     hour12: false,
   });
 
+  const docTitle = docNumber
+    ? `העתק - ${docType} \u2066${docNumber}\u2069`
+    : `העתק - ${docType}`;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerRow}>
+          <View style={styles.logoWrap}>
+            <Image style={styles.logo} src={LOGO_URL} />
+          </View>
           <View style={styles.businessBlock}>
             <Text style={styles.businessTitle}>קבוצת הום קמעונאות בע״מ</Text>
-            <Text style={styles.businessLine}>
+            <Text style={styles.businessSubtitle}>
               השטיח האדום{branch ? ` — ${branch}` : ""}
             </Text>
             <RtlField label="טלפון" value="*3076" valueLtr />
             <RtlField label="עוסק מורשה" value="515713212" valueLtr />
             <RtlField label="מספר תיק במע״מ" value="515713212" valueLtr />
-            <View style={styles.siteLine}>
-              <RtlField label="אתר" value="www.carpetshop.co.il" valueLtr />
-            </View>
-          </View>
-          <View style={styles.logoWrap}>
-            <Image style={styles.logo} src={LOGO_URL} />
+            <RtlField label="אתר" value="www.carpetshop.co.il" valueLtr />
           </View>
         </View>
 
@@ -378,24 +399,15 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
             <RtlField label="נציג מכירות" value={rep || "—"} />
           </View>
           <View style={styles.metaCol}>
-            <Text style={styles.metaLabel}>לכבוד:</Text>
-            <Text style={styles.customerName}>{customer || "—"}</Text>
+            <Text style={styles.fieldLabel}>{hebrewLabel("לכבוד")}</Text>
+            <Text style={[styles.fieldValue, { marginTop: 2, marginBottom: 3, width: "100%", textAlign: "right" }]}>
+              {customer || "—"}
+            </Text>
             {phone ? <RtlField label="טלפון" value={phone} valueLtr /> : null}
           </View>
         </View>
 
-        <View style={styles.docTitle}>
-          {docNumber ? (
-            <>
-              <Text>העתק</Text>
-              <Text> - </Text>
-              <Text>{docType} </Text>
-              <Text style={styles.ltr}>{docNumber}</Text>
-            </>
-          ) : (
-            <Text>העתק - {docType}</Text>
-          )}
-        </View>
+        <Text style={styles.docTitle}>{docTitle}</Text>
 
         <View style={styles.table}>
           <View style={styles.tableHeader}>
@@ -420,7 +432,6 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
             return (
               <View key={i} style={rowStyle}>
                 <TableColumns
-                  row={i}
                   idx={i + 1}
                   sku={item.ItemSKU ?? "—"}
                   desc={item.ItemDescription ?? "—"}
@@ -443,25 +454,25 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
           <View style={styles.summaryBox}>
             <View style={styles.summaryRow}>
               <Text style={styles.amount}>{formatMoneyIls(subtotal)}</Text>
-              <Text>סה״כ ללא מע״מ</Text>
+              <Text style={styles.fieldLabel}>סה״כ ללא מע״מ</Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.amount}>{formatMoneyIls(vat)}</Text>
-              <Text>מע״מ ({Math.round(VAT_RATE * 100)}%)</Text>
+              <Text style={styles.fieldLabel}>{`מע״מ (${Math.round(VAT_RATE * 100)}%)`}</Text>
             </View>
             <View style={[styles.summaryRow, styles.summaryTotal]}>
               <Text style={styles.amount}>{formatMoneyIls(total)}</Text>
-              <Text>סה״כ לתשלום</Text>
+              <Text style={styles.fieldLabel}>סה״כ לתשלום</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerHead}>לקוחות יקרים:</Text>
-          <Text style={styles.footerBullet}>
-            • בכפוף לנוהל החזרת מוצרים התלוי בכל סניפי הרשת ובאתר האינטרנט.
+          <Text style={[styles.fieldLabel, { width: "100%", textAlign: "right", marginBottom: 6 }]}>
+            {hebrewLabel("לקוחות יקרים")}
           </Text>
-          <Text style={styles.footerBullet}>• בימי שישי לא יתאפשרו החזרות בסניפים.</Text>
+          <RtlBullet>בכפוף לנוהל החזרת מוצרים התלוי בכל סניפי הרשת ובאתר האינטרנט.</RtlBullet>
+          <RtlBullet>בימי שישי לא יתאפשרו החזרות בסניפים.</RtlBullet>
         </View>
 
         <Text style={styles.footnote}>
