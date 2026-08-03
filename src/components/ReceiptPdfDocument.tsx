@@ -13,6 +13,9 @@ const LOGO_URL =
 
 const VAT_RATE = 0.18;
 
+/** react-pdf flex ignores page direction — use LTR rows + DOM order for RTL visuals. */
+const ROW = "row" as const;
+
 const styles = StyleSheet.create({
   page: {
     paddingTop: 32,
@@ -20,12 +23,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     fontFamily: PDF_HEBREW_FONT_FAMILY,
     fontSize: 9,
-    direction: "rtl",
     color: "#1a1a1a",
     backgroundColor: "#fff",
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: ROW,
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginBottom: 16,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
   },
   businessBlock: {
     flex: 1,
-    textAlign: "right",
+    alignItems: "flex-end",
     fontSize: 9,
     lineHeight: 1.55,
   },
@@ -53,52 +55,60 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginBottom: 5,
     color: "#000",
+    textAlign: "right",
   },
   businessLine: {
     marginBottom: 1,
+    textAlign: "right",
   },
   siteLine: {
     marginTop: 4,
     fontSize: 8.5,
     color: "#444",
+    textAlign: "right",
   },
   metaRow: {
-    flexDirection: "row",
+    flexDirection: ROW,
     justifyContent: "space-between",
     gap: 24,
     marginBottom: 12,
   },
   metaCol: {
     flex: 1,
-    textAlign: "right",
+    alignItems: "flex-end",
     fontSize: 9,
-    lineHeight: 1.6,
-  },
-  metaColCustomer: {
-    flex: 1,
-    textAlign: "right",
-    fontSize: 9,
-    lineHeight: 1.6,
-    paddingRight: 8,
+    lineHeight: 1.65,
   },
   metaLabel: {
     color: "#555",
     fontWeight: 500,
+    textAlign: "right",
+  },
+  rtlLine: {
+    flexDirection: ROW,
+    justifyContent: "flex-end",
+    alignItems: "baseline",
+    width: "100%",
+    gap: 4,
   },
   customerName: {
     fontWeight: 700,
     fontSize: 10,
     marginTop: 2,
-    marginBottom: 2,
+    marginBottom: 3,
+    textAlign: "right",
+    width: "100%",
   },
   docTitle: {
-    textAlign: "center",
+    flexDirection: ROW,
+    justifyContent: "center",
+    alignItems: "baseline",
     fontSize: 12,
     fontWeight: 700,
     textDecoration: "underline",
     marginTop: 4,
     marginBottom: 14,
-    letterSpacing: 0.2,
+    gap: 4,
   },
   table: {
     borderWidth: 1,
@@ -106,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tableHeader: {
-    flexDirection: "row",
+    flexDirection: ROW,
     borderBottomWidth: 1,
     borderColor: "#333",
     backgroundColor: "#ececec",
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
   },
   tableRow: {
-    flexDirection: "row",
+    flexDirection: ROW,
     borderBottomWidth: 0.5,
     borderColor: "#bbb",
     paddingVertical: 6,
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
   },
   tableRowLast: {
-    flexDirection: "row",
+    flexDirection: ROW,
     paddingVertical: 6,
     paddingHorizontal: 6,
     fontSize: 8.5,
@@ -143,7 +153,7 @@ const styles = StyleSheet.create({
     fontVariantNumeric: "tabular-nums",
   },
   summaryWrap: {
-    flexDirection: "row",
+    flexDirection: ROW,
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginTop: 14,
@@ -158,12 +168,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fafafa",
   },
   summaryRow: {
-    flexDirection: "row",
+    flexDirection: ROW,
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 5,
     fontSize: 8.5,
-    gap: 12,
+    gap: 16,
   },
   summaryTotal: {
     fontWeight: 700,
@@ -176,14 +186,14 @@ const styles = StyleSheet.create({
   },
   sideMeta: {
     flex: 1,
-    textAlign: "right",
+    alignItems: "flex-end",
     fontSize: 8.5,
     lineHeight: 1.6,
     paddingTop: 4,
   },
   footer: {
     marginTop: 20,
-    textAlign: "right",
+    alignItems: "flex-end",
     fontSize: 8,
     lineHeight: 1.55,
     color: "#333",
@@ -195,10 +205,13 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     marginBottom: 5,
     fontSize: 8.5,
+    textAlign: "right",
+    width: "100%",
   },
   footerBullet: {
     marginBottom: 2,
-    paddingRight: 4,
+    textAlign: "right",
+    width: "100%",
   },
   footnote: {
     marginTop: 16,
@@ -253,7 +266,6 @@ function resolveTotals(total: number, vatFromPayload?: number) {
       subtotal: roundMoney(Math.max(0, total - vatFromPayload)),
     };
   }
-  // Israeli retail totals are typically VAT-inclusive when VAT is omitted.
   const subtotal = roundMoney(total / (1 + VAT_RATE));
   const vat = roundMoney(total - subtotal);
   return { vat, subtotal };
@@ -266,12 +278,50 @@ function docTypeLabel(type?: string) {
   return "קבלה";
 }
 
-function MetaLine({ label, value }: { label: string; value: string }) {
+/** Label on the right, value to its left — correct Hebrew line layout. */
+function RtlField({
+  label,
+  value,
+  valueLtr = false,
+}: {
+  label: string;
+  value: string;
+  valueLtr?: boolean;
+}) {
   return (
-    <Text>
-      <Text style={styles.metaLabel}>{label}: </Text>
-      <Text>{value}</Text>
-    </Text>
+    <View style={styles.rtlLine}>
+      <Text style={valueLtr ? styles.ltr : undefined}>{value}</Text>
+      <Text style={styles.metaLabel}>{label}:</Text>
+    </View>
+  );
+}
+
+function TableColumns({
+  row,
+  idx,
+  sku,
+  desc,
+  unit,
+  qty,
+  line,
+}: {
+  row: number;
+  idx: number;
+  sku: string;
+  desc: string;
+  unit: string;
+  qty: number | string;
+  line: string;
+}) {
+  return (
+    <>
+      <Text style={styles.colLine}>{line}</Text>
+      <Text style={styles.colQty}>{qty}</Text>
+      <Text style={[styles.colUnit, styles.amount]}>{unit}</Text>
+      <Text style={styles.colDesc}>{desc}</Text>
+      <Text style={styles.colSku}>{sku}</Text>
+      <Text style={styles.colIdx}>{idx}</Text>
+    </>
   );
 }
 
@@ -299,70 +349,62 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
     hour12: false,
   });
 
-  const docTitle = docNumber
-    ? `העתק - ${docType} ${docNumber}`
-    : `העתק - ${docType}`;
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerRow}>
-          <View style={styles.logoWrap}>
-            <Image style={styles.logo} src={LOGO_URL} />
-          </View>
           <View style={styles.businessBlock}>
             <Text style={styles.businessTitle}>קבוצת הום קמעונאות בע״מ</Text>
             <Text style={styles.businessLine}>
               השטיח האדום{branch ? ` — ${branch}` : ""}
             </Text>
-            <Text style={styles.businessLine}>
-              <Text style={styles.metaLabel}>טלפון: </Text>
-              <Text style={styles.ltr}>*3076</Text>
-            </Text>
-            <Text style={styles.businessLine}>
-              <Text style={styles.metaLabel}>עוסק מורשה: </Text>
-              <Text style={styles.ltr}>515713212</Text>
-            </Text>
-            <Text style={styles.businessLine}>
-              <Text style={styles.metaLabel}>מספר תיק במע״מ: </Text>
-              <Text style={styles.ltr}>515713212</Text>
-            </Text>
-            <Text style={styles.siteLine}>
-              <Text style={styles.metaLabel}>אתר: </Text>
-              <Text style={styles.ltr}>www.carpetshop.co.il</Text>
-            </Text>
+            <RtlField label="טלפון" value="*3076" valueLtr />
+            <RtlField label="עוסק מורשה" value="515713212" valueLtr />
+            <RtlField label="מספר תיק במע״מ" value="515713212" valueLtr />
+            <View style={styles.siteLine}>
+              <RtlField label="אתר" value="www.carpetshop.co.il" valueLtr />
+            </View>
+          </View>
+          <View style={styles.logoWrap}>
+            <Image style={styles.logo} src={LOGO_URL} />
           </View>
         </View>
 
         <View style={styles.metaRow}>
-          <View style={styles.metaColCustomer}>
-            <Text style={styles.metaLabel}>לכבוד:</Text>
-            <Text style={styles.customerName}>{customer || "—"}</Text>
-            {phone ? (
-              <Text>
-                <Text style={styles.metaLabel}>טלפון: </Text>
-                <Text style={styles.ltr}>{phone}</Text>
-              </Text>
-            ) : null}
+          <View style={styles.metaCol}>
+            <RtlField label="תאריך הקבלה" value={printDate || "—"} />
+            <RtlField label="תאריך הדפסה" value={printDateStr} />
+            <RtlField label="שעת הדפסה" value={printTimeStr} />
+            <RtlField label="נציג מכירות" value={rep || "—"} />
           </View>
           <View style={styles.metaCol}>
-            <MetaLine label="תאריך הקבלה" value={printDate || "—"} />
-            <MetaLine label="תאריך הדפסה" value={printDateStr} />
-            <MetaLine label="שעת הדפסה" value={printTimeStr} />
-            <MetaLine label="נציג מכירות" value={rep || "—"} />
+            <Text style={styles.metaLabel}>לכבוד:</Text>
+            <Text style={styles.customerName}>{customer || "—"}</Text>
+            {phone ? <RtlField label="טלפון" value={phone} valueLtr /> : null}
           </View>
         </View>
 
-        <Text style={styles.docTitle}>{docTitle}</Text>
+        <View style={styles.docTitle}>
+          {docNumber ? (
+            <>
+              <Text>העתק</Text>
+              <Text> - </Text>
+              <Text>{docType} </Text>
+              <Text style={styles.ltr}>{docNumber}</Text>
+            </>
+          ) : (
+            <Text>העתק - {docType}</Text>
+          )}
+        </View>
 
         <View style={styles.table}>
           <View style={styles.tableHeader}>
-            <Text style={styles.colIdx}>שורה</Text>
-            <Text style={styles.colSku}>מק״ט</Text>
-            <Text style={styles.colDesc}>תיאור פריט</Text>
-            <Text style={styles.colUnit}>מחיר ליחידה</Text>
-            <Text style={styles.colQty}>כמות</Text>
             <Text style={styles.colLine}>לתשלום</Text>
+            <Text style={styles.colQty}>כמות</Text>
+            <Text style={styles.colUnit}>מחיר ליחידה</Text>
+            <Text style={styles.colDesc}>תיאור פריט</Text>
+            <Text style={styles.colSku}>מק״ט</Text>
+            <Text style={styles.colIdx}>שורה</Text>
           </View>
           {items.map((item, i) => {
             const qty = item.ItemQTY ?? 0;
@@ -377,44 +419,40 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
                   : styles.tableRow;
             return (
               <View key={i} style={rowStyle}>
-                <Text style={styles.colIdx}>{i + 1}</Text>
-                <Text style={styles.colSku}>{item.ItemSKU ?? "—"}</Text>
-                <Text style={styles.colDesc}>{item.ItemDescription ?? "—"}</Text>
-                <Text style={[styles.colUnit, styles.amount]}>
-                  {formatMoneyIls(price)}
-                </Text>
-                <Text style={styles.colQty}>{qty}</Text>
-                <Text style={[styles.colLine, styles.amount]}>
-                  {formatMoneyIls(lineTotal)}
-                </Text>
+                <TableColumns
+                  row={i}
+                  idx={i + 1}
+                  sku={item.ItemSKU ?? "—"}
+                  desc={item.ItemDescription ?? "—"}
+                  unit={formatMoneyIls(price)}
+                  qty={qty}
+                  line={formatMoneyIls(lineTotal)}
+                />
               </View>
             );
           })}
         </View>
 
         <View style={styles.summaryWrap}>
+          <View style={styles.sideMeta}>
+            <RtlField label="סניף" value={branch || "—"} />
+            {payload.BranchID != null && payload.BranchID !== "" ? (
+              <RtlField label="מזהה סניף" value={String(payload.BranchID)} valueLtr />
+            ) : null}
+          </View>
           <View style={styles.summaryBox}>
             <View style={styles.summaryRow}>
-              <Text>סה״כ ללא מע״מ</Text>
               <Text style={styles.amount}>{formatMoneyIls(subtotal)}</Text>
+              <Text>סה״כ ללא מע״מ</Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text>מע״מ ({Math.round(VAT_RATE * 100)}%)</Text>
               <Text style={styles.amount}>{formatMoneyIls(vat)}</Text>
+              <Text>מע״מ ({Math.round(VAT_RATE * 100)}%)</Text>
             </View>
             <View style={[styles.summaryRow, styles.summaryTotal]}>
-              <Text>סה״כ לתשלום</Text>
               <Text style={styles.amount}>{formatMoneyIls(total)}</Text>
+              <Text>סה״כ לתשלום</Text>
             </View>
-          </View>
-          <View style={styles.sideMeta}>
-            <MetaLine label="סניף" value={branch || "—"} />
-            {payload.BranchID != null && payload.BranchID !== "" ? (
-              <Text>
-                <Text style={styles.metaLabel}>מזהה סניף: </Text>
-                <Text style={styles.ltr}>{String(payload.BranchID)}</Text>
-              </Text>
-            ) : null}
           </View>
         </View>
 
