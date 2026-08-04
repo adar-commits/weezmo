@@ -1,3 +1,4 @@
+import { resolveBranchDisplayName } from "@/lib/allowed-branches";
 import { PDF_HEBREW_FONT_FAMILY } from "@/lib/pdf/register-noto-hebrew-pdf";
 import {
   Document,
@@ -337,7 +338,7 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
   const docType = docTypeLabel(payload.type);
   const docNumber = payload.InvoiceNumber ?? "";
   const printDate = payload.PrintDate ?? "";
-  const branch = payload.BranchName ?? "";
+  const branch = resolveBranchDisplayName(payload);
   const rep = payload.SalesRepresentative ?? "";
   const customer = payload.CustomerName ?? "";
   const phone = payload.CustomerPhone ?? "";

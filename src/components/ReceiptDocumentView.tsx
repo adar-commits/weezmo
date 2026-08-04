@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CustomerClubModal } from "@/components/CustomerClubModal";
 import { BRAND_LINKS } from "@/config/links";
+import { resolveBranchDisplayName } from "@/lib/allowed-branches";
 import { getBranchFeedbackUrl } from "@/lib/branch-feedback-urls";
 import type { CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
@@ -37,7 +38,7 @@ export function ReceiptDocumentView({
   documentId: string;
   payload: CreateDocumentPayload;
 }) {
-  const branchName = payload.BranchName ?? "";
+  const branchName = resolveBranchDisplayName(payload);
   const repName = payload.SalesRepresentative ?? "";
   const printDate = payload.PrintDate ?? "";
   const feedbackUrl =

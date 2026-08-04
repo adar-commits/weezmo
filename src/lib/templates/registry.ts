@@ -1,5 +1,5 @@
 import { TEMPLATE_IDS, type TemplateId } from "@/constants/templates";
-import { assertAllowedBranchId } from "@/lib/allowed-branches";
+import { assertAllowedBranchId, getBranchName } from "@/lib/allowed-branches";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
 import type { CreateDocumentPayload } from "@/types/document";
 import { payloadTypeToDbType } from "@/types/document";
@@ -92,6 +92,11 @@ export function parseCreateDocumentBody(raw: unknown): ParsedCreate {
     Items: r.data.Items,
     BranchID: branchCheck.branchId,
   } as unknown as CreateDocumentPayload;
+
+  if (!merged.BranchName?.trim()) {
+    const mapped = getBranchName(branchCheck.branchId);
+    if (mapped) merged.BranchName = mapped;
+  }
 
   return {
     ok: true,
