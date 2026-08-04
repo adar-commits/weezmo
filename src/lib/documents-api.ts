@@ -10,6 +10,8 @@ export type DocumentApiResult = {
   total_price: number | null;
   invoice_number: string | null;
   branchid: string | null;
+  customerPhone: string | null;
+  customerEmail: string | null;
 };
 
 type DocumentRow = {
@@ -17,6 +19,7 @@ type DocumentRow = {
   created_at: string;
   template_id?: string | null;
   branch_id?: string | null;
+  customer_phone?: string | null;
   payload?: unknown;
 };
 
@@ -57,6 +60,26 @@ export function resolveDocumentInvoiceNumber(payload: unknown): string | null {
   return null;
 }
 
+export function resolveDocumentCustomerPhone(row: {
+  customer_phone?: string | null;
+  payload?: unknown;
+}): string | null {
+  if (row.customer_phone != null && String(row.customer_phone).trim() !== "") {
+    return String(row.customer_phone).trim();
+  }
+  const p = asRecord(row.payload);
+  const raw = p?.CustomerPhone ?? p?.customer_phone ?? p?.customerPhone;
+  if (raw != null && String(raw).trim() !== "") return String(raw).trim();
+  return null;
+}
+
+export function resolveDocumentCustomerEmail(payload: unknown): string | null {
+  const p = asRecord(payload);
+  const raw = p?.CustomerEmail ?? p?.customer_email ?? p?.customerEmail;
+  if (raw != null && String(raw).trim() !== "") return String(raw).trim();
+  return null;
+}
+
 export function toDocumentApiResult(row: DocumentRow): DocumentApiResult {
   const templateId = resolveTemplateFromRow(row);
   return {
@@ -67,6 +90,8 @@ export function toDocumentApiResult(row: DocumentRow): DocumentApiResult {
     total_price: resolveDocumentTotalPrice(row.payload),
     invoice_number: resolveDocumentInvoiceNumber(row.payload),
     branchid: resolveDocumentBranchId(row),
+    customerPhone: resolveDocumentCustomerPhone(row),
+    customerEmail: resolveDocumentCustomerEmail(row.payload),
   };
 }
 

@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
 
   let q = supabase
     .from("documents")
-    .select("id, created_at, template_id, branch_id, payload", { count: "exact" });
+    .select("id, created_at, template_id, branch_id, customer_phone, payload", { count: "exact" });
 
   if (templateId === TEMPLATE_IDS.receipt || templateId === TEMPLATE_IDS.customerSurvey) {
     q = q.eq("template_id", templateId);
@@ -181,6 +181,7 @@ export async function POST(req: NextRequest) {
     created_at: new Date().toISOString(),
     template_id: parsed.templateId,
     branch_id: insertRow.branch_id as string | null,
+    customer_phone: insertRow.customer_phone as string | null,
     payload: parsed.payload,
   });
 
@@ -195,6 +196,8 @@ export async function POST(req: NextRequest) {
       total_price: summary.total_price,
       invoice_number: summary.invoice_number,
       branchid: summary.branchid,
+      customerPhone: summary.customerPhone,
+      customerEmail: summary.customerEmail,
     },
   });
 }
