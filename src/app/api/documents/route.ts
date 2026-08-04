@@ -3,6 +3,7 @@ import { TEMPLATE_IDS } from "@/constants/templates";
 import {
   DOCUMENTS_API_DEFAULT_PAGE_SIZE,
   DOCUMENTS_API_MAX_PAGE_SIZE,
+  isDocumentsApiAuthorized,
   receiptDenormFromPayload,
   toDocumentApiResult,
 } from "@/lib/documents-api";
@@ -10,12 +11,6 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getPublicDocumentUrl } from "@/lib/public-urls";
 import { parseCreateDocumentBody } from "@/lib/templates/registry";
 import type { CreateDocumentPayload } from "@/types/document";
-
-function getApiKey(req: NextRequest): string | null {
-  const authHeader = req.headers.get("authorization");
-  if (authHeader?.startsWith("Bearer ")) return authHeader.slice(7);
-  return req.headers.get("x-api-key");
-}
 
 function unauthorized() {
   return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
@@ -29,9 +24,7 @@ function parsePositiveInt(raw: string | null, fallback: number, max?: number): n
 }
 
 export async function GET(req: NextRequest) {
-  const apiKey = getApiKey(req);
-  const expectedKey = process.env.DOCUMENTS_API_KEY;
-  if (!expectedKey || apiKey !== expectedKey) {
+  if (!isDocumentsApiAuthorized(req)) {
     return unauthorized();
   }
 
@@ -105,9 +98,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const apiKey = getApiKey(req);
-  const expectedKey = process.env.DOCUMENTS_API_KEY;
-  if (!expectedKey || apiKey !== expectedKey) {
+  if (!isDocumentsApiAuthorized(req)) {
     return NextResponse.json(
       { status: "error", message: "Unauthorized" },
       { status: 401 }

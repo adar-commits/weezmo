@@ -1,6 +1,21 @@
+import type { NextRequest } from "next/server";
+import { resolveBranchDisplayName } from "@/lib/allowed-branches";
 import type { CreateDocumentPayload } from "@/types/document";
 import { getPublicDocumentUrl } from "@/lib/public-urls";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
+import { TEMPLATE_IDS } from "@/constants/templates";
+
+export function getDocumentsApiKeyFromRequest(req: NextRequest): string | null {
+  const authHeader = req.headers.get("authorization");
+  if (authHeader?.startsWith("Bearer ")) return authHeader.slice(7);
+  return req.headers.get("x-api-key");
+}
+
+export function isDocumentsApiAuthorized(req: NextRequest): boolean {
+  const expectedKey = process.env.DOCUMENTS_API_KEY;
+  if (!expectedKey) return false;
+  return getDocumentsApiKeyFromRequest(req) === expectedKey;
+}
 
 export type DocumentApiResult = {
   id: string;
@@ -18,9 +33,20 @@ type DocumentRow = {
   id: string;
   created_at: string;
   template_id?: string | null;
+  type?: string | null;
   branch_id?: string | null;
+  customer_name?: string | null;
   customer_phone?: string | null;
   payload?: unknown;
+};
+
+export type DocumentApiDetail = DocumentApiResult & {
+  type: string | null;
+  branch_id: string | null;
+  customer_name: string | null;
+  branchName: string | null;
+  payload: unknown;
+  pdf_link: string | null;
 };
 
 function asRecord(v: unknown): Record<string, unknown> | undefined {
@@ -92,6 +118,26 @@ export function toDocumentApiResult(row: DocumentRow): DocumentApiResult {
     branchid: resolveDocumentBranchId(row),
     customerPhone: resolveDocumentCustomerPhone(row),
     customerEmail: resolveDocumentCustomerEmail(row.payload),
+  };
+}
+
+export function toDocumentApiDetail(row: DocumentRow): DocumentApiDetail {
+  const summary = toDocumentApiResult(row);
+  const templateId = resolveTemplateFromRow(row);
+  const payload = asRecord(row.payload) ?? row.payload ?? {};
+  const receiptPayload = payload as CreateDocumentPayload;
+
+  return {
+    ...summary,
+    type: row.type ?? null,
+    branch_id: row.branch_id ?? null,
+    customer_name: row.customer_name ?? receiptPayload.CustomerName ?? null,
+    branchName: resolveBranchDisplayName(receiptPayload) || null,
+    payload,
+    pdf_link:
+      templateId === TEMPLATE_IDS.receipt
+        ? `${summary.link}/pdf`
+        : null,
   };
 }
 
