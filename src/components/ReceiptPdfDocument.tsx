@@ -1,4 +1,5 @@
 import { resolveBranchDisplayName } from "@/lib/allowed-branches";
+import { resolveDocumentTypeLabel } from "@/types/document";
 import { PDF_HEBREW_FONT_FAMILY } from "@/lib/pdf/register-noto-hebrew-pdf";
 import {
   Document,
@@ -265,14 +266,6 @@ function resolveTotals(total: number, vatFromPayload?: number) {
   return { vat, subtotal };
 }
 
-function docTypeLabel(type?: string) {
-  if (!type) return "קבלה";
-  if (type.includes("חשבונית")) return "חשבונית";
-  const t = type.toLowerCase();
-  if (t === "invoice") return "חשבונית";
-  return "קבלה";
-}
-
 function hebrewLabel(label: string): string {
   return `${label}${RLM}:`;
 }
@@ -335,7 +328,7 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
   const items = payload.Items ?? [];
   const total = payload.TotalPrice ?? 0;
   const { vat, subtotal } = resolveTotals(total, payload.VAT);
-  const docType = docTypeLabel(payload.type);
+  const docType = resolveDocumentTypeLabel(payload.type);
   const docNumber = payload.InvoiceNumber ?? "";
   const printDate = payload.PrintDate ?? "";
   const branch = resolveBranchDisplayName(payload);

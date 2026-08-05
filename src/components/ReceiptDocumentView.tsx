@@ -3,7 +3,7 @@ import { CustomerClubModal } from "@/components/CustomerClubModal";
 import { BRAND_LINKS } from "@/config/links";
 import { resolveBranchDisplayName } from "@/lib/allowed-branches";
 import { getBranchFeedbackUrl } from "@/lib/branch-feedback-urls";
-import type { CreateDocumentPayload } from "@/types/document";
+import { resolveDocumentTypeLabel, type CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
 
 const IMG_BASE = "/images";
@@ -26,7 +26,7 @@ function formatPrice(value: number): string {
 }
 
 function formatDocSub(payload: CreateDocumentPayload): string {
-  const type = payload.type === "invoice" ? "חשבונית" : "קבלה";
+  const type = resolveDocumentTypeLabel(payload.type);
   const num = payload.InvoiceNumber ?? "";
   return num ? `${type} ${num}` : type;
 }

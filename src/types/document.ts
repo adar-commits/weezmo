@@ -32,3 +32,14 @@ export function payloadTypeToDbType(displayType?: string): "receipt" | "invoice"
   if (t.includes("משלוח") || t.includes("delivery")) return "delivery_note";
   return "receipt";
 }
+
+/** Hebrew label for document header/PDF — uses payload.type when provided. */
+export function resolveDocumentTypeLabel(displayType?: string): string {
+  const t = displayType?.trim();
+  if (!t) return "קבלה";
+  const lower = t.toLowerCase();
+  if (lower === "invoice") return "חשבונית מס";
+  if (lower === "receipt") return "קבלה";
+  if (lower === "delivery_note") return "תעודת משלוח";
+  return t;
+}
