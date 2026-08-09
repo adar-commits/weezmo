@@ -4,55 +4,65 @@ html:has(.architects-page),
 body:has(.architects-page) {
   margin: 0;
   padding: 0;
-  background: #ffffff;
+  background: #f2f2f2;
 }
 
 .architects-page {
+  --arch-scale: 1.15;
+  --arch-bg: #f2f2f2;
   --arch-red: #e30613;
   --arch-dark: #1a1a1a;
   --arch-muted: #666666;
   --arch-border: #d9d9d9;
   --arch-link: #0d6efd;
+  --arch-success: #1b7f3b;
+  --arch-success-bg: #e8f5ec;
   --arch-font: "Open Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
   direction: rtl;
   text-align: right;
   font-family: var(--arch-font);
   color: var(--arch-dark);
-  font-size: 15px;
+  font-size: calc(15px * var(--arch-scale));
   line-height: 1.45;
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--arch-bg);
   -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.architects-page.is-ready {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease;
 }
 
 .architects-page__inner {
-  max-width: 920px;
+  max-width: calc(920px * var(--arch-scale));
   margin: 0 auto;
-  padding: 48px 24px 64px;
+  padding: calc(48px * var(--arch-scale)) calc(24px * var(--arch-scale))
+    calc(64px * var(--arch-scale));
   box-sizing: border-box;
+  animation: architects-fade-in 0.45s ease-out both;
 }
 
 .architects-page__logo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 28px;
-  height: 88px;
-  overflow: hidden;
+  margin-bottom: calc(28px * var(--arch-scale));
 }
 
 .architects-page__logo {
   width: auto;
-  height: 220px;
-  max-width: min(100%, 360px);
+  height: auto;
+  max-width: min(100%, calc(420px * var(--arch-scale)));
   object-fit: contain;
-  object-position: center top;
-  margin-top: 0;
 }
 
 .architects-page__title {
-  margin: 0 0 36px;
+  margin: 0 0 calc(36px * var(--arch-scale));
   text-align: center;
-  font-size: clamp(22px, 3.2vw, 30px);
+  font-size: clamp(calc(22px * var(--arch-scale)), 3.2vw, calc(30px * var(--arch-scale)));
   font-weight: 700;
   line-height: 1.25;
   color: var(--arch-dark);
@@ -60,12 +70,12 @@ body:has(.architects-page) {
 
 .architects-form__grid {
   display: grid;
-  gap: 18px 16px;
+  gap: calc(18px * var(--arch-scale)) calc(16px * var(--arch-scale));
 }
 
 .architects-form__row {
   display: grid;
-  gap: 18px 16px;
+  gap: calc(18px * var(--arch-scale)) calc(16px * var(--arch-scale));
 }
 
 .architects-form__row--3 {
@@ -87,7 +97,7 @@ body:has(.architects-page) {
 .architects-form__field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: calc(6px * var(--arch-scale));
   min-width: 0;
 }
 
@@ -96,7 +106,7 @@ body:has(.architects-page) {
 }
 
 .architects-form__label {
-  font-size: 14px;
+  font-size: calc(14px * var(--arch-scale));
   font-weight: 400;
   color: var(--arch-dark);
   line-height: 1.3;
@@ -106,10 +116,10 @@ body:has(.architects-page) {
 .architects-form__select {
   width: 100%;
   box-sizing: border-box;
-  height: 40px;
-  padding: 0 12px;
+  height: calc(40px * var(--arch-scale));
+  padding: 0 calc(12px * var(--arch-scale));
   border: 1px solid var(--arch-border);
-  border-radius: 4px;
+  border-radius: calc(4px * var(--arch-scale));
   background: #ffffff;
   font: inherit;
   color: var(--arch-dark);
@@ -117,10 +127,10 @@ body:has(.architects-page) {
 }
 
 .architects-form__select {
-  padding-left: 32px;
+  padding-left: calc(32px * var(--arch-scale));
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: left 12px center;
+  background-position: left calc(12px * var(--arch-scale)) center;
   cursor: pointer;
 }
 
@@ -139,16 +149,16 @@ body:has(.architects-page) {
 }
 
 .architects-form__date-wrap .architects-form__input {
-  padding-left: 36px;
+  padding-left: calc(36px * var(--arch-scale));
 }
 
 .architects-form__date-icon {
   position: absolute;
-  left: 10px;
+  left: calc(10px * var(--arch-scale));
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: calc(18px * var(--arch-scale));
+  height: calc(18px * var(--arch-scale));
   pointer-events: none;
   color: #888888;
 }
@@ -156,21 +166,21 @@ body:has(.architects-page) {
 .architects-form__consent {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-top: 8px;
+  gap: calc(10px * var(--arch-scale));
+  margin-top: calc(8px * var(--arch-scale));
 }
 
 .architects-form__consent input[type="checkbox"] {
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
+  width: calc(18px * var(--arch-scale));
+  height: calc(18px * var(--arch-scale));
+  margin-top: calc(2px * var(--arch-scale));
   accent-color: var(--arch-link);
   cursor: pointer;
 }
 
 .architects-form__consent-text {
-  font-size: 14px;
+  font-size: calc(14px * var(--arch-scale));
   line-height: 1.5;
   color: var(--arch-dark);
 }
@@ -180,28 +190,50 @@ body:has(.architects-page) {
   text-decoration: underline;
 }
 
-.architects-form__error {
-  margin: 12px 0 0;
-  font-size: 14px;
-  color: #c62828;
+.architects-form__alert {
+  margin: calc(12px * var(--arch-scale)) 0 0;
+  padding: calc(12px * var(--arch-scale)) calc(16px * var(--arch-scale));
+  border-radius: calc(6px * var(--arch-scale));
+  font-size: calc(14px * var(--arch-scale));
+  line-height: 1.45;
   display: none;
 }
 
-.architects-form__error.is-visible {
+.architects-form__alert.is-visible {
   display: block;
 }
 
+.architects-form__alert--error {
+  color: #b71c1c;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+}
+
+.architects-form__alert--success {
+  color: var(--arch-success);
+  background: var(--arch-success-bg);
+  border: 1px solid #b7dfc4;
+  text-align: center;
+  font-size: calc(16px * var(--arch-scale));
+  font-weight: 600;
+  padding: calc(20px * var(--arch-scale)) calc(24px * var(--arch-scale));
+  margin-top: calc(24px * var(--arch-scale));
+}
+
 .architects-form__submit {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10px * var(--arch-scale));
   width: 100%;
-  margin-top: 22px;
-  height: 52px;
+  margin-top: calc(22px * var(--arch-scale));
+  height: calc(52px * var(--arch-scale));
   border: none;
-  border-radius: 6px;
+  border-radius: calc(6px * var(--arch-scale));
   background: var(--arch-red);
   color: #ffffff;
   font: inherit;
-  font-size: 18px;
+  font-size: calc(18px * var(--arch-scale));
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s ease;
@@ -216,12 +248,80 @@ body:has(.architects-page) {
   cursor: not-allowed;
 }
 
-.architects-form__success {
-  text-align: center;
-  padding: 48px 16px;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--arch-dark);
+.architects-form__submit-spinner {
+  width: calc(20px * var(--arch-scale));
+  height: calc(20px * var(--arch-scale));
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: architects-spin 0.75s linear infinite;
+}
+
+/* Entrance loader */
+.architects-entrance {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(28px * var(--arch-scale));
+  background: var(--arch-bg);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.architects-entrance.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.architects-entrance__logo {
+  width: auto;
+  height: auto;
+  max-width: min(88vw, calc(380px * var(--arch-scale)));
+  object-fit: contain;
+  animation: architects-fade-in 0.5s ease-out both;
+}
+
+.architects-entrance__spinner {
+  width: calc(52px * var(--arch-scale));
+  height: calc(52px * var(--arch-scale));
+  border-radius: 50%;
+  border: 3px solid rgba(227, 6, 19, 0.14);
+  border-top-color: var(--arch-red);
+  border-right-color: rgba(227, 6, 19, 0.55);
+  animation: architects-spin 0.9s cubic-bezier(0.55, 0.15, 0.35, 0.85) infinite;
+}
+
+@keyframes architects-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes architects-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 768px) {
@@ -237,6 +337,7 @@ body:has(.architects-page) {
   }
 
   .architects-page__inner {
-    padding: 32px 16px 48px;
+    padding: calc(32px * var(--arch-scale)) calc(16px * var(--arch-scale))
+      calc(48px * var(--arch-scale));
   }
 }
