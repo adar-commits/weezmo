@@ -41,6 +41,13 @@ export function getDocumentsBaseUrl(): string {
   );
 }
 
+export function getDesignersBaseUrl(): string {
+  return normalizeBaseUrl(
+    process.env.NEXT_PUBLIC_DESIGNERS_URL,
+    productionFallback("https://designers.carpetshop.co.il")
+  );
+}
+
 /** Old receipts app host: receipts.carpetshop.co.il/{mongoId} */
 export function getLegacyReceiptsBaseUrl(): string {
   return normalizeBaseUrl(
@@ -88,6 +95,7 @@ export function getCustomerFacingHostnames(): string[] {
     hostnameFromBaseUrl(getTrackingBaseUrl()),
     hostnameFromBaseUrl(getSurveyBaseUrl()),
     hostnameFromBaseUrl(getDocumentsBaseUrl()),
+    hostnameFromBaseUrl(getDesignersBaseUrl()),
     getLegacyReceiptsHostname(),
   ].filter((h): h is string => Boolean(h));
 
@@ -101,6 +109,10 @@ export function isCustomerFacingHost(hostname: string): boolean {
 
 export function getTrackingHostname(): string | null {
   return hostnameFromBaseUrl(getTrackingBaseUrl());
+}
+
+export function getDesignersHostname(): string | null {
+  return hostnameFromBaseUrl(getDesignersBaseUrl());
 }
 
 export type PublicUrlKind = "app" | "tracking" | "survey" | "documents";

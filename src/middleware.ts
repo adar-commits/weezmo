@@ -7,6 +7,7 @@ import {
 } from "@/lib/legacy-receipt-redirect";
 import {
   getAppBaseUrl,
+  getDesignersHostname,
   getDocumentsBaseUrl,
   getTrackingHostname,
   isCustomerFacingHost,
@@ -72,6 +73,13 @@ function handleBrandedSubdomain(request: NextRequest): NextResponse | null {
     const trackUrl = request.nextUrl.clone();
     trackUrl.pathname = "/track";
     return NextResponse.redirect(trackUrl);
+  }
+
+  const designersHost = getDesignersHostname();
+  if (designersHost && hostname === designersHost && pathname === "/") {
+    const architectsUrl = request.nextUrl.clone();
+    architectsUrl.pathname = "/architects";
+    return NextResponse.redirect(architectsUrl);
   }
 
   return NextResponse.next({ request });
