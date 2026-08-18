@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notoSansHebrew } from "@/lib/fonts/noto-hebrew";
 
 export const metadata: Metadata = {
-  title: "ניהול | Weezmo",
+  title: { absolute: "ניהול | Weezmo" },
   description: "דשבורד סקרי לקוחות",
 };
 

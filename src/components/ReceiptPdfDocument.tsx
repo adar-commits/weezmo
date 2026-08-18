@@ -1,5 +1,6 @@
 import { resolveBranchDisplayName } from "@/lib/allowed-branches";
-import { resolveDocumentTypeLabel } from "@/types/document";
+import { formatDocumentHeading, resolveDocumentTypeLabel } from "@/types/document";
+import { BRAND_NAME } from "@/config/brand";
 import { PDF_HEBREW_FONT_FAMILY } from "@/lib/pdf/register-noto-hebrew-pdf";
 import {
   Document,
@@ -349,7 +350,7 @@ export function ReceiptPdfDocument({ payload }: { payload: Payload }) {
   });
 
   return (
-    <Document>
+    <Document title={formatDocumentHeading(payload)} author={BRAND_NAME}>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerRow}>
           <View style={styles.logoWrap}>

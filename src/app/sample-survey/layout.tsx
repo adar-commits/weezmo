@@ -1,4 +1,7 @@
 import { Noto_Sans_Hebrew } from "next/font/google";
+import { PUBLIC_PAGE_TITLES, publicPageMetadata } from "@/config/brand";
+
+export const metadata = publicPageMetadata(PUBLIC_PAGE_TITLES.survey);
 
 const notoSansHebrew = Noto_Sans_Hebrew({
   weight: ["400", "500", "700", "900"],

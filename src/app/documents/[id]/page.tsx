@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { ReceiptDocumentView } from "@/components/ReceiptDocumentView";
+import { PUBLIC_PAGE_TITLES, publicPageMetadata } from "@/config/brand";
 import { TEMPLATE_IDS } from "@/constants/templates";
+import { getDocumentRow } from "@/lib/documents/get-document-row";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
-import type { CreateDocumentPayload } from "@/types/document";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
-import type { DeliveryAddressPayload } from "@/types/delivery-address";
+import {
+  DEFAULT_DELIVERY_ADDRESS_TITLE,
+  type DeliveryAddressPayload,
+} from "@/types/delivery-address";
+import {
+  formatDocumentHeading,
+  type CreateDocumentPayload,
+} from "@/types/document";
 import { DocumentPageShell } from "@/components/DocumentPageShell";
 import { CustomerSurveyView } from "./CustomerSurveyView";
 import { DeliveryAddressView } from "./DeliveryAddressView";
@@ -13,20 +21,41 @@ import "./document-page.css";
 import "./survey-page.css";
 import "./delivery-address-page.css";
 
-export default async function DocumentPage({
-  params,
-}: {
+type PageProps = {
   params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase
-    .from("documents")
-    .select("template_id, payload")
-    .eq("id", id)
-    .single();
+};
 
-  if (error || !data) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getDocumentRow(id);
+  if (!data) {
+    return publicPageMetadata(PUBLIC_PAGE_TITLES.document);
+  }
+
+  const templateId = resolveTemplateFromRow(data);
+
+  if (templateId === TEMPLATE_IDS.customerSurvey) {
+    const payload = data.payload as CustomerSurveyPayload;
+    return publicPageMetadata(payload.title?.trim() || PUBLIC_PAGE_TITLES.survey);
+  }
+
+  if (templateId === TEMPLATE_IDS.deliveryAddress) {
+    const payload = data.payload as DeliveryAddressPayload;
+    return publicPageMetadata(
+      payload.title?.trim() || DEFAULT_DELIVERY_ADDRESS_TITLE
+    );
+  }
+
+  return publicPageMetadata(
+    formatDocumentHeading(data.payload as CreateDocumentPayload)
+  );
+}
+
+export default async function DocumentPage({ params }: PageProps) {
+  const { id } = await params;
+  const data = await getDocumentRow(id);
+
+  if (!data) {
     notFound();
   }
 

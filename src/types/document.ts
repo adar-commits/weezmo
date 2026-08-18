@@ -43,3 +43,10 @@ export function resolveDocumentTypeLabel(displayType?: string): string {
   if (lower === "delivery_note") return "תעודת משלוח";
   return t;
 }
+
+/** Visible heading / browser tab for a receipt-style document. */
+export function formatDocumentHeading(payload: Pick<CreateDocumentPayload, "type" | "InvoiceNumber">): string {
+  const type = resolveDocumentTypeLabel(payload.type);
+  const num = payload.InvoiceNumber?.trim();
+  return num ? `${type} ${num}` : type;
+}

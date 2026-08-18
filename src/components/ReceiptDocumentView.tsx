@@ -3,7 +3,7 @@ import { CustomerClubModal } from "@/components/CustomerClubModal";
 import { BRAND_LINKS } from "@/config/links";
 import { resolveBranchDisplayName } from "@/lib/allowed-branches";
 import { getBranchFeedbackUrl } from "@/lib/branch-feedback-urls";
-import { resolveDocumentTypeLabel, type CreateDocumentPayload } from "@/types/document";
+import { formatDocumentHeading, type CreateDocumentPayload } from "@/types/document";
 import { NewsletterForm } from "@/app/documents/[id]/NewsletterForm";
 
 const IMG_BASE = "/images";
@@ -23,12 +23,6 @@ function formatPrice(value: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
-}
-
-function formatDocSub(payload: CreateDocumentPayload): string {
-  const type = resolveDocumentTypeLabel(payload.type);
-  const num = payload.InvoiceNumber ?? "";
-  return num ? `${type} ${num}` : type;
 }
 
 export function ReceiptDocumentView({
@@ -57,7 +51,7 @@ export function ReceiptDocumentView({
           <img className="logo" src={LOGO_URL} alt="HōM GROUP" />
         </div>
         <h1 className="text-danger">מסמך דיגיטלי</h1>
-        <h4 className="doc-sub">{formatDocSub(payload)}</h4>
+        <h4 className="doc-sub">{formatDocumentHeading(payload)}</h4>
         <div className="header-inner">
           <div className="banner-wrap">
             <img src={BANNER_URL} className="img-fluid" alt="לוגו השטיח האדום" />
