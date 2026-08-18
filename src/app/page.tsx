@@ -26,6 +26,11 @@ export default function Home() {
         locally only.
       </p>
       <p>
+        <strong>Delivery address form (instant preview):</strong>{" "}
+        <Link href="/sample-delivery-address">Open sample delivery address preview</Link> — pre-filled
+        fields; submit completes locally only.
+      </p>
+      <p>
         <strong>Order tracking (instant preview):</strong>{" "}
         <Link href="/sample-tracking">Open sample tracking preview</Link> — mock data; live links use{" "}
         <code>/track?orderID=SO…</code>.
@@ -43,7 +48,8 @@ export default function Home() {
           fontSize: "0.85rem",
         }}
       >
-        {`node --env-file=.env.local scripts/create-sample-survey.mjs`}
+        {`node --env-file=.env.local scripts/create-sample-survey.mjs
+node --env-file=.env.local scripts/create-sample-delivery-address.mjs`}
       </pre>
       <p style={{ fontSize: "0.9rem", color: "#555" }}>
         If you use Vercel: <code>vercel link</code> then <code>vercel env pull .env.local</code> to
