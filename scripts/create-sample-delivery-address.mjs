@@ -20,6 +20,8 @@ const key = process.env.DOCUMENTS_API_KEY;
 /** Partial pre-fill — customer can edit every field before submit. */
 const payload = {
   template_id: "delivery_address",
+  action: "generate",
+  customer_id: `sample-cust-${Date.now()}`,
   title: "פרטי משלוח",
   subtitle: "נראה שחסרים לנו פרטי כתובת למשלוח — נשמח שתמלאו את הטופס",
   order_id: `sample-address-${Date.now()}`,

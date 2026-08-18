@@ -7,6 +7,7 @@ import "@/app/documents/[id]/delivery-address-page.css";
 
 const DEMO_PAYLOAD: DeliveryAddressPayload = {
   template_id: "delivery_address",
+  customer_id: "PREVIEW-DEMO-NO-DB",
   title: "פרטי משלוח",
   subtitle: "נראה שחסרים לנו פרטי כתובת למשלוח — נשמח שתמלאו את הטופס",
   order_id: "PREVIEW-DEMO-NO-DB",

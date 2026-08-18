@@ -87,17 +87,19 @@ export function parseCreateDocumentBody(raw: unknown): ParsedCreate {
     if (r.data.branch_id != null && String(r.data.branch_id).trim() !== "") {
       const branchCheck = assertAllowedBranchId(r.data.branch_id, "branch_id");
       if (!branchCheck.ok) return branchCheck;
+      const { action: _action, ...stored } = r.data;
       return {
         ok: true,
         templateId: TEMPLATE_IDS.deliveryAddress,
-        payload: { ...r.data, branch_id: branchCheck.branchId },
+        payload: { ...stored, branch_id: branchCheck.branchId },
         dbType: "delivery_note",
       };
     }
+    const { action: _action, ...stored } = r.data;
     return {
       ok: true,
       templateId: TEMPLATE_IDS.deliveryAddress,
-      payload: r.data,
+      payload: stored,
       dbType: "delivery_note",
     };
   }

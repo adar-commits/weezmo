@@ -1,4 +1,4 @@
-/* Delivery address form — reuses survey page shell tokens */
+/* Delivery address form — modern minimal */
 
 .doc-page.doc-page--survey .da-shell,
 .doc-page.doc-page--survey .da-shell * {
@@ -6,62 +6,62 @@
 }
 
 .da-preview-banner {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
   text-align: center;
-  color: var(--doc-muted);
-  background: rgba(179, 1, 3, 0.07);
-  border: 1px solid rgba(179, 1, 3, 0.18);
-  border-radius: 12px;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
   padding: 10px 14px;
-  margin-bottom: 14px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 16px;
 }
 
 .da-shell {
-  padding: 8px 0 max(2.5rem, env(safe-area-inset-bottom, 0px));
+  padding: 4px 0 max(2rem, env(safe-area-inset-bottom, 0px));
 }
 
 .da-header {
   text-align: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--doc-border);
-  margin-bottom: 8px;
+  padding-bottom: 20px;
+  margin-bottom: 4px;
 }
 
 .da-logo {
-  width: min(220px, 88vw);
+  width: min(200px, 82vw);
   max-width: 100%;
   height: auto;
-  margin: 0 auto 10px;
+  margin: 0 auto 16px;
   display: block;
 }
 
 .da-title {
-  font-size: clamp(1.3rem, 4.2vw, 1.6rem);
-  font-weight: 900;
+  font-size: clamp(1.35rem, 4.5vw, 1.65rem);
+  font-weight: 800;
   color: var(--doc-red);
-  margin: 6px 0 6px;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  margin: 0 0 8px;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 .da-subtitle {
-  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
-  color: var(--doc-muted);
-  margin: 0 0 4px;
-  line-height: 1.5;
-  padding: 0 2px;
+  font-size: clamp(0.875rem, 3vw, 0.975rem);
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.55;
+  padding: 0 4px;
+  max-width: 28ch;
+  margin-inline: auto;
 }
 
 .da-form {
-  padding-top: 10px;
+  padding-top: 4px;
 }
 
 .da-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px 12px;
+  gap: 16px 10px;
 }
 
 .da-field {
@@ -83,14 +83,14 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .da-field-enter {
-    animation: daFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: daFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
 @keyframes daFadeUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -99,88 +99,112 @@
 }
 
 .da-label {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--doc-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
   text-align: right;
+  letter-spacing: 0.01em;
 }
 
 .da-required {
-  color: #c62828;
+  color: var(--doc-red);
+  font-weight: 700;
 }
 
 .da-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 14px;
+  padding: 13px 14px;
   font-size: 1rem;
   font-family: inherit;
-  color: var(--doc-ink);
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid var(--doc-border);
-  border-radius: 12px;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
-    0 2px 8px rgba(0, 0, 0, 0.04);
+  color: #111827;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
   transition:
     border-color 0.15s ease,
+    background-color 0.15s ease,
     box-shadow 0.15s ease;
+}
+
+.da-input::placeholder {
+  color: #9ca3af;
+}
+
+.da-input:hover:not(:focus) {
+  border-color: #d1d5db;
+  background: #f3f4f6;
 }
 
 .da-textarea {
   resize: vertical;
-  min-height: 88px;
-  line-height: 1.45;
+  min-height: 96px;
+  line-height: 1.5;
 }
 
 .da-input:focus {
   outline: none;
-  border-color: rgba(179, 1, 3, 0.45);
-  box-shadow:
-    0 0 0 3px rgba(179, 1, 3, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.04);
+  background: #fff;
+  border-color: var(--doc-red);
+  box-shadow: 0 0 0 3px rgba(179, 1, 3, 0.1);
 }
 
 .da-error {
   color: #b30103;
+  font-size: 0.875rem;
   font-weight: 600;
   text-align: center;
-  margin: 14px 0 0;
-  grid-column: 1 / -1;
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: #fef2f2;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+}
+
+.da-submit-wrap {
+  margin-top: 28px;
+  padding-top: 4px;
 }
 
 .da-submit {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
-  max-width: 280px;
-  margin: 24px auto 0;
-  padding: 16px 24px;
-  font-size: 18px;
-  font-weight: 800;
-  font-family: var(--doc-font);
+  min-height: 52px;
+  padding: 0 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.02em;
   color: #fff;
-  background: linear-gradient(180deg, #c41418 0%, var(--doc-red) 55%, #8f0102 100%);
+  background: #111827;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(179, 1, 3, 0.35);
   transition:
+    background-color 0.18s ease,
     transform 0.12s ease,
-    box-shadow 0.12s ease,
     opacity 0.2s ease;
 }
 
 .da-submit:hover:not(:disabled) {
-  filter: brightness(1.05);
+  background: #1f2937;
 }
 
 .da-submit:active:not(:disabled) {
-  transform: translateY(2px);
+  transform: scale(0.985);
+}
+
+.da-submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.25);
 }
 
 .da-submit:disabled {
   cursor: wait;
-  opacity: 0.85;
+  opacity: 0.65;
 }
 
 .da-submit-inner {
@@ -190,12 +214,12 @@
 }
 
 .da-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
   border-radius: 50%;
-  animation: daSpin 0.65s linear infinite;
+  animation: daSpin 0.6s linear infinite;
 }
 
 @keyframes daSpin {
@@ -207,28 +231,31 @@
 /* Success */
 .da-success {
   text-align: center;
-  padding: 48px 16px 64px;
+  padding: 56px 16px 64px;
 }
 
 .da-success-icon {
   margin: 0 auto 20px;
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0fdf4;
+  border-radius: 50%;
 }
 
 .da-check-svg {
-  width: 80px;
-  height: 80px;
+  width: 44px;
+  height: 44px;
 }
 
 .da-check-circle {
-  stroke: var(--doc-red);
-  stroke-width: 2;
-  opacity: 0.9;
+  display: none;
 }
 
 .da-check-mark {
-  stroke: var(--doc-red);
+  stroke: #16a34a;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -238,7 +265,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .da-check-mark {
-    animation: daDraw 0.55s ease forwards 0.15s;
+    animation: daDraw 0.5s ease forwards 0.1s;
   }
 }
 
@@ -249,26 +276,28 @@
 }
 
 .da-success-title {
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--doc-red);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
   margin: 0 0 8px;
+  letter-spacing: -0.02em;
 }
 
 .da-success-text {
-  font-size: 17px;
-  color: var(--doc-muted);
+  font-size: 1rem;
+  color: #6b7280;
   margin: 0;
+  line-height: 1.5;
 }
 
 .da-confetti-piece {
   position: fixed;
-  width: 8px;
-  height: 10px;
+  width: 7px;
+  height: 9px;
   border-radius: 2px;
   pointer-events: none;
   z-index: 9999;
-  animation: daConfetti 1.8s ease-out forwards;
+  animation: daConfetti 1.6s ease-out forwards;
 }
 
 @keyframes daConfetti {

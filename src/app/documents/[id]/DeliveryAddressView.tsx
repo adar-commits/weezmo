@@ -223,21 +223,23 @@ export function DeliveryAddressView({
           </p>
         ) : null}
 
-        <button
-          type="submit"
-          className="da-submit"
-          disabled={submitting}
-          aria-busy={submitting}
-        >
-          {submitting ? (
-            <span className="da-submit-inner">
-              <span className="da-spinner" aria-hidden />
-              שולחים…
-            </span>
-          ) : (
-            "שליחה"
-          )}
-        </button>
+        <div className="da-submit-wrap">
+          <button
+            type="submit"
+            className="da-submit"
+            disabled={submitting}
+            aria-busy={submitting}
+          >
+            {submitting ? (
+              <span className="da-submit-inner">
+                <span className="da-spinner" aria-hidden />
+                שולחים…
+              </span>
+            ) : (
+              "שליחה"
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

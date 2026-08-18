@@ -1,5 +1,7 @@
 {
   "template_id": "delivery_address",
+  "action": "generate",
+  "customer_id": "CUST-12345",
   "title": "פרטי משלוח",
   "subtitle": "נראה שחסרים לנו פרטי כתובת למשלוח — נשמח שתמלאו את הטופס",
   "order_id": "shopify-order-5678901234",

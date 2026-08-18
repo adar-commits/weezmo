@@ -19,6 +19,8 @@ export interface DeliveryAddressFields {
 
 export interface DeliveryAddressPayload extends DeliveryAddressFields {
   template_id: "delivery_address";
+  /** Passed at creation; forwarded on submit webhook. */
+  customer_id?: string;
   title?: string;
   subtitle?: string;
   /** Overrides default carpetshop logo when set */

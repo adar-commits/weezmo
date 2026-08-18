@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { TEMPLATE_IDS } from "@/constants/templates";
+import {
+  buildDeliveryAddressWebhookBody,
+  DELIVERY_ADDRESS_WEBHOOK_URL,
+} from "@/lib/delivery-address-webhook";
 import { postJsonWebhook } from "@/lib/webhook-forward";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
 import type { DeliveryAddressFormValues, DeliveryAddressPayload } from "@/types/delivery-address";
@@ -110,39 +114,14 @@ export async function POST(req: NextRequest) {
   }
 
   const responseId = inserted.id as string;
-  const webhookUrl = process.env.DELIVERY_ADDRESS_SUBMIT_WEBHOOK_URL?.trim();
-
-  const forward = {
-    event: "delivery_address_submitted",
-    templateId: TEMPLATE_IDS.deliveryAddress,
+  const forward = buildDeliveryAddressWebhookBody({
     documentId,
     responseId,
-    order_id: orderId,
-    branch_id: branchId,
-    customer_name: address.full_name,
-    customer_phone: address.phone,
+    payload,
     address,
-    metadata: payload.metadata ?? null,
-    submitted_at: new Date().toISOString(),
-  };
+  });
 
-  if (!webhookUrl) {
-    await supabase
-      .from("delivery_address_responses")
-      .update({
-        webhook_status: "skipped",
-        webhook_error: "DELIVERY_ADDRESS_SUBMIT_WEBHOOK_URL not configured",
-      })
-      .eq("id", responseId);
-
-    return NextResponse.json({
-      success: true,
-      responseId,
-      webhookStatus: "skipped" as const,
-    });
-  }
-
-  const result = await postJsonWebhook(webhookUrl, forward);
+  const result = await postJsonWebhook(DELIVERY_ADDRESS_WEBHOOK_URL, forward);
   if (!result.ok) {
     console.error("Delivery address webhook error:", result.status, result.body);
     await supabase

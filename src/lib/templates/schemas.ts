@@ -9,6 +9,8 @@ const surveyQuestionSchema = z.object({
 
 export const deliveryAddressPayloadSchema = z.object({
   template_id: z.literal(TEMPLATE_IDS.deliveryAddress),
+  action: z.literal("generate"),
+  customer_id: z.string().min(1).max(256),
   title: z.string().min(1).max(200).optional(),
   subtitle: z.string().max(500).optional(),
   logoUrl: z.string().url().optional(),
