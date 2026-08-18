@@ -10,7 +10,10 @@ import {
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getPublicDocumentUrl } from "@/lib/public-urls";
 import { parseCreateDocumentBody } from "@/lib/templates/registry";
+import { findExistingDeliveryAddressByPhone } from "@/lib/delivery-address-dedup";
+import { normalizePhoneForDedup } from "@/lib/phone-normalize";
 import type { CreateDocumentPayload } from "@/types/document";
+import type { DeliveryAddressPayload } from "@/types/delivery-address";
 
 function unauthorized() {
   return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
@@ -149,7 +152,32 @@ export async function POST(req: NextRequest) {
     const p = parsed.payload;
     insertRow.branch_id = p.branch_id ?? null;
     insertRow.customer_name = p.full_name?.trim() || null;
-    insertRow.customer_phone = p.phone?.trim() || null;
+    const phoneRaw = p.phone?.trim() || null;
+    insertRow.customer_phone = phoneRaw ? normalizePhoneForDedup(phoneRaw) ?? phoneRaw : null;
+
+    if (phoneRaw) {
+      const existing = await findExistingDeliveryAddressByPhone(supabase, phoneRaw);
+      if (existing) {
+        const existingPayload = existing.payload as DeliveryAddressPayload;
+        const summary = toDocumentApiResult(existing);
+        return NextResponse.json({
+          status: "success",
+          data: {
+            data: {
+              ...existingPayload,
+              id: existing.id,
+            },
+            link: summary.link,
+            reused: true,
+            total_price: summary.total_price,
+            invoice_number: summary.invoice_number,
+            branchid: summary.branchid,
+            customerPhone: summary.customerPhone,
+            customerEmail: summary.customerEmail,
+          },
+        });
+      }
+    }
   } else if (parsed.templateId === TEMPLATE_IDS.receipt) {
     const denorm = receiptDenormFromPayload(parsed.payload as CreateDocumentPayload);
     insertRow.branch_id = denorm.branch_id;
