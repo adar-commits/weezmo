@@ -3,7 +3,7 @@ import type { DeliveryAddressFormValues, DeliveryAddressPayload } from "@/types/
 
 /** n8n webhook — delivery address form submitted by customer. */
 export const DELIVERY_ADDRESS_WEBHOOK_URL =
-  "https://redcarpet.app.n8n.cloud/webhook/d5087336-f0dd-432e-b723-85bac2bdd7e9";
+  "https://redcarpet.app.n8n.cloud/webhook-test/d5087336-f0dd-432e-b723-85bac2bdd7e9";
 
 export const DELIVERY_ADDRESS_SUBMIT_ACTION = "received" as const;
 export const DELIVERY_ADDRESS_CREATE_ACTION = "generate" as const;
