@@ -81,39 +81,34 @@ export async function POST(req: NextRequest) {
 
   const payload = row.payload as DeliveryAddressPayload;
 
-  const { data: existing } = await supabase
-    .from("delivery_address_responses")
-    .select("id")
-    .eq("document_id", documentId)
-    .maybeSingle();
-
-  if (existing) {
-    return NextResponse.json({ message: "Already submitted" }, { status: 409 });
-  }
-
   const orderId = payload.order_id?.trim() || null;
   const branchId = payload.branch_id?.trim() || row.branch_id?.trim() || null;
 
-  const { data: inserted, error: insertErr } = await supabase
+  const { data: saved, error: saveErr } = await supabase
     .from("delivery_address_responses")
-    .insert({
-      document_id: documentId,
-      address,
-      order_id: orderId,
-      branch_id: branchId,
-      customer_name: address.full_name,
-      customer_phone: address.phone,
-      webhook_status: "pending",
-    })
+    .upsert(
+      {
+        document_id: documentId,
+        address,
+        order_id: orderId,
+        branch_id: branchId,
+        customer_name: address.full_name,
+        customer_phone: address.phone,
+        webhook_status: "pending",
+        webhook_error: null,
+        submitted_at: new Date().toISOString(),
+      },
+      { onConflict: "document_id" }
+    )
     .select("id")
     .single();
 
-  if (insertErr || !inserted) {
-    console.error("delivery_address_responses insert error:", insertErr);
+  if (saveErr || !saved) {
+    console.error("delivery_address_responses upsert error:", saveErr);
     return NextResponse.json({ message: "Failed to save response" }, { status: 500 });
   }
 
-  const responseId = inserted.id as string;
+  const responseId = saved.id as string;
   const forward = buildDeliveryAddressWebhookBody({
     documentId,
     responseId,

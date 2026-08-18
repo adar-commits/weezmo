@@ -63,12 +63,64 @@ function lightConfetti(container: HTMLElement | null) {
   }
 }
 
-function validate(values: DeliveryAddressFormValues): string | null {
-  if (!values.full_name.trim()) return "נא למלא שם מלא";
-  if (!values.street.trim()) return "נא למלא רחוב";
-  if (!values.house_number.trim()) return "נא למלא מספר בית";
-  if (!values.city.trim()) return "נא למלא עיר";
-  if (!values.phone.trim()) return "נא למלא טלפון";
+function formatSubmitError(message: string): { title: string; detail: string } {
+  switch (message) {
+    case "Webhook failed":
+      return {
+        title: "לא הצלחנו לשלוח את הפרטים",
+        detail: "נסו שוב בעוד רגע. אם הבעיה נמשכת, צרו קשר עם השירות.",
+      };
+    case "Failed to save response":
+      return {
+        title: "שמירה נכשלה",
+        detail: "לא הצלחנו לשמור את הפרטים. נסו שוב.",
+      };
+    case "Not found":
+      return {
+        title: "הטופס לא נמצא",
+        detail: "ייתכן שהקישור אינו תקין. בקשו קישור חדש.",
+      };
+    default:
+      return {
+        title: "משהו השתבש",
+        detail: message || "שליחה נכשלה. נסו שוב.",
+      };
+  }
+}
+
+function DaAlert({ title, detail }: { title: string; detail: string }) {
+  return (
+    <div className="da-alert" role="alert" aria-live="assertive">
+      <div className="da-alert-icon" aria-hidden>
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M12 7.5v5.5M12 16.5h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      </div>
+      <div className="da-alert-copy">
+        <p className="da-alert-title">{title}</p>
+        <p className="da-alert-detail">{detail}</p>
+      </div>
+    </div>
+  );
+}
+
+function validate(values: DeliveryAddressFormValues): { title: string; detail: string } | null {
+  if (!values.full_name.trim()) {
+    return { title: "חסר שם מלא", detail: "נא למלא את השם המלא לפני השליחה." };
+  }
+  if (!values.street.trim()) {
+    return { title: "חסר רחוב", detail: "נא למלא את שם הרחוב." };
+  }
+  if (!values.house_number.trim()) {
+    return { title: "חסר מספר בית", detail: "נא למלא את מספר הבית." };
+  }
+  if (!values.city.trim()) {
+    return { title: "חסרה עיר", detail: "נא למלא את שם העיר." };
+  }
+  if (!values.phone.trim()) {
+    return { title: "חסר טלפון", detail: "נא למלא מספר טלפון ליצירת קשר." };
+  }
   return null;
 }
 
@@ -94,7 +146,7 @@ export function DeliveryAddressView({
     deliveryAddressInitialValues(payload)
   );
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ title: string; detail: string } | null>(null);
   const [done, setDone] = useState(false);
   const successRef = useRef<HTMLDivElement>(null);
 
@@ -122,12 +174,17 @@ export function DeliveryAddressView({
       });
       const data = (await res.json().catch(() => ({}))) as { message?: string };
       if (!res.ok) {
-        setError(typeof data.message === "string" ? data.message : "שליחה נכשלה");
+        setError(
+          formatSubmitError(typeof data.message === "string" ? data.message : "שליחה נכשלה")
+        );
         return;
       }
       setDone(true);
     } catch {
-      setError("שגיאת רשת, נסו שוב");
+      setError({
+        title: "שגיאת רשת",
+        detail: "בדקו את החיבור לאינטרנט ונסו שוב.",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -150,6 +207,16 @@ export function DeliveryAddressView({
         </div>
         <h2 className="da-success-title">תודה רבה!</h2>
         <p className="da-success-text">קיבלנו את פרטי המשלוח — נעדכן את ההזמנה בהקדם.</p>
+        <button
+          type="button"
+          className="da-success-edit"
+          onClick={() => {
+            setDone(false);
+            setError(null);
+          }}
+        >
+          עדכון הפרטים
+        </button>
       </div>
     );
   }
@@ -217,11 +284,7 @@ export function DeliveryAddressView({
           })}
         </div>
 
-        {error ? (
-          <p className="da-error" role="alert">
-            {error}
-          </p>
-        ) : null}
+        {error ? <DaAlert title={error.title} detail={error.detail} /> : null}
 
         <div className="da-submit-wrap">
           <button
