@@ -23,7 +23,7 @@ export async function GET(
   }
 
   const templateId = resolveTemplateFromRow(data);
-  if (templateId === TEMPLATE_IDS.customerSurvey) {
+  if (templateId === TEMPLATE_IDS.customerSurvey || templateId === TEMPLATE_IDS.deliveryAddress) {
     return NextResponse.json(
       { error: "PDF is not available for this document type" },
       { status: 404 }

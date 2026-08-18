@@ -7,6 +7,24 @@ const surveyQuestionSchema = z.object({
   required: z.boolean(),
 });
 
+export const deliveryAddressPayloadSchema = z.object({
+  template_id: z.literal(TEMPLATE_IDS.deliveryAddress),
+  title: z.string().min(1).max(200).optional(),
+  subtitle: z.string().max(500).optional(),
+  logoUrl: z.string().url().optional(),
+  order_id: z.string().min(1).max(256).optional(),
+  branch_id: z.string().min(1).max(120).optional(),
+  full_name: z.string().max(200).optional(),
+  street: z.string().max(200).optional(),
+  house_number: z.string().max(40).optional(),
+  city: z.string().max(120).optional(),
+  floor: z.string().max(20).optional(),
+  apartment: z.string().max(20).optional(),
+  phone: z.string().max(40).optional(),
+  delivery_instructions: z.string().max(1000).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+
 export const customerSurveyPayloadSchema = z.object({
   template_id: z.literal(TEMPLATE_IDS.customerSurvey),
   title: z.string().min(1),

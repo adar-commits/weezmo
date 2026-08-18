@@ -12,7 +12,7 @@ export type AdminDocumentListRow = {
   branch_id: string | null;
 };
 
-export type AdminDocumentTemplateFilter = "all" | "receipt" | "customer_survey";
+export type AdminDocumentTemplateFilter = "all" | "receipt" | "customer_survey" | "delivery_address";
 
 export function getPublicDocumentUrl(id: string, templateId: string): string {
   return buildPublicDocumentUrl(templateId, id);
@@ -33,6 +33,8 @@ export async function listAdminDocuments(
     q = q.eq("template_id", TEMPLATE_IDS.receipt);
   } else if (template === TEMPLATE_IDS.customerSurvey) {
     q = q.eq("template_id", TEMPLATE_IDS.customerSurvey);
+  } else if (template === TEMPLATE_IDS.deliveryAddress) {
+    q = q.eq("template_id", TEMPLATE_IDS.deliveryAddress);
   }
 
   const { data, error, count } = await q

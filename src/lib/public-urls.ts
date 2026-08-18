@@ -69,6 +69,7 @@ export function isLegacyReceiptsHost(hostname: string): boolean {
 
 export function getPublicDocumentBaseUrl(templateId: string): string {
   if (templateId === TEMPLATE_IDS.customerSurvey) return getSurveyBaseUrl();
+  if (templateId === TEMPLATE_IDS.deliveryAddress) return getSurveyBaseUrl();
   return getDocumentsBaseUrl();
 }
 
@@ -118,5 +119,7 @@ export function getDesignersHostname(): string | null {
 export type PublicUrlKind = "app" | "tracking" | "survey" | "documents";
 
 export function publicUrlKindForTemplate(templateId: TemplateId): "survey" | "documents" {
-  return templateId === TEMPLATE_IDS.customerSurvey ? "survey" : "documents";
+  if (templateId === TEMPLATE_IDS.customerSurvey) return "survey";
+  if (templateId === TEMPLATE_IDS.deliveryAddress) return "survey";
+  return "documents";
 }

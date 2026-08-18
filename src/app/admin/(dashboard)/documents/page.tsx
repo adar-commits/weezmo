@@ -24,7 +24,10 @@ function parseParams(sp: Record<string, string | string[] | undefined>) {
   const page = Math.max(1, parseInt(String(sp.page ?? "1"), 10) || 1);
   const t = String(sp.template ?? "receipt");
   const template: AdminDocumentTemplateFilter =
-    t === "all" || t === TEMPLATE_IDS.customerSurvey || t === TEMPLATE_IDS.receipt
+    t === "all" ||
+    t === TEMPLATE_IDS.customerSurvey ||
+    t === TEMPLATE_IDS.deliveryAddress ||
+    t === TEMPLATE_IDS.receipt
       ? (t as AdminDocumentTemplateFilter)
       : "receipt";
   return { page, template };
@@ -33,6 +36,7 @@ function parseParams(sp: Record<string, string | string[] | undefined>) {
 function templateLabel(t: string): string {
   if (t === TEMPLATE_IDS.receipt) return "קבלה / מסמך";
   if (t === TEMPLATE_IDS.customerSurvey) return "סקר לקוחות";
+  if (t === TEMPLATE_IDS.deliveryAddress) return "פרטי משלוח";
   return t;
 }
 
@@ -69,6 +73,7 @@ export default async function AdminDocumentsPage({
             [
               ["receipt" as const, "קבלות"],
               [TEMPLATE_IDS.customerSurvey, "סקרים"],
+              [TEMPLATE_IDS.deliveryAddress, "פרטי משלוח"],
               ["all" as const, "הכול"],
             ] as const
           ).map(([key, label]) => (

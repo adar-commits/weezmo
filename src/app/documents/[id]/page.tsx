@@ -5,10 +5,13 @@ import { TEMPLATE_IDS } from "@/constants/templates";
 import { resolveTemplateFromRow } from "@/lib/templates/registry";
 import type { CreateDocumentPayload } from "@/types/document";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
+import type { DeliveryAddressPayload } from "@/types/delivery-address";
 import { DocumentPageShell } from "@/components/DocumentPageShell";
 import { CustomerSurveyView } from "./CustomerSurveyView";
+import { DeliveryAddressView } from "./DeliveryAddressView";
 import "./document-page.css";
 import "./survey-page.css";
+import "./delivery-address-page.css";
 
 export default async function DocumentPage({
   params,
@@ -33,6 +36,14 @@ export default async function DocumentPage({
     return (
       <DocumentPageShell survey>
         <CustomerSurveyView documentId={id} payload={data.payload as CustomerSurveyPayload} />
+      </DocumentPageShell>
+    );
+  }
+
+  if (templateId === TEMPLATE_IDS.deliveryAddress) {
+    return (
+      <DocumentPageShell survey>
+        <DeliveryAddressView documentId={id} payload={data.payload as DeliveryAddressPayload} />
       </DocumentPageShell>
     );
   }

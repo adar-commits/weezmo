@@ -2,6 +2,7 @@
 export const TEMPLATE_IDS = {
   receipt: "receipt",
   customerSurvey: "customer_survey",
+  deliveryAddress: "delivery_address",
 } as const;
 
 export type TemplateId = (typeof TEMPLATE_IDS)[keyof typeof TEMPLATE_IDS];

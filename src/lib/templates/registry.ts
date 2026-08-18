@@ -1,9 +1,14 @@
 import { TEMPLATE_IDS, type TemplateId } from "@/constants/templates";
 import { assertAllowedBranchId, getBranchName } from "@/lib/allowed-branches";
 import type { CustomerSurveyPayload } from "@/types/customer-survey";
+import type { DeliveryAddressPayload } from "@/types/delivery-address";
 import type { CreateDocumentPayload } from "@/types/document";
 import { payloadTypeToDbType } from "@/types/document";
-import { customerSurveyPayloadSchema, receiptPayloadSchema } from "./schemas";
+import {
+  customerSurveyPayloadSchema,
+  deliveryAddressPayloadSchema,
+  receiptPayloadSchema,
+} from "./schemas";
 
 export type DbDocumentType = "receipt" | "invoice" | "delivery_note";
 
@@ -12,6 +17,12 @@ export type ParsedCreateSuccess =
       ok: true;
       templateId: typeof TEMPLATE_IDS.customerSurvey;
       payload: CustomerSurveyPayload;
+      dbType: DbDocumentType;
+    }
+  | {
+      ok: true;
+      templateId: typeof TEMPLATE_IDS.deliveryAddress;
+      payload: DeliveryAddressPayload;
       dbType: DbDocumentType;
     }
   | {
@@ -61,6 +72,33 @@ export function parseCreateDocumentBody(raw: unknown): ParsedCreate {
       templateId: TEMPLATE_IDS.customerSurvey,
       payload: r.data,
       dbType: "receipt",
+    };
+  }
+
+  if (templateIdRaw === TEMPLATE_IDS.deliveryAddress) {
+    const r = deliveryAddressPayloadSchema.safeParse(raw);
+    if (!r.success) {
+      return {
+        ok: false,
+        message:
+          r.error.issues.map((i) => i.message).join("; ") || "Invalid delivery address payload",
+      };
+    }
+    if (r.data.branch_id != null && String(r.data.branch_id).trim() !== "") {
+      const branchCheck = assertAllowedBranchId(r.data.branch_id, "branch_id");
+      if (!branchCheck.ok) return branchCheck;
+      return {
+        ok: true,
+        templateId: TEMPLATE_IDS.deliveryAddress,
+        payload: { ...r.data, branch_id: branchCheck.branchId },
+        dbType: "delivery_note",
+      };
+    }
+    return {
+      ok: true,
+      templateId: TEMPLATE_IDS.deliveryAddress,
+      payload: r.data,
+      dbType: "delivery_note",
     };
   }
 
@@ -117,9 +155,15 @@ export function resolveTemplateFromRow(row: {
   if (row.template_id === TEMPLATE_IDS.customerSurvey) {
     return TEMPLATE_IDS.customerSurvey;
   }
+  if (row.template_id === TEMPLATE_IDS.deliveryAddress) {
+    return TEMPLATE_IDS.deliveryAddress;
+  }
   const p = row.payload as Record<string, unknown> | undefined;
   if (p?.template_id === TEMPLATE_IDS.customerSurvey) {
     return TEMPLATE_IDS.customerSurvey;
+  }
+  if (p?.template_id === TEMPLATE_IDS.deliveryAddress) {
+    return TEMPLATE_IDS.deliveryAddress;
   }
   return TEMPLATE_IDS.receipt;
 }

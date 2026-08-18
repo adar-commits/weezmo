@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
     .from("documents")
     .select("id, created_at, template_id, branch_id, customer_phone, payload", { count: "exact" });
 
-  if (templateId === TEMPLATE_IDS.receipt || templateId === TEMPLATE_IDS.customerSurvey) {
+  if (templateId === TEMPLATE_IDS.receipt || templateId === TEMPLATE_IDS.customerSurvey || templateId === TEMPLATE_IDS.deliveryAddress) {
     q = q.eq("template_id", templateId);
   }
 
@@ -145,6 +145,11 @@ export async function POST(req: NextRequest) {
     insertRow.branch_id = p.branch_id ?? null;
     insertRow.customer_name = p.customer_name ?? null;
     insertRow.customer_phone = p.customer_phone ?? null;
+  } else if (parsed.templateId === TEMPLATE_IDS.deliveryAddress) {
+    const p = parsed.payload;
+    insertRow.branch_id = p.branch_id ?? null;
+    insertRow.customer_name = p.full_name?.trim() || null;
+    insertRow.customer_phone = p.phone?.trim() || null;
   } else if (parsed.templateId === TEMPLATE_IDS.receipt) {
     const denorm = receiptDenormFromPayload(parsed.payload as CreateDocumentPayload);
     insertRow.branch_id = denorm.branch_id;

@@ -1,0 +1,283 @@
+/* Delivery address form — reuses survey page shell tokens */
+
+.doc-page.doc-page--survey .da-shell,
+.doc-page.doc-page--survey .da-shell * {
+  font-family: var(--doc-font), "Arial Hebrew", Arial, sans-serif;
+}
+
+.da-preview-banner {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--doc-muted);
+  background: rgba(179, 1, 3, 0.07);
+  border: 1px solid rgba(179, 1, 3, 0.18);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+}
+
+.da-shell {
+  padding: 8px 0 max(2.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.da-header {
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--doc-border);
+  margin-bottom: 8px;
+}
+
+.da-logo {
+  width: min(220px, 88vw);
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.da-title {
+  font-size: clamp(1.3rem, 4.2vw, 1.6rem);
+  font-weight: 900;
+  color: var(--doc-red);
+  margin: 6px 0 6px;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.da-subtitle {
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  color: var(--doc-muted);
+  margin: 0 0 4px;
+  line-height: 1.5;
+  padding: 0 2px;
+}
+
+.da-form {
+  padding-top: 10px;
+}
+
+.da-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 12px;
+}
+
+.da-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+
+.da-field--half {
+  grid-column: span 1;
+}
+
+@media (max-width: 420px) {
+  .da-field--half {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .da-field-enter {
+    animation: daFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes daFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.da-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--doc-ink);
+  text-align: right;
+}
+
+.da-required {
+  color: #c62828;
+}
+
+.da-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--doc-ink);
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid var(--doc-border);
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.da-textarea {
+  resize: vertical;
+  min-height: 88px;
+  line-height: 1.45;
+}
+
+.da-input:focus {
+  outline: none;
+  border-color: rgba(179, 1, 3, 0.45);
+  box-shadow:
+    0 0 0 3px rgba(179, 1, 3, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.da-error {
+  color: #b30103;
+  font-weight: 600;
+  text-align: center;
+  margin: 14px 0 0;
+  grid-column: 1 / -1;
+}
+
+.da-submit {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 24px auto 0;
+  padding: 16px 24px;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--doc-font);
+  color: #fff;
+  background: linear-gradient(180deg, #c41418 0%, var(--doc-red) 55%, #8f0102 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(179, 1, 3, 0.35);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    opacity 0.2s ease;
+}
+
+.da-submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.da-submit:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+.da-submit:disabled {
+  cursor: wait;
+  opacity: 0.85;
+}
+
+.da-submit-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.da-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: daSpin 0.65s linear infinite;
+}
+
+@keyframes daSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success */
+.da-success {
+  text-align: center;
+  padding: 48px 16px 64px;
+}
+
+.da-success-icon {
+  margin: 0 auto 20px;
+  width: 80px;
+  height: 80px;
+}
+
+.da-check-svg {
+  width: 80px;
+  height: 80px;
+}
+
+.da-check-circle {
+  stroke: var(--doc-red);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.da-check-mark {
+  stroke: var(--doc-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .da-check-mark {
+    animation: daDraw 0.55s ease forwards 0.15s;
+  }
+}
+
+@keyframes daDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.da-success-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--doc-red);
+  margin: 0 0 8px;
+}
+
+.da-success-text {
+  font-size: 17px;
+  color: var(--doc-muted);
+  margin: 0;
+}
+
+.da-confetti-piece {
+  position: fixed;
+  width: 8px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: daConfetti 1.8s ease-out forwards;
+}
+
+@keyframes daConfetti {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
