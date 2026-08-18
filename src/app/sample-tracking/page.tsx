@@ -40,7 +40,7 @@ const DEMO_PAYLOAD: OrderTrackingPayload = {
   Notes: null,
 };
 
-/** Static UI preview — no API call; live tracking uses /track?orderID=SO… */
+/** Static UI preview — no API call; live tracking uses /track?orderID=… */
 export default function SampleTrackingPage() {
   return (
     <TrackingPageShell>

@@ -33,7 +33,7 @@ export default function Home() {
       <p>
         <strong>Order tracking (instant preview):</strong>{" "}
         <Link href="/sample-tracking">Open sample tracking preview</Link> — mock data; live links use{" "}
-        <code>/track?orderID=SO…</code>.
+        <code>/track?orderID=…</code> (Priority <code>SO…</code> or a numeric id).
       </p>
       <p>
         <strong>Real shareable link:</strong> create a document with{" "}

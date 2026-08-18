@@ -27,7 +27,8 @@ export function parseOrderTrackingPayload(data: unknown): OrderTrackingPayload |
   return result.success ? result.data : null;
 }
 
-export const ORDER_ID_PATTERN = /^SO\d+$/i;
+/** Priority `SO123` or a bare numeric id such as Shopify `35580`. */
+export const ORDER_ID_PATTERN = /^(SO)?\d+$/i;
 
 export function isValidOrderId(value: string): boolean {
   return ORDER_ID_PATTERN.test(value.trim());
