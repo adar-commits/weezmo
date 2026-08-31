@@ -133,18 +133,20 @@ export function TrackingPortalView({ orderId, previewData }: Props) {
 
           <hr className="track-divider" />
 
-          <section className="track-products" aria-labelledby="track-products-heading">
-            <h2 id="track-products-heading" className="track-section-title">
-              מוצרים
-            </h2>
-            <ul className="track-products__list">
-              {data.products.map((product, index) => (
-                <li key={`${product.prdDesc}-${index}`}>
-                  {product.prdDesc} (כמות: {product.Quantity})
-                </li>
-              ))}
-            </ul>
-          </section>
+          {data.products.length > 0 ? (
+            <section className="track-products" aria-labelledby="track-products-heading">
+              <h2 id="track-products-heading" className="track-section-title">
+                מוצרים
+              </h2>
+              <ul className="track-products__list">
+                {data.products.map((product, index) => (
+                  <li key={`${product.prdDesc}-${index}`}>
+                    {product.prdDesc} (כמות: {product.Quantity})
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <OrderProgressStepper events={data.Events} />
 

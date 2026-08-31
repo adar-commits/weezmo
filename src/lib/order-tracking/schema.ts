@@ -17,7 +17,7 @@ export const orderTrackingPayloadSchema = z.object({
   customerAddress: z.string(),
   branchDesc: z.string(),
   workingHours: z.string(),
-  products: z.array(productSchema),
+  products: z.array(productSchema).nullable().transform((value) => value ?? []),
   Events: z.array(eventSchema),
   Notes: z.string().nullable(),
 });
